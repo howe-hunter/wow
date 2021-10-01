@@ -1,0 +1,32 @@
+
+GatherMate2DB = {
+	["global"] = {
+		["data_version"] = 5,
+	},
+	["profileKeys"] = {
+		["Liandrii - Earthfury"] = "Default",
+		["Ruuss - Earthfury"] = "Default",
+	},
+	["profiles"] = {
+		["Default"] = {
+		},
+	},
+}
+GatherMate2HerbDB = {
+}
+GatherMate2MineDB = {
+	[1422] = {
+		[4471625100] = 206,
+		[5116702900] = 206,
+		[5519605000] = 214,
+	},
+	[1420] = {
+		[8234730800] = 201,
+	},
+}
+GatherMate2FishDB = {
+}
+GatherMate2GasDB = {
+}
+GatherMate2TreasureDB = {
+}

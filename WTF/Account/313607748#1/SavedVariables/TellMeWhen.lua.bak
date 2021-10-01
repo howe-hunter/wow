@@ -1,0 +1,34 @@
+
+TellMeWhenDB = {
+	["profileKeys"] = {
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+	},
+	["global"] = {
+		["TextLayouts"] = {
+			["icon1"] = {
+				{
+				}, -- [1]
+				{
+				}, -- [2]
+			},
+			["bar2"] = {
+				{
+				}, -- [1]
+				{
+				}, -- [2]
+			},
+		},
+	},
+	["Version"] = 91100,
+	["profiles"] = {
+		["Liandrii - Earthfury"] = {
+			["Version"] = 91100,
+			["Groups"] = {
+				{
+					["GUID"] = "TMW:group:1XIz=e3ZOhuL",
+				}, -- [1]
+			},
+			["Locked"] = true,
+		},
+	},
+}

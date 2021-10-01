@@ -1,0 +1,453 @@
+VER 3 0000000000000049 "C Barkskin" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Barkskin
+END
+VER 3 0000000000000024 "C Cleanse" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/castsequence reset=1 Abolish Poison, Remove Curse
+END
+VER 3 0000000000000069 "C Curse" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Remove Curse
+END
+VER 3 000000000000000E "C Entangling" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Entangling Roots
+/startattack
+END
+VER 3 0000000000000062 "C Faerie" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Faerie Fire
+/startattack
+END
+VER 3 000000000000002A "C Faerie Fire" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cast [nostance][stance:2/4/5] Faerie Fire; [stance:1/3] Faerie Fire (Feral)()
+/startattack
+END
+VER 3 0000000000000026 "C Hibernate" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Hibernate
+END
+VER 3 0000000000000014 "C HT" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Healing Touch
+END
+VER 3 0000000000000054 "C HT 3" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Healing Touch(Rank 3)
+END
+VER 3 000000000000003F "C HT 4" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Healing Touch(Rank 4)
+END
+VER 3 000000000000006C "C HT 8" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Healing Touch(Rank 8)
+END
+VER 3 000000000000006B "C HT 9" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Healing Touch(Rank 9)
+END
+VER 3 000000000000002D "C Hurricane" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Hurricane
+/startattack
+END
+VER 3 000000000000002F "C Innervate" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Innervate
+END
+VER 3 000000000000004C "C Insect Swarm" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Insect Swarm
+/startattack
+END
+VER 3 0000000000000052 "C IronPounce" "INV_MISC_QUESTIONMARK"
+#showtooltip 
+/cast [stance:0] Iron Grenade; [stance:3] Pounce
+/startattack
+END
+VER 3 0000000000000025 "C Mark of the Wi" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Mark of the Wild
+END
+VER 3 000000000000000F "C Moonfire" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Moonfire
+/startattack
+END
+VER 3 0000000000000012 "C Nature's Grasp" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Nature's Grasp
+END
+VER 3 0000000000000064 "C NS HT" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/castsequence reset=2 Nature's Swiftness, Healing Touch
+END
+VER 3 0000000000000061 "C Parachute" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equip Parachute Cloak
+/use Parachute Cloak
+END
+VER 3 000000000000006A "C Poison" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Abolish Poison
+END
+VER 3 0000000000000041 "C Reg Rd1" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Regrowth(Rank 7)
+END
+VER 3 0000000000000042 "C Reg Rd2" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Regrowth(Rank 6)
+END
+VER 3 0000000000000029 "C Regrowth" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Regrowth
+END
+VER 3 000000000000000D "C Rejuv" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Rejuvenation
+END
+VER 3 0000000000000067 "C Rejuv 3" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Rejuvenation(Rank 3)
+END
+VER 3 0000000000000068 "C Rejuv 4" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Rejuvenation(Rank 4)
+END
+VER 3 0000000000000037 "C Soothe Animal" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Soothe Animal
+END
+VER 3 0000000000000011 "C Starfire" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Starfire
+/startattack
+END
+VER 3 0000000000000063 "C ThOmWild" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/castsequence reset=3 Thorns, Omen of Clarity, Mark of the Wild
+END
+VER 3 0000000000000015 "C Thorns" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cancelform
+/cast Thorns
+END
+VER 3 000000000000001D "C Tranquility" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Tranquility
+END
+VER 3 000000000000000C "C War Stomp" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast War Stomp
+END
+VER 3 0000000000000010 "C Wrath" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Wrath
+/startattack
+END
+VER 3 000000000000004F "C Wrathfire" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/castsequence reset=10 Starfire, Wrath
+/startattack
+END
+VER 3 0000000000000050 "Decursive" "INV_MISC_QUESTIONMARK"
+/script DecursiveRootTable.Dcr:Println('No spell available')
+END
+VER 3 0000000000000051 "E1 Cloak" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 13 Gnomish Cloaking Device
+END
+VER 3 000000000000003A "E1 Death Ray" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 13 Gnomish Death Ray
+END
+VER 3 000000000000003E "E1 Dragonling" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 13 Mechanical Dragonling
+END
+VER 3 0000000000000066 "E1 Life" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 13 Lifestone
+END
+VER 3 0000000000000065 "E1 Linken" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 13 Linken's Boomerang
+END
+VER 3 0000000000000048 "E1 Net" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 13 Gnomish Net-o-Matic Projector
+END
+VER 3 000000000000003B "E1 Shrink Ray" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 13 Gnomish Shrink Ray
+END
+VER 3 0000000000000045 "E2 Bag" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 14 Six Demon Bag
+END
+VER 3 0000000000000046 "E2 Chicken" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 14 Gnomish Battle Chicken
+END
+VER 3 000000000000003D "E2 Insignia" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 14 Insignia of the Horde
+END
+VER 3 000000000000003C "E2 Stopwatch" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equipslot 14 Nifty Stopwatch
+END
+VER 3 0000000000000033 "Fsh" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/equip Nat Pagle's Extreme Angler FC-5000
+/cast Fishing
+END
+VER 3 000000000000002C "Mount" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cancelform [noform:5]
+/use Gray Kodo
+END
+VER 3 000000000000004B "R Delete Gray" "132150"
+/run local i,n=0;for b=0,4 do for s=1,GetContainerNumSlots(b) do ClearCursor();i={GetContainerItemInfo(b,s)};n=i[7];if n and string.find(n,"9d9d9d") then PickupContainerItem(b,s); DeleteCursorItem() end end end
+END
+VER 3 000000000000004A "R ScriptErrors" "132108"
+/console ScriptErrors 0
+END
+VER 3 000000000000002E "Rez" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform [noform:5]
+/cast Rebirth
+END
+VER 3 000000000000002B "S Bash" "INV_MISC_QUESTIONMARK"
+#showtooltip Bash
+/stand
+/dismount
+/cancelaura [stance:2] Aquatic Form; [stance:3] Cat Form; [stance:4] Travel Form; [stance:5] Moonkin Form
+/cast [nostance] Dire Bear Form; [stance:1] Bash
+/startattack
+END
+VER 3 0000000000000006 "S Bear Form" "INV_MISC_QUESTIONMARK"
+#showtooltip Dire Bear Form
+/stand
+/dismount
+/cancelform
+/cast Dire Bear Form
+END
+VER 3 0000000000000008 "S Caster Form" "136222"
+/cancelform
+/dismount
+END
+VER 3 0000000000000007 "S Cat Form" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/stand
+/dismount
+/cancelform
+/cast Cat Form
+END
+VER 3 0000000000000020 "S Cower" "INV_MISC_QUESTIONMARK"
+#showtooltip Cower
+/stand
+/dismount
+/cancelaura [stance:1] Dire Bear Form; [stance:2] Aquatic Form; [stance:4] Travel Form; [stance:5] Moonkin Form
+/cast [nostance] Cat Form
+/cast Cower
+END
+VER 3 0000000000000056 "S CRoar" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Challenging Roar
+/startattack
+END
+VER 3 000000000000000B "S Dash" "INV_MISC_QUESTIONMARK"
+#showtooltip Dash
+/stand
+/dismount
+/cancelaura [stance:1] Dire Bear Form; [stance:2] Aquatic Form; [stance:4] Travel Form; [stance:5] Moonkin Form 
+/cast [nostance] Cat Form
+/cast Dash
+END
+VER 3 0000000000000057 "S DRoar" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Demoralizing Roar
+/startattack
+END
+VER 3 000000000000001A "S Feral Charge" "INV_MISC_QUESTIONMARK"
+#showtooltip Feral Charge
+/stand
+/dismount
+/cancelaura [stance:2] Aquatic Form; [stance:3] Cat Form; [stance:4] Travel Form; [stance:5] Moonkin Form
+/cast [nostance] Dire Bear Form; [stance:1] Feral Charge
+/startattack
+END
+VER 3 000000000000001F "S Growl" "INV_MISC_QUESTIONMARK"
+#showtooltip Growl
+/stand
+/dismount
+/cancelaura [stance:2] Aquatic Form; [stance:3] Cat Form; [stance:4] Travel Form; [stance:5] Moonkin Form
+/cast [nostance] Dire Bear Form; [stance:1] Growl
+/startattack
+END
+VER 3 0000000000000035 "S Manashift" "136099"
+/cancelform
+/use Greater Mana Potion
+/cast Cat Form
+/startattack
+END
+VER 3 0000000000000058 "S Maul" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Maul
+/startattack
+END
+VER 3 000000000000000A "S Prowl" "INV_MISC_QUESTIONMARK"
+#showtooltip Prowl
+/stand
+/dismount
+/cancelaura [stance:1] Dire Bear Form; [stance:2] Aquatic Form; [stance:4] Travel Form; [stance:5] Moonkin Form
+/cast [nostance] Cat Form
+/cast Prowl
+END
+VER 3 0000000000000021 "S Rake" "INV_MISC_QUESTIONMARK"
+#showtooltip Rake
+/stand
+/dismount
+/cancelaura [stance:1] Dire Bear Form; [stance:2] Aquatic Form; [stance:4] Travel Form; [stance:5] Moonkin Form
+/cast [nostance] Cat Form
+/cast Rake
+/startattack
+END
+VER 3 000000000000001E "S RavShred" "INV_MISC_QUESTIONMARK"
+#showtooltip 
+/cast [stealth] Ravage; [nostealth] Shred
+/startattack
+END
+VER 3 0000000000000034 "S Savior" "136051"
+#showtooltip
+/cancelform
+/use Superior Healing Potion
+/use Ring of Saviors
+/cast Dire Bear Form
+/startattack
+END
+VER 3 0000000000000059 "S Swipe" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/cast Swipe
+/startattack
+END
+VER 3 0000000000000005 "S Travel Forms" "INV_MISC_QUESTIONMARK"
+#showtooltip travel form
+/stand
+/dismount
+/cancelaura [stance:1] Dire Bear Form; [stance:3] Cat Form; [stance:5] Moonkin Form
+/cast [nostance, swimming] Aquatic Form; [nostance, outdoors] Travel Form
+END
+VER 3 0000000000000032 "T1" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/use 13
+END
+VER 3 0000000000000039 "T2" "INV_MISC_QUESTIONMARK"
+#showtooltip
+/use 14
+END

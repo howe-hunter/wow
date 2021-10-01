@@ -1,0 +1,10 @@
+## Interface: 20502
+## Title: Titan Panel Classic [|cffeda55fLootType|r] |cff00aa001.4.0.20502|r
+## Notes: Adds group loot and instance difficulty information to Titan Panel
+## Author: Titan Panel Development Team (http://www.titanpanel.org)
+## SavedVariables: TitanClassicLootTypeSaved
+## OptionalDeps: 
+## Dependencies: TitanClassic
+## Version: 1.4.0.20502
+## X-Child-Of: TitanClassic
+TitanClassicLootType.xml

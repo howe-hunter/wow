@@ -1,0 +1,370 @@
+
+Bartender4DB = {
+	["namespaces"] = {
+		["ActionBars"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["actionbars"] = {
+						{
+							["padding"] = 6,
+							["version"] = 3,
+							["position"] = {
+								["y"] = 41.75,
+								["x"] = -510,
+								["point"] = "BOTTOM",
+							},
+						}, -- [1]
+						{
+							["enabled"] = false,
+							["version"] = 3,
+							["position"] = {
+								["y"] = -205,
+								["x"] = -231.4999389648438,
+								["point"] = "CENTER",
+							},
+						}, -- [2]
+						{
+							["padding"] = 5,
+							["rows"] = 12,
+							["version"] = 3,
+							["position"] = {
+								["y"] = 610,
+								["x"] = -82,
+								["point"] = "BOTTOMRIGHT",
+							},
+						}, -- [3]
+						{
+							["padding"] = 5,
+							["rows"] = 12,
+							["version"] = 3,
+							["position"] = {
+								["y"] = 610,
+								["x"] = -42,
+								["point"] = "BOTTOMRIGHT",
+							},
+						}, -- [4]
+						{
+							["padding"] = 6,
+							["version"] = 3,
+							["position"] = {
+								["y"] = 98.93820190429688,
+								["x"] = 10.90118408203125,
+								["point"] = "BOTTOM",
+							},
+						}, -- [5]
+						{
+							["padding"] = 6,
+							["version"] = 3,
+							["position"] = {
+								["y"] = 96.81182098388672,
+								["x"] = 247.357421875,
+								["point"] = "BOTTOMLEFT",
+							},
+						}, -- [6]
+						{
+						}, -- [7]
+						{
+						}, -- [8]
+						nil, -- [9]
+						{
+						}, -- [10]
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["actionbars"] = {
+						{
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = 320.3647766113281,
+								["point"] = "BOTTOMLEFT",
+								["y"] = 94.45138549804688,
+							},
+						}, -- [1]
+						{
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = 7.90789794921875,
+								["point"] = "BOTTOM",
+								["y"] = 169.8086700439453,
+							},
+						}, -- [2]
+						{
+							["rows"] = 12,
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = -82,
+								["point"] = "BOTTOMRIGHT",
+								["y"] = 610,
+							},
+						}, -- [3]
+						{
+							["rows"] = 12,
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = -42,
+								["point"] = "BOTTOMRIGHT",
+								["y"] = 610,
+							},
+						}, -- [4]
+						{
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = 6.950927734375,
+								["point"] = "BOTTOM",
+								["y"] = 94.19784545898438,
+							},
+						}, -- [5]
+						{
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = 320.6019897460938,
+								["point"] = "BOTTOMLEFT",
+								["y"] = 134.0612640380859,
+							},
+						}, -- [6]
+						{
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = -213.3271484375,
+								["point"] = "CENTER",
+								["y"] = 62.851806640625,
+							},
+						}, -- [7]
+						{
+							["enabled"] = true,
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = 6.32733154296875,
+								["point"] = "BOTTOM",
+								["y"] = 131.8828277587891,
+							},
+						}, -- [8]
+						{
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = -217.277587890625,
+								["point"] = "CENTER",
+								["y"] = -67.51849365234375,
+							},
+						}, -- [9]
+						{
+							["enabled"] = true,
+							["version"] = 3,
+							["padding"] = -1,
+							["position"] = {
+								["x"] = 321.0866394042969,
+								["point"] = "BOTTOMLEFT",
+								["y"] = 172.1787567138672,
+							},
+						}, -- [10]
+					},
+				},
+			},
+		},
+		["MicroMenu"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["padding"] = -2,
+					["version"] = 3,
+					["position"] = {
+						["y"] = 42,
+						["x"] = 33,
+						["point"] = "BOTTOM",
+						["scale"] = 1,
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["position"] = {
+						["x"] = -182,
+						["point"] = "BOTTOMRIGHT",
+						["scale"] = 1,
+						["y"] = 79.99002838134766,
+					},
+					["fadeoutalpha"] = 0,
+					["fadeoutdelay"] = 0.5,
+					["fadeout"] = true,
+					["version"] = 3,
+					["padding"] = -4,
+				},
+			},
+		},
+		["XPBar"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["enabled"] = true,
+					["version"] = 3,
+					["position"] = {
+						["y"] = 54,
+						["x"] = -514,
+						["point"] = "BOTTOM",
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["enabled"] = true,
+					["position"] = {
+						["x"] = -512,
+						["point"] = "BOTTOM",
+						["y"] = 9.58027458190918,
+					},
+					["version"] = 3,
+				},
+			},
+		},
+		["BlizzardArt"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["enabled"] = true,
+					["version"] = 3,
+					["position"] = {
+						["y"] = 47,
+						["x"] = -512,
+						["point"] = "BOTTOM",
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["position"] = {
+						["x"] = -512,
+						["point"] = "BOTTOM",
+						["y"] = 47,
+					},
+					["version"] = 3,
+				},
+			},
+		},
+		["BagBar"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["padding"] = 5,
+					["version"] = 3,
+					["position"] = {
+						["y"] = 41.78977203369141,
+						["x"] = 273.08642578125,
+						["point"] = "BOTTOM",
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["fadeout"] = true,
+					["fadeoutdelay"] = 0.5,
+					["fadeoutalpha"] = 0,
+					["version"] = 3,
+					["position"] = {
+						["x"] = -193.4014892578125,
+						["point"] = "BOTTOMRIGHT",
+						["y"] = 40.50000381469727,
+					},
+					["padding"] = -3,
+				},
+			},
+		},
+		["StanceBar"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["version"] = 3,
+					["position"] = {
+						["y"] = 154.9164619445801,
+						["x"] = 205.1451416015625,
+						["point"] = "BOTTOMLEFT",
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["position"] = {
+						["x"] = -2.999996900558472,
+						["point"] = "BOTTOMLEFT",
+						["scale"] = 1,
+						["y"] = 35.99999618530273,
+					},
+					["version"] = 3,
+				},
+			},
+		},
+		["Vehicle"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["version"] = 3,
+					["position"] = {
+						["y"] = 102.0492706298828,
+						["x"] = 195.6544342041016,
+						["point"] = "BOTTOMLEFT",
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["position"] = {
+						["x"] = 97.67916107177734,
+						["point"] = "BOTTOMLEFT",
+						["y"] = 61.75282287597656,
+					},
+					["version"] = 3,
+				},
+			},
+		},
+		["PetBar"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["version"] = 3,
+					["position"] = {
+						["y"] = 130.3579254150391,
+						["x"] = 253.7715759277344,
+						["point"] = "BOTTOMLEFT",
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["version"] = 3,
+					["position"] = {
+						["x"] = 119.6975326538086,
+						["point"] = "LEFT",
+						["y"] = 178.2654113769531,
+					},
+				},
+			},
+		},
+		["RepBar"] = {
+			["profiles"] = {
+				["Liandrii - Earthfury"] = {
+					["enabled"] = true,
+					["version"] = 3,
+					["position"] = {
+						["y"] = 61,
+						["x"] = -514,
+						["point"] = "BOTTOM",
+					},
+				},
+				["Ruuss - Earthfury"] = {
+					["enabled"] = true,
+					["position"] = {
+						["x"] = -512,
+						["point"] = "BOTTOM",
+						["y"] = 14.38319301605225,
+					},
+					["version"] = 3,
+				},
+			},
+		},
+	},
+	["profileKeys"] = {
+		["Liandrii - Earthfury"] = "Ruuss - Earthfury",
+		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+	},
+	["profiles"] = {
+		["Liandrii - Earthfury"] = {
+			["focuscastmodifier"] = false,
+			["blizzardVehicle"] = true,
+			["snapping"] = false,
+			["outofrange"] = "hotkey",
+		},
+		["Ruuss - Earthfury"] = {
+			["blizzardVehicle"] = true,
+			["focuscastmodifier"] = false,
+			["snapping"] = false,
+			["outofrange"] = "hotkey",
+		},
+	},
+}

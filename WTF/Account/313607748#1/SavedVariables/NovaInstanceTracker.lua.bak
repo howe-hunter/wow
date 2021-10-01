@@ -1,0 +1,56 @@
+
+NITdatabase = {
+	["profileKeys"] = {
+		["Liandrii - Earthfury"] = "Default",
+	},
+	["global"] = {
+		["Earthfury"] = {
+			["trades"] = {
+			},
+			["myChars"] = {
+				["Liandrii"] = {
+					["fishingSkill"] = 0,
+					["cookingSkill"] = 0,
+					["profSkill1"] = 0,
+					["firstaidSkillMax"] = 0,
+					[17033] = 0,
+					["profSkill2"] = 0,
+					["savedInstances"] = {
+					},
+					["maxXP"] = 400,
+					["gender"] = "Female",
+					["prof1"] = "none",
+					["restedXP"] = 10,
+					["totalBagSlots"] = 20,
+					["freeBagSlots"] = 17,
+					["currentXP"] = 75,
+					["raceEnglish"] = "BloodElf",
+					["profSkillMax1"] = 0,
+					["race"] = "Blood Elf",
+					["time"] = 1632362638,
+					["gold"] = 0,
+					["realm"] = "Earthfury",
+					["level"] = 1,
+					["raceLocalized"] = "Blood Elf",
+					["fishingSkillMax"] = 0,
+					["firstaidSkill"] = 0,
+					["classEnglish"] = "PALADIN",
+					["durabilityAverage"] = 100,
+					["prof2"] = "none",
+					["guild"] = "No guild",
+					["guildRankName"] = "No guild rank",
+					[21177] = 0,
+					["resting"] = false,
+					["cooldowns"] = {
+					},
+					["cookingSkillMax"] = 0,
+					["classLocalized"] = "Paladin",
+					["profSkillMax2"] = 0,
+				},
+			},
+			["instances"] = {
+			},
+		},
+		["resetCharData"] = false,
+	},
+}

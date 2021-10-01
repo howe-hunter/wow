@@ -1,0 +1,59 @@
+
+PawnOptions = {
+	["LastVersion"] = 2.0527,
+	["ItemLevels"] = {
+		[7] = {
+			["ID"] = 2962,
+			["Level"] = 10,
+			["Link"] = "|cff1eff00|Hitem:2962::::::::10:::::::::|h[Burnt Leather Breeches]|h|r",
+		},
+		[15] = {
+			["ID"] = 6520,
+			["Level"] = 9,
+			["Link"] = "|cffffffff|Hitem:6520::::::::10:::::::::|h[Pioneer Cloak]|h|r",
+		},
+		[8] = {
+			["ID"] = 20997,
+			["Level"] = 5,
+			["Link"] = "|cffffffff|Hitem:20997::::::::3:::::::::|h[Green Chain Boots]|h|r",
+		},
+		[16] = {
+			["ID"] = 2488,
+			["Level"] = 9,
+			["AlsoFitsIn"] = 17,
+			["Link"] = "|cffffffff|Hitem:2488::::::::10:::::::::|h[Gladius]|h|r",
+		},
+		[9] = {
+			["ID"] = 9760,
+			["Level"] = 12,
+			["Link"] = "|cffffffff|Hitem:9760::::::::11:::::::::|h[Cadet Bracers]|h|r",
+		},
+		[5] = {
+			["ID"] = 23399,
+			["Level"] = 10,
+			["Link"] = "|cff1eff00|Hitem:23399::::::::11:::::::::|h[Fallen Apprentice's Robe]|h|r",
+		},
+		[10] = {
+			["ID"] = 23376,
+			["Level"] = 6,
+			["Link"] = "|cffffffff|Hitem:23376::::::::6:::::::::|h[Gatewatcher's Chain Gloves]|h|r",
+		},
+		[6] = {
+			["ID"] = 21009,
+			["Level"] = 5,
+			["Link"] = "|cff9d9d9d|Hitem:21009::::::::3:::::::::|h[Scraggy Leather Belt]|h|r",
+		},
+		[17] = {
+			["ID"] = 15486,
+			["Level"] = 12,
+			["Link"] = "|cff1eff00|Hitem:15486::::::669:809986560:10:::::::::|h[War Torn Shield of the Tiger]|h|r",
+		},
+	},
+	["AutoSelectScales"] = false,
+	["LastPlayerFullName"] = "Liandrii-Earthfury",
+}
+PawnMrRobotScaleProviderOptions = nil
+PawnClassicScaleProviderOptions = {
+	["LastClass"] = "PALADIN",
+	["LastAdded"] = 2,
+}
