@@ -1,6 +1,8 @@
 
 PawnOptions = {
 	["LastVersion"] = 2.0527,
+	["LastPlayerFullName"] = "Ruuss-Earthfury",
+	["AutoSelectScales"] = false,
 	["ItemLevels"] = {
 		{
 			["ID"] = 8345,
@@ -77,8 +79,6 @@ PawnOptions = {
 			["Link"] = "|cff0070dd|Hitem:13030::::::::57:::::::::|h[Basilisk Bone]|h|r",
 		},
 	},
-	["AutoSelectScales"] = false,
-	["LastPlayerFullName"] = "Ruuss-Earthfury",
 }
 PawnMrRobotScaleProviderOptions = nil
 PawnClassicScaleProviderOptions = {

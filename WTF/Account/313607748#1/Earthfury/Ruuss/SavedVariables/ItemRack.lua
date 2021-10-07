@@ -7,7 +7,7 @@ ItemRackUser = {
 	["MainScale"] = 1,
 	["SetMenuWrapValue"] = 3,
 	["SetMenuWrap"] = "OFF",
-	["EnablePerSetQueues"] = "OFF",
+	["CurrentSet"] = "bear",
 	["Sets"] = {
 		["cat"] = {
 			["oldset"] = "caster",
@@ -22,20 +22,21 @@ ItemRackUser = {
 			},
 		},
 		["bear"] = {
-			["oldset"] = "cat",
+			["oldset"] = "caster",
 			["equip"] = {
 				[16] = "868::::::::57:::::::::",
 				[17] = "13030::::::::57:::::::::",
 			},
 			["icon"] = 133488,
 			["old"] = {
-				[16] = "24222::::::::58:::::::::",
+				[16] = "812::::::::58:::::::::",
+				[17] = 0,
 			},
 		},
 		["~CombatQueue"] = {
 			["equip"] = {
-				[16] = "812::::::::58:::::::::",
-				[17] = 0,
+				[16] = "868::::::::57:::::::::",
+				[17] = "13030::::::::57:::::::::",
 			},
 		},
 		["caster"] = {
@@ -55,29 +56,29 @@ ItemRackUser = {
 			},
 		},
 	},
-	["EnableQueues"] = "ON",
+	["EnablePerSetQueues"] = "OFF",
 	["Queues"] = {
 	},
-	["Alpha"] = 1,
+	["Buttons"] = {
+	},
 	["ItemsUsed"] = {
 	},
 	["Events"] = {
 		["Enabled"] = {
-			["Bear"] = true,
-			["cat"] = true,
 			["caster"] = true,
+			["cat"] = true,
+			["Bear"] = true,
 		},
 		["Set"] = {
-			["Bear"] = "bear",
-			["cat"] = "cat",
 			["caster"] = "caster",
+			["cat"] = "cat",
+			["Bear"] = "bear",
 		},
 	},
+	["EnableEvents"] = "ON",
 	["Hidden"] = {
 	},
-	["EnableEvents"] = "ON",
-	["Buttons"] = {
-	},
+	["Alpha"] = 1,
 	["MenuScale"] = 0.85,
-	["CurrentSet"] = "caster",
+	["EnableQueues"] = "ON",
 }

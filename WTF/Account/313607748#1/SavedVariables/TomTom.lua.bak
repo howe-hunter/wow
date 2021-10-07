@@ -8,11 +8,11 @@ TomTomDB = {
 		["Default"] = {
 			["arrow"] = {
 				["position"] = {
-					"CENTER", -- [1]
+					"RIGHT", -- [1]
 					nil, -- [2]
-					"CENTER", -- [3]
-					0, -- [4]
-					0, -- [5]
+					"RIGHT", -- [3]
+					-54.96274948120117, -- [4]
+					187.2588195800781, -- [5]
 				},
 				["stickycorpse"] = true,
 			},
@@ -39,39 +39,6 @@ TomTomWaypointsM = {
 		["Liandrii - Earthfury"] = {
 		},
 		["Ruuss - Earthfury"] = {
-			[1422] = {
-				["1422:519070904.64548:280440097.79951:Kirsta Deepshadow"] = {
-					1422, -- [1]
-					0.5190709046454768, -- [2]
-					0.280440097799511, -- [3]
-					["arrivaldistance"] = 15,
-					["crazy"] = true,
-					["persistent"] = true,
-					["desc"] = "Kirsta Deepshadow",
-					["silent"] = true,
-					["cleardistance"] = 10,
-					["title"] = "Kirsta Deepshadow",
-					["from"] = "?",
-					["callbacks"] = {
-						["distance"] = {
-							[10] = nil --[[ skipped inline function ]],
-							[15] = nil --[[ skipped inline function ]],
-						},
-						["world"] = {
-							["onclick"] = nil --[[ skipped inline function ]],
-							["tooltip_update"] = nil --[[ skipped inline function ]],
-							["tooltip_show"] = nil --[[ skipped inline function ]],
-						},
-						["minimap"] = {
-							["onclick"] = nil --[[ skipped inline function ]],
-							["tooltip_update"] = nil --[[ skipped inline function ]],
-							["tooltip_show"] = nil --[[ skipped inline function ]],
-						},
-					},
-					["minimap"] = true,
-					["world"] = true,
-				},
-			},
 		},
 	},
 }

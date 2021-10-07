@@ -8,12 +8,12 @@ ThreatPlatesDB = {
 			["welcome"] = true,
 		},
 	},
-	["global"] = {
-		["version"] = "10.2.11",
-	},
 	["profileKeys"] = {
 		["Liandrii - Earthfury"] = "Default",
 		["Ruuss - Earthfury"] = "Default",
+	},
+	["global"] = {
+		["version"] = "10.2.11",
 	},
 	["profiles"] = {
 		["Default"] = {
