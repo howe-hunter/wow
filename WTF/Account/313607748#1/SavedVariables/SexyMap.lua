@@ -27,9 +27,31 @@ SexyMap2DB = {
 			["backgroundColor"] = {
 			},
 		},
-		["ping"] = {
-			["showPing"] = true,
-			["showAt"] = "map",
+		["buttons"] = {
+			["radius"] = 10,
+			["lockDragging"] = false,
+			["allowDragging"] = true,
+			["visibilitySettings"] = {
+				["MinimapZoomIn"] = "never",
+				["MiniMapMailFrame"] = "always",
+				["GameTimeFrame"] = "never",
+				["MiniMapWorldMapButton"] = "never",
+				["MinimapZoomOut"] = "never",
+				["MiniMapBattlefieldFrame"] = "always",
+				["GarrisonLandingPageMinimapButton"] = "always",
+				["TimeManagerClockButton"] = "always",
+				["SexyMapZoneTextButton"] = "always",
+			},
+			["dragPositions"] = {
+				["LibDBIcon10_Bartender4"] = 199.2645543025632,
+				["LibDBIcon10_Details"] = 181.4128820172927,
+				["LibDBIcon10_Leatrix_Plus"] = 164.8148353684094,
+				["MiniMapTracking"] = 127.716306286056,
+				["LibDBIcon10_Questie"] = 55.34292725054368,
+				["LibDBIcon10_Leatrix_Maps"] = 149.6769809951201,
+				["LibDBIcon10_WeakAuras"] = 35.61315866873543,
+			},
+			["controlVisibility"] = true,
 		},
 		["movers"] = {
 			["lockDurability"] = false,
@@ -50,18 +72,18 @@ SexyMap2DB = {
 		["clock"] = {
 			["bgColor"] = {
 				["a"] = 1,
-				["r"] = 0,
-				["g"] = 0,
 				["b"] = 0,
+				["g"] = 0,
+				["r"] = 0,
 			},
 			["font"] = "Friz Quadrata TT",
 			["fontColor"] = {
 			},
 			["borderColor"] = {
 				["a"] = 1,
-				["r"] = 0,
-				["g"] = 0,
 				["b"] = 0,
+				["g"] = 0,
+				["r"] = 0,
 			},
 			["xOffset"] = 0,
 			["yOffset"] = 0,
@@ -123,47 +145,25 @@ SexyMap2DB = {
 		["zonetext"] = {
 			["bgColor"] = {
 				["a"] = 1,
-				["r"] = 0,
-				["g"] = 0,
 				["b"] = 0,
+				["g"] = 0,
+				["r"] = 0,
 			},
 			["font"] = "Friz Quadrata TT",
 			["fontColor"] = {
 			},
 			["borderColor"] = {
 				["a"] = 1,
-				["r"] = 0,
-				["g"] = 0,
 				["b"] = 0,
+				["g"] = 0,
+				["r"] = 0,
 			},
 			["xOffset"] = 0,
 			["yOffset"] = 0,
 		},
-		["buttons"] = {
-			["radius"] = 10,
-			["lockDragging"] = false,
-			["allowDragging"] = true,
-			["visibilitySettings"] = {
-				["MinimapZoomIn"] = "never",
-				["MiniMapMailFrame"] = "always",
-				["GameTimeFrame"] = "never",
-				["MiniMapWorldMapButton"] = "never",
-				["MinimapZoomOut"] = "never",
-				["MiniMapBattlefieldFrame"] = "always",
-				["GarrisonLandingPageMinimapButton"] = "always",
-				["SexyMapZoneTextButton"] = "always",
-				["TimeManagerClockButton"] = "always",
-			},
-			["dragPositions"] = {
-				["LibDBIcon10_Bartender4"] = 199.2645543025632,
-				["MiniMapTracking"] = 127.716306286056,
-				["LibDBIcon10_Questie"] = 55.34292725054368,
-				["LibDBIcon10_WeakAuras"] = 35.61315866873543,
-				["LibDBIcon10_Leatrix_Maps"] = 149.6769809951201,
-				["LibDBIcon10_Leatrix_Plus"] = 164.8148353684094,
-				["LibDBIcon10_Details"] = 181.4128820172927,
-			},
-			["controlVisibility"] = true,
+		["ping"] = {
+			["showPing"] = true,
+			["showAt"] = "map",
 		},
 	},
 	["presets"] = {
@@ -172,10 +172,10 @@ SexyMap2DB = {
 		["core"] = {
 			["clamp"] = true,
 			["lock"] = false,
-			["rightClickToConfig"] = true,
-			["autoZoom"] = 5,
-			["shape"] = 130871,
 			["northTag"] = true,
+			["shape"] = 130871,
+			["autoZoom"] = 5,
+			["rightClickToConfig"] = true,
 		},
 		["coordinates"] = {
 			["enabled"] = true,
@@ -191,9 +191,30 @@ SexyMap2DB = {
 			["backgroundColor"] = {
 			},
 		},
-		["ping"] = {
-			["showPing"] = true,
-			["showAt"] = "map",
+		["buttons"] = {
+			["radius"] = 10,
+			["lockDragging"] = false,
+			["allowDragging"] = true,
+			["visibilitySettings"] = {
+				["MinimapZoomIn"] = "never",
+				["MiniMapMailFrame"] = "always",
+				["GameTimeFrame"] = "never",
+				["MiniMapWorldMapButton"] = "never",
+				["MinimapZoomOut"] = "never",
+				["MiniMapBattlefieldFrame"] = "always",
+				["GarrisonLandingPageMinimapButton"] = "always",
+				["TimeManagerClockButton"] = "always",
+				["SexyMapZoneTextButton"] = "always",
+			},
+			["dragPositions"] = {
+				["LibDBIcon10_Details"] = 30.30674931890328,
+				["LibDBIcon10_Leatrix_Maps"] = 151.4498762100784,
+				["LibDBIcon10_WeakAuras"] = 166.2650944255264,
+				["LibDBIcon10_Leatrix_Plus"] = 180.8533833006098,
+				["MiniMapTracking"] = 135.7121946213339,
+				["LibDBIcon10_Questie"] = 47.04180050116631,
+			},
+			["controlVisibility"] = true,
 		},
 		["movers"] = {
 			["lockDurability"] = false,
@@ -214,18 +235,18 @@ SexyMap2DB = {
 		["clock"] = {
 			["bgColor"] = {
 				["a"] = 1,
-				["r"] = 0,
-				["g"] = 0,
 				["b"] = 0,
+				["g"] = 0,
+				["r"] = 0,
 			},
 			["font"] = "Friz Quadrata TT",
 			["fontColor"] = {
 			},
 			["borderColor"] = {
 				["a"] = 1,
-				["r"] = 0,
-				["g"] = 0,
 				["b"] = 0,
+				["g"] = 0,
+				["r"] = 0,
 			},
 			["xOffset"] = 0,
 			["yOffset"] = 0,
@@ -237,9 +258,9 @@ SexyMap2DB = {
 			["backdrop"] = {
 				["show"] = true,
 				["textureColor"] = {
-					["r"] = 0,
-					["g"] = 0,
 					["b"] = 0,
+					["g"] = 0,
+					["r"] = 0,
 				},
 				["settings"] = {
 					["bgFile"] = 137056,
@@ -262,46 +283,25 @@ SexyMap2DB = {
 		["zonetext"] = {
 			["bgColor"] = {
 				["a"] = 1,
-				["r"] = 0,
-				["g"] = 0,
 				["b"] = 0,
+				["g"] = 0,
+				["r"] = 0,
 			},
 			["font"] = "Friz Quadrata TT",
 			["fontColor"] = {
 			},
 			["borderColor"] = {
 				["a"] = 1,
-				["r"] = 0,
-				["g"] = 0,
 				["b"] = 0,
+				["g"] = 0,
+				["r"] = 0,
 			},
 			["xOffset"] = 0,
 			["yOffset"] = 0,
 		},
-		["buttons"] = {
-			["radius"] = 10,
-			["lockDragging"] = false,
-			["allowDragging"] = true,
-			["visibilitySettings"] = {
-				["MinimapZoomIn"] = "never",
-				["MiniMapMailFrame"] = "always",
-				["GameTimeFrame"] = "never",
-				["MiniMapWorldMapButton"] = "never",
-				["MinimapZoomOut"] = "never",
-				["MiniMapBattlefieldFrame"] = "always",
-				["GarrisonLandingPageMinimapButton"] = "always",
-				["SexyMapZoneTextButton"] = "always",
-				["TimeManagerClockButton"] = "always",
-			},
-			["dragPositions"] = {
-				["LibDBIcon10_Details"] = 30.30674931890328,
-				["LibDBIcon10_Leatrix_Plus"] = 180.8533833006098,
-				["LibDBIcon10_WeakAuras"] = 166.2650944255264,
-				["LibDBIcon10_Questie"] = 47.04180050116631,
-				["MiniMapTracking"] = 135.7121946213339,
-				["LibDBIcon10_Leatrix_Maps"] = 151.4498762100784,
-			},
-			["controlVisibility"] = true,
+		["ping"] = {
+			["showPing"] = true,
+			["showAt"] = "map",
 		},
 	},
 }

@@ -1,12 +1,12 @@
 
 OmniCCDB = {
-	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Default",
-		["Ruuss - Earthfury"] = "Default",
-	},
 	["global"] = {
 		["dbVersion"] = 6,
 		["addonVersion"] = "9.1.0",
+	},
+	["profileKeys"] = {
+		["Liandrii - Earthfury"] = "Default",
+		["Ruuss - Earthfury"] = "Default",
 	},
 	["profiles"] = {
 		["Default"] = {
@@ -51,9 +51,9 @@ OmniCCDB = {
 			["themes"] = {
 				["Default"] = {
 					["textStyles"] = {
-						["soon"] = {
-						},
 						["seconds"] = {
+						},
+						["soon"] = {
 						},
 						["minutes"] = {
 						},
@@ -61,9 +61,9 @@ OmniCCDB = {
 				},
 				["Plater Nameplates Theme"] = {
 					["textStyles"] = {
-						["soon"] = {
-						},
 						["seconds"] = {
+						},
+						["soon"] = {
 						},
 						["minutes"] = {
 						},
