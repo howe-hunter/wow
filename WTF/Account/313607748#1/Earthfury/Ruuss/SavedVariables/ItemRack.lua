@@ -7,18 +7,17 @@ ItemRackUser = {
 	["MainScale"] = 1,
 	["SetMenuWrapValue"] = 3,
 	["SetMenuWrap"] = "OFF",
-	["CurrentSet"] = "bear",
+	["EnableQueues"] = "ON",
 	["Sets"] = {
 		["cat"] = {
-			["oldset"] = "caster",
+			["oldset"] = "bear",
 			["equip"] = {
 				[16] = "24222::::::::58:::::::::",
 				[17] = "13030::::::::58:::::::::",
 			},
 			["icon"] = 133488,
 			["old"] = {
-				[16] = "812::::::::58:::::::::",
-				[17] = 0,
+				[16] = "868::::::::58:::::::::",
 			},
 		},
 		["bear"] = {
@@ -35,8 +34,6 @@ ItemRackUser = {
 		},
 		["~CombatQueue"] = {
 			["equip"] = {
-				[16] = "868::::::::57:::::::::",
-				[17] = "13030::::::::57:::::::::",
 			},
 		},
 		["caster"] = {
@@ -44,10 +41,10 @@ ItemRackUser = {
 				[16] = "812::::::::58:::::::::",
 				[17] = 0,
 			},
-			["oldset"] = "cat",
+			["oldset"] = "bear",
 			["icon"] = 133488,
 			["old"] = {
-				[16] = "24222::::::::58:::::::::",
+				[16] = "868::::::::58:::::::::",
 				[17] = "13030::::::::58:::::::::",
 			},
 		},
@@ -59,26 +56,26 @@ ItemRackUser = {
 	["EnablePerSetQueues"] = "OFF",
 	["Queues"] = {
 	},
-	["Buttons"] = {
-	},
+	["Alpha"] = 1,
 	["ItemsUsed"] = {
 	},
 	["Events"] = {
 		["Enabled"] = {
-			["caster"] = true,
-			["cat"] = true,
 			["Bear"] = true,
+			["cat"] = true,
+			["caster"] = true,
 		},
 		["Set"] = {
-			["caster"] = "caster",
-			["cat"] = "cat",
 			["Bear"] = "bear",
+			["cat"] = "cat",
+			["caster"] = "caster",
 		},
 	},
-	["EnableEvents"] = "ON",
 	["Hidden"] = {
 	},
-	["Alpha"] = 1,
+	["EnableEvents"] = "ON",
+	["Buttons"] = {
+	},
 	["MenuScale"] = 0.85,
-	["EnableQueues"] = "ON",
+	["CurrentSet"] = "caster",
 }

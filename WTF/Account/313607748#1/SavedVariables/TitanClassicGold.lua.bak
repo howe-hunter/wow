@@ -8,6 +8,6 @@ GoldSave = {
 	["Ruuss_Earthfury::Horde"] = {
 		["show"] = true,
 		["name"] = "Ruuss",
-		["gold"] = 1081777,
+		["gold"] = 1132656,
 	},
 }

@@ -18,6 +18,14 @@ Quartz3DB = {
 				},
 			},
 		},
+		["EnemyCasts"] = {
+			["profiles"] = {
+				["Default"] = {
+					["y"] = 216.4442901611328,
+					["x"] = 687.2591552734375,
+				},
+			},
+		},
 		["Player"] = {
 			["profiles"] = {
 				["Default"] = {
@@ -27,21 +35,13 @@ Quartz3DB = {
 				},
 			},
 		},
-		["EnemyCasts"] = {
-			["profiles"] = {
-				["Default"] = {
-					["y"] = 216.4442901611328,
-					["x"] = 687.2591552734375,
-				},
-			},
-		},
 		["GCD"] = {
 			["profiles"] = {
 				["Default"] = {
-					["y"] = 650,
-					["gcdposition"] = "free",
 					["gcdgap"] = 35,
 					["x"] = 625,
+					["y"] = 650,
+					["gcdposition"] = "free",
 				},
 			},
 		},
@@ -64,9 +64,9 @@ Quartz3DB = {
 				},
 			},
 		},
-		["Mirror"] = {
-		},
 		["Range"] = {
+		},
+		["Mirror"] = {
 		},
 		["Latency"] = {
 		},
@@ -78,9 +78,9 @@ Quartz3DB = {
 	["profiles"] = {
 		["Default"] = {
 			["modules"] = {
-				["Focus"] = false,
-				["Pet"] = false,
 				["Buff"] = false,
+				["Pet"] = false,
+				["Focus"] = false,
 			},
 		},
 	},
