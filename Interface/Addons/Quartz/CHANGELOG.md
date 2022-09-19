@@ -1,7 +1,10 @@
 # Quartz
 
-## [3.6.7](https://github.com/Nevcairiel/Quartz/tree/3.6.7) (2021-09-21)
-[Full Changelog](https://github.com/Nevcairiel/Quartz/compare/3.6.6...3.6.7) [Previous Releases](https://github.com/Nevcairiel/Quartz/releases)
+## [3.6.12](https://github.com/Nevcairiel/Quartz/tree/3.6.12) (2022-08-30)
+[Full Changelog](https://github.com/Nevcairiel/Quartz/compare/3.6.11...3.6.12) [Previous Releases](https://github.com/Nevcairiel/Quartz/releases)
 
-- Update TOC for BCC  
-- Fix channeling related issue for priests on BCC  
+- Add channeling spells from BCC to Wrath  
+- Add Wrath TOC entry  
+- Re-design WoW version checks for upcoming Wrath Classic support  
+- Protect more occurances of spell interrupt events on Classic  
+    Fixes #49  

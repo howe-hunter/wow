@@ -2,6 +2,7 @@
 PallyPowerDB = {
 	["profileKeys"] = {
 		["Liandrii - Earthfury"] = "Default",
+		["Eurydice - Skyfury"] = "Default",
 	},
 	["profiles"] = {
 		["Default"] = {
@@ -15,7 +16,16 @@ PallyPower_NormalAssignments = {
 }
 PallyPower_AuraAssignments = {
 }
-PallyPower_SavedPresets = nil
+PallyPower_SavedPresets = {
+	["PallyPower_Assignments"] = {
+		[0] = {
+		},
+	},
+	["PallyPower_NormalAssignments"] = {
+		[0] = {
+		},
+	},
+}
 PallyPower_ChanNames = {
 	[0] = "None",
 }

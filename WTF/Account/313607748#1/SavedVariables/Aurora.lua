@@ -1,8 +1,6 @@
 
 AuroraConfig = {
 	["chatBubbles"] = true,
-	["tooltips"] = true,
-	["bags"] = true,
 	["customClassColors"] = {
 		["HUNTER"] = {
 			["r"] = 0.67,
@@ -59,6 +57,8 @@ AuroraConfig = {
 			["b"] = 0.41,
 		},
 	},
+	["acknowledgedSplashScreen"] = true,
+	["tooltips"] = true,
 	["chat"] = true,
 	["fonts"] = true,
 	["alpha"] = 0.300000011920929,
@@ -72,5 +72,5 @@ AuroraConfig = {
 	["mainmenubar"] = false,
 	["chatBubbleNames"] = true,
 	["buttonsHaveGradient"] = true,
-	["acknowledgedSplashScreen"] = true,
+	["bags"] = true,
 }

@@ -14,7 +14,11 @@ local ttIcons = tt:RegisterElement({},"Icons");
 --------------------------------------------------------------------------------------------------------
 
 function ttIcons:SetIcon(icon,u)
-	local raidIconIndex = GetRaidTargetIndex(u.token);
+	local raidIconIndex = nil;
+	
+	if (UnitExists(u.token)) then
+		raidIconIndex = GetRaidTargetIndex(u.token);
+	end
 
 	if (cfg.iconRaid) and (raidIconIndex) then
 		icon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons");
@@ -29,7 +33,7 @@ function ttIcons:SetIcon(icon,u)
 		icon:SetTexture("Interface\\CharacterFrame\\UI-StateIcon");
 		icon:SetTexCoord(0.5,1,0,0.5);
 	elseif (u.isPlayer) and (cfg.iconClass) then
-		local texCoord = CLASS_ICON_TCOORDS[u.classID];
+		local texCoord = CLASS_ICON_TCOORDS[u.classFile];
 		icon:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles");
 		icon:SetTexCoord(unpack(texCoord));
 	else
@@ -62,14 +66,14 @@ function ttIcons:OnApplyConfig(cfg)
 	end
 end
 
-function ttIcons:OnPostStyleTip(tip,u,first)
+function ttIcons:OnPostStyleTip(tip,first)
 	if (self.wantIcon) then
-		self.icon:SetShown(self:SetIcon(self.icon,u));
+		self.icon:SetShown(self:SetIcon(self.icon,tip.ttUnit));
 	end
 end
 
-function ttIcons:OnCleared()
-	if (self.icon) then
+function ttIcons:OnCleared(tip)
+	if (self.icon) and (gtt == tip) then
 		self.icon:Hide();
 	end
 end

@@ -79,12 +79,15 @@ TMW:RegisterCallback("TMW_DB_INITIALIZED", function()
 end)
 
 function AuraCache:COMBAT_LOG_EVENT_UNFILTERED()
-	local _, p,_, g, _, f, _, _, _, _, _, i = CombatLogGetCurrentEventInfo()
+	local _, p,_, g, _, f, _, _, _, _, _, id, name = CombatLogGetCurrentEventInfo()
 	if p == "SPELL_AURA_APPLIED" then
-		if bitband(f, CL_CONTROL_PLAYER) == CL_CONTROL_PLAYER then
-			Cache[i] = self.CONST.AURA_TYPE_PLAYER
+		name = strlowerCache[name]
+		if Cache[name] then
+			-- nothing
+		elseif bitband(f, CL_CONTROL_PLAYER) == CL_CONTROL_PLAYER then
+			Cache[name] = self.CONST.AURA_TYPE_PLAYER
 		else
-			Cache[i] = self.CONST.AURA_TYPE_NONPLAYER
+			Cache[name] = self.CONST.AURA_TYPE_NONPLAYER
 		end
 	end
 end

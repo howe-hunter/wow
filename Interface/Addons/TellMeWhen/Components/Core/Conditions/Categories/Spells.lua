@@ -171,16 +171,15 @@ ConditionCategory:RegisterCondition(2.8, "LASTCAST", {
 				local _, e, _, sourceGuid, _, _, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
 				if e == "SPELL_CAST_SUCCESS" and sourceGuid == pGUID then
 					Env.LastPlayerCastName = strlower(spellName)
-					Env.LastPlayerCastID = spellID
 					TMW:Fire("TMW_CNDT_LASTCAST_UPDATED")
 				end
 			end)
 		end
 
 		if c.Level == 1 then
-			return [[LastPlayerCastName ~= LOWER(c.NameFirst) and LastPlayerCastID ~= c.NameFirst]] 
+			return [[LastPlayerCastName ~= LOWER(c.NameString)]]
 		end
-		return [[LastPlayerCastName == LOWER(c.NameFirst) or LastPlayerCastID == c.NameFirst]] 
+		return [[LastPlayerCastName == LOWER(c.NameString)]]
 	end,
 	events = function(ConditionObject, c)
 		local pGUID = UnitGUID("player")
@@ -573,63 +572,31 @@ ConditionCategory:RegisterCondition(19.5,	 "OHSWING", {
 ConditionCategory:RegisterSpacer(20)
 
 local totemData = TMW.COMMON.CurrentClassTotems
-local totemRanks = TMW.COMMON.TotemRanks
 
-function Env.TotemHelper(slot, spellSet)
-	local _, totemName, start, duration = GetTotemInfo(slot)
-	local totemNameLower = strlowerCache[totemName]
-	local totemInfo = totemRanks[totemNameLower]
-	local Hash = spellSet and spellSet.Hash
-	
-	if
-		start ~= 0 and
-		totemName and
-		(
-			not spellSet or
-			Hash[totemNameLower] or
-			(totemInfo and (
-				-- By totem name, (e.g. "Searing Totem III")
-				Hash[totemInfo.totemNameLower] or
-				-- or by spellID,
-				Hash[totemInfo.spellID] or
-				-- Or by the spell name (which is the same as the rank 1 totem name) (e.g. "Searing Totem")
-				Hash[totemInfo.spellNameLower])
-			)
-		)
-	then
-		return duration and duration ~= 0 and (duration - (TMW.time - start)) or 0
+function Env.TotemHelper(slot, nameString)
+	local have, name, start, duration = GetTotemInfo(slot)
+	if nameString and nameString ~= "" and nameString ~= ";" and name and not strfind(nameString, Env.SemicolonConcatCache[name or ""]) then
+		return 0
 	end
-	return 0
+	return duration and duration ~= 0 and (duration - (TMW.time - start)) or 0
 end
 
-function Env.TotemHelperAny(spellSet)
-	local Hash = spellSet and spellSet.Hash
-	
+function Env.TotemHelperAny(nameString)
 	for slot = 1, 10 do
-		local have, totemName, start, duration = GetTotemInfo(slot)
+		local have, name, start, duration = GetTotemInfo(slot)
 		if have == nil then
 			return 0 -- `have` will be nil if the slot doesn't exist.
 		end
-		
-		local totemNameLower = strlowerCache[totemName]
-		local totemInfo = totemRanks[totemNameLower]
 
 		if
-			start ~= 0 and
-			totemName and
-			(
-				not spellSet or
-				Hash[totemNameLower] or
-				(totemInfo and (
-					-- By totem name, (e.g. "Searing Totem III")
-					Hash[totemInfo.totemNameLower] or
-					-- or by spellID,
-					Hash[totemInfo.spellID] or
-					-- Or by the spell name (which is the same as the rank 1 totem name) (e.g. "Searing Totem")
-					Hash[totemInfo.spellNameLower])
-				)
+			have and (
+				-- If we're not filtering by name,
+				(not nameString or nameString == "" or nameString == ";")
+				-- Or we are filtering by name and the name matches
+				or (name and strfind(nameString, Env.SemicolonConcatCache[name]))
 			)
 		then
+			-- Then return the time of this totem as the result.
 			return duration and duration ~= 0 and (duration - (TMW.time - start)) or 0
 		end
 		-- If the above condition didn't succeeed, continue on to the next totem.
@@ -650,18 +617,18 @@ ConditionCategory:RegisterCondition(20.1,	 "TOTEM_ANY", {
 		editbox:SetTexts(L["CNDT_TOTEMNAME"], L["CNDT_TOTEMNAME_DESC"])
 		editbox:SetLabel(L["CNDT_TOTEMNAME"] .. " " .. L["ICONMENU_CHOOSENAME_ORBLANK"])
 	end,
-	useSUG = "totem",
+	useSUG = true,
 	allowMultipleSUGEntires = true,
 	formatter = TMW.C.Formatter.TIME_0ABSENT,
 	icon = "Interface\\ICONS\\spell_nature_brilliance",
 	tcoords = CNDT.COMMON.standardtcoords,
-	funcstr = [[TotemHelperAny(c.Spells) c.Operator c.Level]],
+	funcstr = [[TotemHelperAny(c.NameStrings) c.Operator c.Level]],
 	events = function(ConditionObject, c)
 		return
 			ConditionObject:GenerateNormalEventString("PLAYER_TOTEM_UPDATE")
 	end,
 	anticipate = function(c)
-		return [[local VALUE = time + TotemHelperAny(c.Spells) - c.Level]]
+		return [[local VALUE = time + TotemHelperAny(c.NameStrings) - c.Level]]
 	end,
 })
 
@@ -677,12 +644,12 @@ for i = 1, 5 do
 			editbox:SetTexts(L["CNDT_TOTEMNAME"], L["CNDT_TOTEMNAME_DESC"])
 			editbox:SetLabel(L["CNDT_TOTEMNAME"] .. " " .. L["ICONMENU_CHOOSENAME_ORBLANK"])
 		end,
-		useSUG = "totem",
+		useSUG = true,
 		allowMultipleSUGEntires = true,
 		formatter = TMW.C.Formatter.TIME_0ABSENT,
 		icon = totem and totem.texture or "Interface\\ICONS\\ability_shaman_tranquilmindtotem",
 		tcoords = CNDT.COMMON.standardtcoords,
-		funcstr = [[TotemHelper(]] .. i .. ((not totem or totem.hasVariableNames) and [[, c.Spells]] or "") .. [[) c.Operator c.Level]],
+		funcstr = [[TotemHelper(]] .. i .. ((not totem or totem.hasVariableNames) and [[, c.NameString]] or "") .. [[) c.Operator c.Level]],
 		events = function(ConditionObject, c)
 			return
 				ConditionObject:GenerateNormalEventString("PLAYER_TOTEM_UPDATE")
@@ -697,7 +664,7 @@ end
 
 ConditionCategory:RegisterSpacer(30)
 
-local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo
+local UnitCastingInfo, UnitChannelInfo = TMW.UnitCastingInfo, TMW.UnitChannelInfo
 Env.UnitCast = function(unit, level, matchname)
 	local name = UnitCastingInfo(unit)
 	if not name then
@@ -751,16 +718,10 @@ ConditionCategory:RegisterCondition(31,	 "CASTING", {
 	events = function(ConditionObject, c)
 		return
 			ConditionObject:GetUnitChangedEventString(CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_START", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_STOP", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_SUCCEEDED", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_FAILED", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_FAILED_QUIET", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_DELAYED", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_INTERRUPTED", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_CHANNEL_START", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_CHANNEL_UPDATE", CNDT:GetUnit(c.Unit)),
-			ConditionObject:GenerateNormalEventString("UNIT_SPELLCAST_CHANNEL_STOP", CNDT:GetUnit(c.Unit))
+			
+			-- We can't check against the unit here because LibClassicCasterino's events don't
+			-- work like the blizzard events do - they don't fire with every valid unitID.
+			ConditionObject:GenerateNormalEventString("TMW_UNIT_CAST_UPDATE" --[[, CNDT:GetUnit(c.Unit)]])
 	end,
 })
 

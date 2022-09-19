@@ -1,9 +1,13 @@
 # Shadowed Unit Frames
 
-## [v4.3.2-classic](https://github.com/Nevcairiel/ShadowedUnitFrames/tree/v4.3.2-classic) (2021-09-08)
-[Full Changelog](https://github.com/Nevcairiel/ShadowedUnitFrames/compare/v4.3.1-classic...v4.3.2-classic) [Previous Releases](https://github.com/Nevcairiel/ShadowedUnitFrames/releases)
+## [v4.3.3-classic](https://github.com/Nevcairiel/ShadowedUnitFrames/tree/v4.3.3-classic) (2022-09-15)
+[Full Changelog](https://github.com/Nevcairiel/ShadowedUnitFrames/compare/v4.3.2-classic...v4.3.3-classic) [Previous Releases](https://github.com/Nevcairiel/ShadowedUnitFrames/releases)
 
-- Bump BCC TOC  
-- Reimplement threat highlights and tags  
-    Closes #17  
-- Only try hiding the FocusFrame if its present  
+- Update packaging to create a unified classic package  
+- Add migration code to add rune bars to existing frames  
+- Add Death Knight rune bar  
+- Temporary fix for main tank frames to handle role selection issues  
+- Shamans can now remove curses  
+- Update TOC for Wrath support  
+- Remove casting API overrides for BC, as this was fixed  
+- Replace HealComm by API-based heal information (ported from retail)  

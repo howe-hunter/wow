@@ -1,8 +1,9 @@
 
 TomTomDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Default",
 		["Ruuss - Earthfury"] = "Default",
+		["Liandrii - Earthfury"] = "Default",
+		["Eurydice - Skyfury"] = "Default",
 	},
 	["profiles"] = {
 		["Default"] = {
@@ -32,13 +33,16 @@ TomTomDB = {
 TomTomWaypoints = nil
 TomTomWaypointsM = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["profiles"] = {
+		["Ruuss - Earthfury"] = {
+		},
 		["Liandrii - Earthfury"] = {
 		},
-		["Ruuss - Earthfury"] = {
+		["Eurydice - Skyfury"] = {
 		},
 	},
 }

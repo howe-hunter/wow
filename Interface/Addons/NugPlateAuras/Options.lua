@@ -37,6 +37,16 @@ function NugPlateAuras:CreateGUI()
                     ReloadUI()
                 end
             },
+            staticSize = {
+                name = L"Static Size",
+                type = "toggle",
+                order = 0.9,
+                get = function(info) return NugPlateAuras.db.profile.staticSize end,
+                set = function(info, v)
+                    NugPlateAuras.db.profile.staticSize = not NugPlateAuras.db.profile.staticSize
+                    NugPlateAuras:ForEachNameplate(NugPlateAuras.ReconfigureHeaders)
+                end
+            },
 
             debuffs = {
                 type = 'group',
@@ -123,7 +133,7 @@ function NugPlateAuras:CreateGUI()
                     },
 
                     priorityThreshold = {
-                        name = L"Priority Threshold".." (PvP)",
+                        name = L"Priority Threshold".." (PvP Area/World)",
                         width = "full",
                         type = "range",
                         get = function(info) return NugPlateAuras.db.profile.debuffs.priorityThreshold end,
@@ -139,7 +149,7 @@ function NugPlateAuras:CreateGUI()
                     },
 
                     priorityThresholdPVE = {
-                        name = L"Priority Threshold".." (PvE)",
+                        name = L"Priority Threshold".." (PvE Area)",
                         width = "full",
                         type = "range",
                         get = function(info) return NugPlateAuras.db.profile.debuffs.priorityThresholdPVE end,

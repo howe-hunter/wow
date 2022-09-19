@@ -1,7 +1,7 @@
-## Interface: 20502
+## Interface: 90200
 ## Title: NugComboBarGUI
 ## Notes: NugComboBar Configuration Panel
-## Version: 9.1-bcc5
+## Version: 9.2.2
 ## Dependencies: NugComboBar
 ## Author: d87
 ## LoadOnDemand: 1

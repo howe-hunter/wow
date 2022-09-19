@@ -2,20 +2,29 @@
 DiminishDB = {
 	["profileKeys"] = {
 		["Liandrii-Earthfury"] = "Default",
+		["Eurydice-Skyfury"] = "Default",
 	},
 	["profiles"] = {
 		["Default"] = {
 			["categoryTextures"] = {
 			},
-			["timerSwipe"] = true,
-			["timerColors"] = false,
+			["timerEdge"] = false,
+			["trackNPCs"] = false,
 			["timerText"] = true,
+			["timerSwipe"] = true,
 			["border"] = {
 				["edgeSize"] = 2.5,
 				["layer"] = "BORDER",
 				["name"] = "Default",
 				["edgeFile"] = "Interface\\BUTTONS\\UI-Quickslot-Depress",
 			},
+			["timerStartAuraEnd"] = false,
+			["categoryTextMaxLines"] = 2,
+			["version"] = "1.10",
+			["showCategoryText"] = false,
+			["timerTextOutline"] = "NONE",
+			["colorBlind"] = false,
+			["timerColors"] = false,
 			["unitFrames"] = {
 				["nameplate"] = {
 					["enabled"] = false,
@@ -45,15 +54,6 @@ DiminishDB = {
 				["player"] = {
 					["enabled"] = true,
 					["anchorUIParent"] = false,
-					["growDirection"] = "RIGHT",
-					["iconPadding"] = 7,
-					["watchFriendly"] = true,
-					["disabledCategories"] = {
-						["Scatter Shot"] = true,
-						["Death Coil"] = true,
-						["Freezing Trap"] = true,
-						["Random roots"] = true,
-					},
 					["zones"] = {
 						["party"] = false,
 						["scenario"] = true,
@@ -62,6 +62,15 @@ DiminishDB = {
 						["arena"] = true,
 						["none"] = true,
 					},
+					["iconPadding"] = 7,
+					["watchFriendly"] = true,
+					["disabledCategories"] = {
+						["Scatter Shot"] = true,
+						["Death Coil"] = true,
+						["Freezing Trap"] = true,
+						["Random roots"] = true,
+					},
+					["growDirection"] = "RIGHT",
 					["offsetX"] = -6,
 					["timerTextSize"] = 12,
 					["iconSize"] = 21,
@@ -173,13 +182,6 @@ DiminishDB = {
 					["isEnabledForZone"] = false,
 				},
 			},
-			["categoryTextMaxLines"] = 2,
-			["version"] = "1.8",
-			["showCategoryText"] = false,
-			["timerTextOutline"] = "NONE",
-			["colorBlind"] = false,
-			["trackNPCs"] = false,
-			["timerStartAuraEnd"] = false,
 			["categoryFont"] = {
 				["size"] = 9,
 				["x"] = 0,

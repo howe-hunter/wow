@@ -117,7 +117,7 @@ VER 3 0000000000000025 "C Mark of the Wi" "INV_MISC_QUESTIONMARK"
 /stand
 /dismount
 /cancelform [noform:5]
-/cast Mark of the Wild
+/castsequence reset=3 Mark of the Wild, Omen of Clarity, Thorns
 END
 VER 3 000000000000000F "C Moonfire" "INV_MISC_QUESTIONMARK"
 #showtooltip
@@ -365,7 +365,7 @@ VER 3 000000000000000B "S Dash" "INV_MISC_QUESTIONMARK"
 #showtooltip Dash
 /stand
 /dismount
-/cancelaura [stance:1] Dire Bear Form; [stance:2] Aquatic Form; [stance:4] Travel Form; [stance:5] Moonkin Form 
+/cancelaura [stance:1] Dire Bear Form; [stance:2] Aquatic Form; [stance:4] Travel Form; [stance:5] Moonkin Form
 /cast [nostance] Cat Form
 /cast Dash
 END

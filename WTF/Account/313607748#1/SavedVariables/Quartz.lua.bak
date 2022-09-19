@@ -21,9 +21,9 @@ Quartz3DB = {
 		["Player"] = {
 			["profiles"] = {
 				["Default"] = {
-					["y"] = -175.4383544921875,
-					["point"] = "CENTER",
-					["x"] = -3.6917724609375,
+					["y"] = 186.3207855224609,
+					["point"] = "BOTTOM",
+					["x"] = 0.258941650390625,
 				},
 			},
 		},
@@ -38,10 +38,11 @@ Quartz3DB = {
 		["GCD"] = {
 			["profiles"] = {
 				["Default"] = {
-					["y"] = 650,
-					["gcdposition"] = "free",
 					["gcdgap"] = 35,
 					["x"] = 625,
+					["gcdheight"] = 5,
+					["gcdposition"] = "free",
+					["y"] = 175,
 				},
 			},
 		},
@@ -58,9 +59,9 @@ Quartz3DB = {
 			["profiles"] = {
 				["Default"] = {
 					["showfriendly"] = false,
-					["y"] = -202.9626007080078,
-					["point"] = "CENTER",
-					["x"] = 1.049652099609375,
+					["y"] = 163.0869598388672,
+					["point"] = "BOTTOM",
+					["x"] = 3.42010498046875,
 				},
 			},
 		},
@@ -72,15 +73,22 @@ Quartz3DB = {
 		},
 	},
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Default",
 		["Ruuss - Earthfury"] = "Default",
+		["Liandrii - Earthfury"] = "Default",
+		["Eurydice - Skyfury"] = "Default",
 	},
 	["profiles"] = {
 		["Default"] = {
 			["modules"] = {
-				["Focus"] = false,
-				["Pet"] = false,
+				["Swing"] = false,
 				["Buff"] = false,
+				["Flight"] = false,
+				["Pet"] = false,
+				["Focus"] = false,
+				["Timer"] = false,
+				["Range"] = false,
+				["Tradeskill"] = false,
+				["Mirror"] = false,
 			},
 		},
 	},

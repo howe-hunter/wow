@@ -1,12 +1,24 @@
 local _G = getfenv(0);
 local unpack = unpack;
 local UnitName = UnitName;
+local UnitQuestTrivialLevelRange = UnitQuestTrivialLevelRange;
 local GetQuestGreenRange = GetQuestGreenRange;
 local gtt = GameTooltip;
 
 -- classic support
 local UnitIsWildBattlePet = UnitIsWildBattlePet or function() return false end;
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion or function() return false end;
+
+local isWoWClassic, isWoWBcc, isisWoWRetail,isWoWwotlk = false, false, false, false;
+if (_G["WOW_PROJECT_ID"] == _G["WOW_PROJECT_CLASSIC"]) then
+	isWoWClassic = true;
+elseif (_G["WOW_PROJECT_ID"] == _G["WOW_PROJECT_BURNING_CRUSADE_CLASSIC"]) then
+	isWoWBcc = true;
+elseif (_G["WOW_PROJECT_ID"] == _G["WOW_PROJECT_WRATH_CLASSIC"]) then
+	isWoWwotlk = true;
+else
+	isWoWRetail = true;
+end
 
 -- TipTac refs
 local tt = TipTac;
@@ -37,7 +49,7 @@ local TT_Reaction = {
 -- colors
 local COL_WHITE = "|cffffffff";
 local COL_LIGHTGRAY = "|cffc0c0c0";
-local COL_GRANK = "|cFF777777";
+local COL_GRANK = "|cFF776666"; -- DaMaGepy
 
 --------------------------------------------------------------------------------------------------------
 --                                           Style Tooltip                                            --
@@ -53,7 +65,7 @@ local function GetDifficultyLevelColor(level)
 		return "|cffff8040"; -- orange
 	elseif (level >= -2) then
 		return "|cffffff00"; -- yellow
-	elseif (level >= -GetQuestGreenRange("player")) then
+	elseif (isWoWRetail and level >= -UnitQuestTrivialLevelRange("player") or (not isWoWRetail) and level >= -GetQuestGreenRange("player")) then
 		return "|cff40c040"; -- green
 	else
 		return "|cff808080"; -- gray
@@ -70,8 +82,8 @@ local function AddTarget(lineList,target,targetName)
 		lineList.next = targetReaction;
 		lineList.next = "[";
 		if (UnitIsPlayer(target)) then
-			local _, targetClassID = UnitClass(target);
-			lineList.next = (tt.ClassColorMarkup[targetClassID] or COL_LIGHTGRAY);
+			local _, targetClassFile = UnitClass(target);
+			lineList.next = (tt.ClassColorMarkup[targetClassFile] or COL_LIGHTGRAY);
 			lineList.next = targetName;
 			lineList.next = targetReaction;
 		else
@@ -82,11 +94,11 @@ local function AddTarget(lineList,target,targetName)
 end
 
 -- TARGET
-function ttStyle:GenerateTargetLines(unit,method)
+function ttStyle:GenerateTargetLines(unit,method) -- DaMaGepy	
 	local target = unit.."target";
 	local targetName = UnitName(target);
 	if (targetName) and (targetName ~= UNKNOWNOBJECT and targetName ~= "" or UnitExists(target)) then
-		if GetFakeName~=nil then targetName=GetFakeName(targetName,"TipTacStyle:GenTargetLines") end -- DaMaGepy		
+		if GetFakeName~=nil then targetName=GetFakeName(targetName,"TipTacStyle:GenTargetLines") end 	
 		if (method == "first") then
 			lineName.next = COL_WHITE;
 			lineName.next = " : |r";
@@ -103,15 +115,13 @@ function ttStyle:GenerateTargetLines(unit,method)
 	end
 end
 
-
 -- DaMaGepy's PvP title stuffs
 function GepyPvPTitles (gpnname,gpunit)
 	local rankID = UnitPVPRank(gpunit)
 	local gName = gpnname.name;
 	local gPvPrank = 0
 	local gPvPtitle = ""
-	local gClassColor = (cfg.colorNameByClass and (tt.ClassColorMarkup[gpnname.classID] or COL_WHITE) or gpnname.reactionColor);
-	local gRankCol="|cFF776666";
+	local gClassColor = (cfg.colorNameByClass and (tt.ClassColorMarkup[gpnname.classFile] or COL_WHITE) or gpnname.reactionColor);
 	local gRankNum=""
 	local GPT = gClassColor..gName; -- normal name
 	-- Generate pvptitle, rank and name texts...
@@ -126,7 +136,7 @@ function GepyPvPTitles (gpnname,gpunit)
 			gRankNum = "|cFF555555(|cFFCC7777"..(gPvPrank).."|cFF555555)"  -- (#)
 		end
 	end
-	if GetFakeName~=nil then gName=GetFakeName(gName,"TipTacStyle:GenPlayerLines") end -- DaMaGepy
+	if GetFakeName~=nil then gName=GetFakeName(gName,"TipTacStyle:GenPlayerLines") end
 
 	-- Name Display type (Options / General / Name Type)
 	if cfg.nameType == "original" then 
@@ -168,14 +178,13 @@ function ttStyle:GeneratePlayerLines(u,first,unit)
 			lineInfo.next = (sex == 3 and FEMALE or MALE);
 		end
 	end
-	--local guild, guildRank = GetGuildInfo(unit); if (guild==nil) then guild="??"; end; DEFAULT_CHAT_FRAME:AddMessage("--- "..u.name..": "..UnitLevel(unit).." "..UnitRace(unit).." "..u.class.."   <"..guild..">|r");
 	-- race
 	lineInfo.next = " ";
 	lineInfo.next = cfg.colRace;
 	lineInfo.next = UnitRace(unit);
 	-- class
 	lineInfo.next = " ";
-	lineInfo.next = (tt.ClassColorMarkup[u.classID] or COL_WHITE);
+	lineInfo.next = (tt.ClassColorMarkup[u.classFile] or COL_WHITE);
 	lineInfo.next = u.class;
 	-- name
 	lineName.next = GepyPvPTitles(u,unit); -- DaMaGepy custom (PvP) titles...
@@ -187,28 +196,19 @@ function ttStyle:GeneratePlayerLines(u,first,unit)
 			lineName.next = COL_WHITE;
 			lineName.next = status;
 		end
-	end	
+	end
 	-- guild
 	if (cfg.showTTguildAfter) then -- DaMaGepy
 		local guild, guildRank = GetGuildInfo(unit);
 		if (guild) then
 			local pGuild = GetGuildInfo("player");
 			local guildColor = (guild == pGuild and cfg.colSameGuild or cfg.colorGuildByReaction and u.reactionColor or cfg.colGuild);
-			lineInfo.next = "\n"..guildColor.."<"..guild..">"; -- DaMaGepy Fix
+			lineInfo.next = "\n"..guildColor.."<"..guild..">"; -- Fix
 			if cfg.showGuildRank and guildRank then lineInfo.next = " "..COL_GRANK..guildRank; end
 			GameTooltipTextLeft2:SetFormattedText(cfg.showGuildRank and guildRank and "%s<%s> %s%s" or "%s<%s>",guildColor,guild,COL_GRANK,guildRank);
 			--lineInfo.Index = (lineInfo.Index + 1);		
 		end
-	end
-	
-	--[[
-	if (guild) then
-		local pGuild = GetGuildInfo("player");
-		local guildColor = (guild == pGuild and cfg.colSameGuild or cfg.colorGuildByReaction and u.reactionColor or cfg.colGuild);
-		GameTooltipTextLeft2:SetFormattedText(cfg.showGuildRank and guildRank and "%s<%s> %s%s" or "%s<%s>",guildColor,guild,COL_LIGHTGRAY,guildRank);
-		lineInfo.Index = (lineInfo.Index + 1);		
-	end
-	]]--
+	end	
 end
 
 -- PET Styling
@@ -245,20 +245,16 @@ end
 
 -- NPC Styling
 function ttStyle:GenerateNpcLines(u,first,unit)
-	-- name
-	lineName.next = u.reactionColor;
-	if GetFakeName~=nil then u.name=GetFakeName(u.name,"TipTacStyle:GenNpcLines") end -- DaMaGepy: 's Pet/minion
+	-- name DaMaGepy
+	lineName.next = u.reactionColor; -- u.name / u.title?
+	if GetFakeName~=nil then u.name=GetFakeName(u.name,"TipTacStyle:GenNpcLines") end -- 's Pet/minion
 	lineName.next = u.name;
 
-	local Ftitle = u.title;
-	if GetFakeName~=nil then Ftitle=GetFakeName(Ftitle,"TipTacStyle:GenNpcLines") end -- DaMaGepy: 's Pet/minion
-	
 	-- guild/title -- since WoD, npc title can be a single space character
 	if (u.title) and (u.title ~= " ") then
 		-- Az: this doesn't work with "Mini Diablo" or "Mini Thor", which has the format: 1) Mini Diablo 2) Lord of Terror 3) Player's Pet 4) Level 1 Non-combat Pet
 		local gttLine = tt.isColorBlind and GameTooltipTextLeft3 or GameTooltipTextLeft2;
-		--gttLine:SetFormattedText("%s<%s>",u.reactionColor,u.title);
-		gttLine:SetFormattedText("%s<%s>",u.reactionColor,Ftitle);
+		gttLine:SetFormattedText("%s<%s>",u.reactionColor,u.title);
 		lineInfo.Index = (lineInfo.Index + 1);
 	end
 
@@ -278,8 +274,8 @@ function ttStyle:ModifyUnitTooltip(u,first)
 	local unit = u.token;
 	u.name, u.realm = UnitName(unit);
 	u.reactionColor = cfg["colReactText"..u.reactionIndex];
-	--u.isPetWild, u.isPetCompanion = UnitIsWildBattlePet(unit), UnitIsBattlePetCompanion(unit);
-	u.isPetWild, u.isPetCompanion = false, false;
+	u.isPetWild, u.isPetCompanion = UnitIsWildBattlePet(unit), UnitIsBattlePetCompanion(unit);
+
 	-- this is the line index where the level and unit type info is
 	lineInfo.Index = 2 + (tt.isColorBlind and UnitIsVisible(unit) and 1 or 0);
 
@@ -305,8 +301,8 @@ function ttStyle:ModifyUnitTooltip(u,first)
 	-- Generate Line Modification
 	if (u.isPlayer) then
 		self:GeneratePlayerLines(u,first,unit);
---	elseif (cfg.showBattlePetTip) and (u.isPetWild or u.isPetCompanion) then
---		self:GeneratePetLines(u,first,unit);
+	elseif (cfg.showBattlePetTip) and (u.isPetWild or u.isPetCompanion) then
+		self:GeneratePetLines(u,first,unit);
 	else
 		self:GenerateNpcLines(u,first,unit);
 	end
@@ -347,39 +343,41 @@ function ttStyle:OnLoad()
 	cfg = TipTac_Config;
 end
 
-function ttStyle:OnStyleTip(tip,u,first)
+function ttStyle:OnStyleTip(tip,first)
 	-- some things only need to be done once initially when the tip is first displayed
 	if (first) then
 		-- Store Original Name
 		if (cfg.nameType == "original") then
-			u.originalName = GameTooltipTextLeft1:GetText();
+			tip.ttUnit.originalName = GameTooltipTextLeft1:GetText();
 		end
 
 		-- Az: RolePlay Experimental (Mary Sue Protocol)
-		if (u.isPlayer) and (cfg.nameType == "marysueprot") and (msp) then
+		if (tip.ttUnit.isPlayer) and (cfg.nameType == "marysueprot") and (msp) then
 			local field = "NA";
-			local name = UnitName(u.token);
+			local name = UnitName(tip.ttUnit.token);
 			if GetFakeName~=nil then name=GetFakeName(name,"TipTacStyle:OnStyleTip1") end -- DaMaGepy
-			if GetFakeName~=nil then u.rpName=GetFakeName(u.rpName,"TipTacStyle:OnStyleTip2") end -- DaMaGepy
-			if GetFakeName~=nil then u.originalName=GetFakeName(u.originalName,"TipTacStyle:OnStyleTip3") end -- DaMaGepy
+			if GetFakeName~=nil then tip.ttUnit.rpName=GetFakeName(tip.ttUnit.rpName,"TipTacStyle:OnStyleTip2") end -- DaMaGepy
+			if GetFakeName~=nil then tip.ttUnit.originalName=GetFakeName(tip.ttUnit.originalName,"TipTacStyle:OnStyleTip3") end -- DaMaGepy
 			msp:Request(name,field);	-- Az: does this return our request, or only storing it for later use? I'm guessing the info isn't available right away, but only after the person's roleplay addon replies.
 			if (msp.char[name]) and (msp.char[name].field[field] ~= "") then
-				u.rpName = msp.char[name].field[field] or name;
+				tip.ttUnit.rpName = msp.char[name].field[field] or name;
 			end
 		end
 
 		-- Find NPC Title -- 09.08.22: Should now work with colorblind mode
-		if (not u.isPlayer) then
-			u.title = (tt.isColorBlind and GameTooltipTextLeft3 or GameTooltipTextLeft2):GetText();
-			if (u.title) and (u.title:find(TT_LevelMatch)) then
-				u.title = nil;
+		if (not tip.ttUnit.isPlayer) then
+			tip.ttUnit.title = (tt.isColorBlind and GameTooltipTextLeft3 or GameTooltipTextLeft2):GetText();
+			if (tip.ttUnit.title) and (tip.ttUnit.title:find(TT_LevelMatch)) then
+				tip.ttUnit.title = nil;
 			end
 		end
 	end
 
-	self:ModifyUnitTooltip(u,first);
+	self:ModifyUnitTooltip(tip.ttUnit,first);
 end
 
-function ttStyle:OnCleared()
-	self.petLevelLineIndex = nil;
+function ttStyle:OnCleared(tip)
+	if (gtt == tip) then
+		self.petLevelLineIndex = nil;
+	end
 end

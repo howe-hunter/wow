@@ -253,7 +253,8 @@ VER 3 000000000000004F "C Wrathfire" "INV_MISC_QUESTIONMARK"
 /startattack
 END
 VER 3 0000000000000050 "Decursive" "INV_MISC_QUESTIONMARK"
-/script DecursiveRootTable.Dcr:Println('No spell available')
+/stopcasting
+/cast [@mouseover,nomod,exists] Purify;  [@mouseover,exists,mod:ctrl] Purify; [@mouseover,exists,mod:shift] Purify
 END
 VER 3 0000000000000051 "E1 Cloak" "INV_MISC_QUESTIONMARK"
 #showtooltip

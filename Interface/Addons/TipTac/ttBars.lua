@@ -20,12 +20,12 @@ local CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS;
 local HealthBarMixin = {};
 
 function HealthBarMixin:GetVisibility(u)
-	return cfg.healthBar and UnitHealthMax(u.token) ~= 0;
+	return cfg.healthBar;
 end
 
 function HealthBarMixin:GetColor(u)
 	if (u.isPlayer) and (cfg.healthBarClassColor) then
-		local color = CLASS_COLORS[u.classID] or CLASS_COLORS["PRIEST"];
+		local color = CLASS_COLORS[u.classFile] or CLASS_COLORS["PRIEST"];
 		return color.r, color.g, color.b;
 	else
 		return unpack(cfg.healthBarColor);
@@ -33,20 +33,6 @@ function HealthBarMixin:GetColor(u)
 end
 
 if (RealMobHealth) then
-	--[[
-	if RealMobHealth.IsUnitMob(u.token) then 
-		if RealMobHealth.GetUnitHealth~=nil then 
-			if RealMobHealth.UnitHasHealthData(u.token) then
-				local MH_hp, MH_hpMax = RealMobHealth.GetUnitHealth(u.token)
-				if MH_hp~=nil and MH_hpMax~=nil then val=MH_hp; max=MH_hpMax; end
-			end
-		elseif RealMobHealth.GetHealth~=nil then 
-			local MH_hp, MH_hpMax = RealMobHealth.GetHealth(u.token)
-			if MH_hp~=nil and MH_hpMax~=nil then val=MH_hp; max=MH_hpMax; end				
-		end
-	end
-	return val, max, cfg.healthBarText;
-	]]--
 	local RMH = RealMobHealth;
 	function HealthBarMixin:GetValueParams(u)
 		local val, max = RMH.GetUnitHealth(u.token);
@@ -162,7 +148,7 @@ local function SetFormattedBarValues(self,val,max,type)
 	if (type == "none") then
 		fs:SetText("");
 	elseif (type == "value") or (max == 0) then -- max should never be zero, but if it is, dont let it pass through to the "percent" type, or there will be an error
-		fs:SetFormattedText("%s / %s",FormatValue(val),FormatValue(max));
+		if fs:GetFont() then fs:SetFormattedText("%s / %s",FormatValue(val),FormatValue(max)); end -- DaMaGepy - Font not loaded, from other (missing) addon, or not supported
 	elseif (type == "current") then
 		fs:SetFormattedText("%s",FormatValue(val));
 	elseif (type == "full") then
@@ -180,7 +166,6 @@ end
 
 -- Creates a bar with the given mixins
 function ttBars:CreateBar(parent,tblMixin)
-	local cfg = TipTac_Config;
 	local bar = CreateFrame("StatusBar",nil,parent);
 	bar:Hide();
 
@@ -194,7 +179,6 @@ function ttBars:CreateBar(parent,tblMixin)
 	bar.text = bar:CreateFontString(nil,"ARTWORK");
 	bar.text:SetPoint("CENTER");
 	bar.text:SetTextColor(1,1,1);
-	bar.text:SetFont(cfg.barFontFace,cfg.barFontSize,cfg.barFontFlags);
 
 	bar.SetFormattedBarValues = SetFormattedBarValues;
 
@@ -202,17 +186,17 @@ function ttBars:CreateBar(parent,tblMixin)
 end
 
 -- Initializes the anchoring position and color for each bar
-function ttBars:SetupBars(u)
+function ttBars:SetupBars(tip)
 	for index, bar in ipairs(bars) do
 		bar:ClearAllPoints();
 
-		if (bar:GetVisibility(u)) then
-			bar:SetPoint("BOTTOMLEFT",BAR_MARGIN_X,tt.yPadding + BAR_MARGIN_Y);
-			bar:SetPoint("BOTTOMRIGHT",-BAR_MARGIN_X,tt.yPadding + BAR_MARGIN_Y);
+		if (bar:GetVisibility(tip.ttUnit)) then
+			bar:SetPoint("BOTTOMLEFT", tt.padding.right + BAR_MARGIN_X, tt.padding.bottom + BAR_MARGIN_Y);
+			bar:SetPoint("BOTTOMRIGHT", -tt.padding.left - BAR_MARGIN_X, tt.padding.bottom + BAR_MARGIN_Y);
 
-			bar:SetStatusBarColor(bar:GetColor(u));
+			bar:SetStatusBarColor(bar:GetColor(tip.ttUnit));
 
-			tt.yPadding = (tt.yPadding + cfg.barHeight + BAR_SPACING);
+			tt.padding.bottom = (tt.padding.bottom + cfg.barHeight + BAR_SPACING);
 
 			bar:Show();
 		else
@@ -249,13 +233,14 @@ function ttBars:OnApplyConfig(cfg)
 		bar:GetStatusBarTexture():SetVertTile(false);	-- Az: 3.3.3 fix
 		bar:SetHeight(cfg.barHeight);
 		bar.text:SetFont(cfg.barFontFace,cfg.barFontSize,cfg.barFontFlags);
+		if bar.text:GetFont()==nil then bar.text:SetFont("Fonts\\FRIZQT__.TTF",cfg.barFontSize,cfg.barFontFlags); end -- DaMaGepy
 	end
 end
 
-function ttBars:OnPreStyleTip(tip,u,first)
+function ttBars:OnPreStyleTip(tip,first)
 	-- for the first time styling, we want to initialize the bars
 	if (first) then
-		self:SetupBars(u);
+		self:SetupBars(tip);
 
 		-- Hide GTT Status bar, we have our own, which is prettier!
 		if (cfg.hideDefaultBar) then
@@ -266,7 +251,7 @@ function ttBars:OnPreStyleTip(tip,u,first)
 	-- update each shown bar
 	for _, bar in ipairs(bars) do
 		if (bar:IsShown()) then
-			local val, max, fmt = bar:GetValueParams(u);
+			local val, max, fmt = bar:GetValueParams(tip.ttUnit);
 			bar:SetMinMaxValues(0,max);
 			bar:SetValue(val);
 			bar:SetFormattedBarValues(val,max,fmt);
@@ -274,8 +259,10 @@ function ttBars:OnPreStyleTip(tip,u,first)
 	end
 end
 
-function ttBars:OnCleared()
+function ttBars:OnCleared(tip)
 	for _, bar in ipairs(bars) do
-		bar:Hide();
+		if (bar:GetParent() == tip) then
+			bar:Hide();
+		end
 	end
 end

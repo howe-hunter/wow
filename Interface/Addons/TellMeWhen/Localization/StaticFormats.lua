@@ -23,11 +23,6 @@ end
 -- Blizzard has a typo in the English string ("Ecplise")
 L["ECLIPSE"] = (locale == "enUS" or locale == "enGB") and "Eclipse" or ECLIPSE
 
-L["DR-DeathCoil"] = GetSpellInfo(6789)
-L["DR-FreezingTrap"] = GetSpellInfo(3355)
-L["DR-Sleep"] = GetSpellInfo(700)
-L["DR-UnstableAffliction"] = GetSpellInfo(30108)
-
 L["DOMAIN_GLOBAL_NC"] = L["DOMAIN_GLOBAL"]:gsub("|cff00c300", ""):gsub("|r", "")
 
 L["HELP_FIRSTUCD"]                      = L["HELP_FIRSTUCD"]                        :format(L["ICONMENU_CHOOSENAME3"], 
@@ -137,6 +132,7 @@ L["ANIM_TEX_DESC"] = L["ANIM_TEX_DESC"] .. "\r\n\r\n" .. L["ICONMENU_CUSTOMTEX_M
 L["CONDITIONALPHA_METAICON_DESC"] = L["CONDITIONALPHA_METAICON_DESC"]:format(L["ICONMENU_SHOWWHEN"], L["CONDITIONS"])
 L["DURATIONALPHA_DESC"] = L["DURATIONALPHA_DESC"]:format(L["ICONMENU_SHOWWHEN"])
 L["STACKALPHA_DESC"] = L["STACKALPHA_DESC"]:format(L["ICONMENU_SHOWWHEN"])
+L["VALUEALPHA_DESC"] = L["VALUEALPHA_DESC"]:format(L["ICONMENU_SHOWWHEN"])
 
 
 --L["CNDT_SLIDER_DESC_CLICKSWAP_TOMANUAL"] = L["CNDT_SLIDER_DESC_BASE"] .. "\r\n\r\n" .. L["CNDT_SLIDER_DESC_CLICKSWAP_TOMANUAL"]

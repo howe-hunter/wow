@@ -98,6 +98,7 @@
 <!-- ..\Components\IconDataProcessorHooks\includes.config.xml -->
 <Include file="..\Components\IconDataProcessorHooks\IconDataProcessorHook_Alpha_DurationReq\Config.xml" />
 <Include file="..\Components\IconDataProcessorHooks\IconDataProcessorHook_Alpha_StackReq\Config.xml" />
+<Include file="..\Components\IconDataProcessorHooks\IconDataProcessorHook_Alpha_ValueReq\Config.xml" />
 <Include file="..\Components\IconDataProcessorHooks\IconDataProcessorHook_Texture_CustomTex\Config.xml" />
 <Script  file="..\Components\IconDataProcessorHooks\IconDataProcessorHook_Texture_CustomTex\Config.lua" />
 
@@ -136,13 +137,13 @@
 <Include file="..\Components\IconTypes\IconType_conditionicon\Config.xml" />
 <Include file="..\Components\IconTypes\IconType_default\Config.xml" />
 <Script  file="..\Components\IconTypes\IconType_dr\Config.lua" />
-<Script  file="..\Components\IconTypes\IconType_guardian\Config.lua" />
 <Script  file="..\Components\IconTypes\IconType_item\Config.lua" />
 <Include file="..\Components\IconTypes\IconType_meta\Config.xml" />
 <Script  file="..\Components\IconTypes\IconType_meta\Config.lua" />
 <Include file="..\Components\IconTypes\IconType_swingtimer\Config.xml" />
 <Include file="..\Components\IconTypes\IconType_uierror\Config.xml" />
 <Script  file="..\Components\IconTypes\IconType_wpnenchant\Config.lua" />
+<Include file="..\Components\IconTypes\IconType_luavalue\Config.xml" />
 </Ui>
 
 

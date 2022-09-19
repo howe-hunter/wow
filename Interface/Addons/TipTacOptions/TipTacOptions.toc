@@ -1,11 +1,10 @@
-## Interface: 20502
-## Version: 21.09.23
+## Interface: 30400
+## Version: 22.09.02
 ## Title: TipTacOptions |cff00aa00(GepyFix)
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Option Dialog for TipTac
 ## Dependencies: TipTac
 ## LoadOnDemand: 1
-Libs\AzDropDown.lua
-Libs\AzOptionsFactory.lua
+embeds.xml
 ttLayouts.lua
 ttOptions.lua

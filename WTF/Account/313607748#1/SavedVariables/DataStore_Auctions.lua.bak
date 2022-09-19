@@ -1,7 +1,8 @@
 
 DataStore_AuctionsDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 }

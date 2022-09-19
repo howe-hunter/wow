@@ -1,8 +1,9 @@
 
 DataStore_SpellsDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["global"] = {
 		["Characters"] = {
@@ -23,6 +24,13 @@ DataStore_SpellsDB = {
 						"20154|Rank 1", -- [2]
 					},
 				},
+				["SpellTabs"] = {
+					"General", -- [1]
+					"Holy", -- [2]
+				},
+			},
+			["Default.Skyfury.Eurydice"] = {
+				["lastUpdate"] = 1662220622,
 				["SpellTabs"] = {
 					"General", -- [1]
 					"Holy", -- [2]

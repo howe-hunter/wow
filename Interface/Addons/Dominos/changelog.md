@@ -1,5 +1,73 @@
 # Dominos Changelog
 
+## 9.3.5
+
+* (WotLK) Update LibDualSpec
+
+## 9.3.4
+
+* (WotLK) Fix OverrideController related errors
+
+## 9.3.3
+
+* (Retail) Fix issues with the talking head bar not loading
+
+## 9.3.2
+
+* Use Dominos_Encounter.toc instead of Dominos_Encounter_Mainline.toc for compatibility
+
+## 9.3.1
+
+* Fix packaging for multiple game versions
+
+## 9.3.0
+
+* Packaged as a universal addon
+* (WotLK) Update expansion level detection
+
+## 9.3.0-beta3
+
+* (WotLK) Fix the shadowdance state
+* (Vanilla) Fix a crash due to no override bar
+
+## 9.3.0-beta2
+
+* (WotLK) Fixed a load issue with the new totem bar
+* (WotLK) Disabled the pet bar when possessing a target
+
+## 9.3.0-beta1
+
+* First pass at support for WotLK classic:
+  * Turned on the full vehicle UI for WotLK (NEEDS TESTING)
+  * Made the Blizzard totem bar movable
+
+## 9.2.2
+
+* Fixed some packaging issues
+
+## 9.2.1
+
+* Fixed a loading error for Classic
+
+## 9.2.0
+
+* Update TOCs for client versions 9.2.0 and 1.14.2
+* Add the ability to choose the Pet bar as the possess bar in TBC Classic
+
+## 9.1.7
+
+* Fixed a bug causing channeling spells to not appear on the castbar
+* Updated TOCs for the latest version of TBC Classic
+
+## 9.1.6
+
+* The cast bar now displays immediately, instead of fading in
+* Fixed a bug causing the cast bar to get stuck when canceling out of a spell cast started in a Druid form
+
+## 9.1.5
+
+* TOC updates
+
 ## 9.1.3
 
 * Add a type check for the button themer on classic era realms

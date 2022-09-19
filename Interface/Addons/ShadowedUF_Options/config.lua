@@ -1100,6 +1100,40 @@ local function loadGeneralOptions()
 								arg = "powerColors.ENERGY",
 								width = "half",
 							},
+							RUNIC_POWER = {
+								order = 6,
+								type = "color",
+								name = L["Runic Power"],
+								arg = "powerColors.RUNIC_POWER",
+							},
+							RUNES_BLOOD = {
+								order = 7,
+								type = "color",
+								name = "Runes (Blood)",
+								arg = "powerColors.RUNES_BLOOD",
+								hidden = function(info) return select(2, UnitClass("player")) ~= "DEATHKNIGHT" end,
+							},
+							RUNES_FROST = {
+								order = 8,
+								type = "color",
+								name = "Runes (Frost)",
+								arg = "powerColors.RUNES_FROST",
+								hidden = function(info) return select(2, UnitClass("player")) ~= "DEATHKNIGHT" end,
+							},
+							RUNES_UNHOLY = {
+								order = 9,
+								type = "color",
+								name = "Runes (Unholy)",
+								arg = "powerColors.RUNES_UNHOLY",
+								hidden = function(info) return select(2, UnitClass("player")) ~= "DEATHKNIGHT" end,
+							},
+							RUNES_DEATH = {
+								order = 10,
+								type = "color",
+								name = "Runes (Death)",
+								arg = "powerColors.RUNES_DEATH",
+								hidden = function(info) return select(2, UnitClass("player")) ~= "DEATHKNIGHT" end,
+							},
 							COMBOPOINTS = {
 								order = 11,
 								type = "color",
@@ -3296,12 +3330,20 @@ local function loadUnitOptions()
 						hidden = function(info)
 							local unit = info[2]
 							if( unit == "global" ) then
-								return not globalConfig.totemBar and not globalConfig.druidBar and not globalConfig.xpBar
+								return not globalConfig.runeBar and not globalConfig.totemBar and not globalConfig.druidBar and not globalConfig.xpBar
 							else
 								return unit ~= "player" and unit ~= "pet"
 							end
 						end,
 						args = {
+							runeBar = {
+								order = 1,
+								type = "toggle",
+								name = string.format(L["Enable %s"], L["Rune bar"]),
+								desc = L["Adds rune bars and timers before runes refresh to the player frame."],
+								hidden = hideRestrictedOption,
+								arg = "runeBar.enabled",
+							},
 							druidBar = {
 								order = 3,
 								type = "toggle",
@@ -3428,19 +3470,23 @@ local function loadUnitOptions()
 						type = "group",
 						inline = false,
 						name = L["Incoming heals"],
-						hidden = hideRestrictedOption,
+						hidden = function(info) return ShadowUF.Units.zoneUnits[info[2]] or hideRestrictedOption(info) end,
 						disabled = function(info) return not getVariable(info[2], "healthBar", nil, "enabled") end,
 						args = {
-							enabled = {
+							heals = {
 								order = 1,
 								type = "toggle",
-								name = string.format(L["Enable %s"], L["Incoming heals"]),
-								desc = L["Adds a bar inside the health bar indicating how much healing someone is estimated to be receiving."],
+								name = L["Show incoming heals"],
+								desc = L["Adds a bar inside the health bar indicating how much healing someone will receive."],
 								arg = "incHeal.enabled",
 								hidden = false,
+								set = function(info, value)
+									setUnit(info, value)
+									setDirectUnit(info[2], "incHeal", nil, "enabled", getVariable(info[2], "incHeal", nil, "enabled"))
+								end
 							},
 							cap = {
-								order = 2,
+								order = 3,
 								type = "range",
 								name = L["Outside bar limit"],
 								desc = L["Percentage value of how far outside the unit frame the incoming heal bar can go. 130% means it will go 30% outside the frame, 100% means it will not go outside."],

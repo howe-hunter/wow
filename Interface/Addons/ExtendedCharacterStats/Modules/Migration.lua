@@ -1,41 +1,39 @@
 ---@class Migration
 local Migration = ECSLoader:CreateModule("Migration")
 
+---@type Profile
+local Profile = ECSLoader:ImportModule("Profile")
+
 ---@param profileVersion number
----@param defaultProfile table
-function Migration:ToLatestProfileVersion(profileVersion, defaultProfile)
-    --- Before correct migration
-    if profileVersion < 6 then
+function Migration:ToLatestProfileVersion(profileVersion)
+    if profileVersion < 11 then
         ---@class ECSProfile
-        ExtendedCharacterStats.profile = defaultProfile.profile
-        ExtendedCharacterStats.general = defaultProfile.general
+        Profile:Reset()
         return
     end
 
-    if profileVersion < 7 then
-        ExtendedCharacterStats.profile.melee.attackPower.refName = "MeleeAttackPower"
-        ExtendedCharacterStats.profile.melee.attackSpeed = defaultProfile.profile.melee.attackSpeed
+    local defaultProfile = Profile:GetDefaultProfile()
+    if profileVersion < 12 then
+        ExtendedCharacterStats.profile.melee.expertiseRating = defaultProfile.profile.melee.expertiseRating
     end
-
-    if profileVersion < 8 then
-        ExtendedCharacterStats.profile.ranged.attackSpeed = defaultProfile.profile.ranged.attackSpeed
-        ExtendedCharacterStats.profile.spell.penetration = defaultProfile.profile.spell.penetration
-        if ECS.IsTBC then
-            ExtendedCharacterStats.profile.melee.expertise = defaultProfile.profile.melee.expertise
-        end
+    if profileVersion < 13 then
+        ExtendedCharacterStats.profile.melee.hasteRating = defaultProfile.profile.melee.hasteRating
+        ExtendedCharacterStats.profile.ranged.hasteRating = defaultProfile.profile.ranged.hasteRating
+        ExtendedCharacterStats.profile.spell.hasteRating = defaultProfile.profile.spell.hasteRating
+        ExtendedCharacterStats.profile.spell.hasteBonus = defaultProfile.profile.spell.hasteBonus
     end
-
-    if profileVersion < 9 then
-        if ECS.IsTBC then
-            ExtendedCharacterStats.profile.defense.resilience = defaultProfile.profile.defense.resilience
-        end
+    if profileVersion < 14 then
+        ExtendedCharacterStats.profile.defense.avoidance = defaultProfile.profile.defense.avoidance
+        ExtendedCharacterStats.profile.melee.hasteBonus = defaultProfile.profile.melee.hasteBonus
+        ExtendedCharacterStats.profile.ranged.hasteBonus = defaultProfile.profile.ranged.hasteBonus
     end
-
-    if profileVersion < 10 then
-        if ECS.IsTBC then
-            ExtendedCharacterStats.profile.melee.hit.rating = defaultProfile.profile.melee.hit.rating
-            ExtendedCharacterStats.profile.ranged.hit.rating = defaultProfile.profile.ranged.hit.rating
-            ExtendedCharacterStats.profile.spell.hit.rating = defaultProfile.profile.spell.hit.rating
-        end
+    if profileVersion < 15 then
+        ExtendedCharacterStats.profile.regen.mp5NotCasting = defaultProfile.profile.regen.mp5NotCasting
+        ExtendedCharacterStats.profile.melee.penetration = defaultProfile.profile.melee.penetration
+        ExtendedCharacterStats.profile.ranged.penetration = defaultProfile.profile.ranged.penetration
+    end
+    if profileVersion < 16 then
+        ExtendedCharacterStats.profile.melee.penetration = defaultProfile.profile.melee.penetration
+        ExtendedCharacterStats.profile.ranged.penetration = defaultProfile.profile.ranged.penetration
     end
 end

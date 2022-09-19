@@ -1,11 +1,16 @@
 
 DataStore_TalentsDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["global"] = {
 		["Characters"] = {
+			["Default.Skyfury.Eurydice"] = {
+				["lastUpdate"] = 1662220622,
+				["Class"] = "PALADIN",
+			},
 			["Default.Earthfury.Liandrii"] = {
 				["lastUpdate"] = 1632362925,
 				["Class"] = "PALADIN",
@@ -15,7 +20,8 @@ DataStore_TalentsDB = {
 }
 DataStore_TalentsRefDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 }

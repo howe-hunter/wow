@@ -1,11 +1,17 @@
 
 DataStore_QuestsDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["global"] = {
 		["Characters"] = {
+			["Default.Skyfury.Eurydice"] = {
+				["HistoryLastUpdate"] = 1662220723,
+				["HistoryBuild"] = "45435",
+				["lastUpdate"] = 1662220622,
+			},
 			["Default.Earthfury.Ruuss"] = {
 				["HistoryLastUpdate"] = 1632932068,
 				["HistorySize"] = 664,

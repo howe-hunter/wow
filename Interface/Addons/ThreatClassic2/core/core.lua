@@ -84,6 +84,7 @@ LSM:Register("sound", "TC2: Bell", [[Sound/Doodad/BellTollAlliance.ogg]])
 LSM:Register("font", "NotoSans SemiCondensedBold", [[Interface\AddOns\ThreatClassic2\media\NotoSans-SemiCondensedBold.ttf]])
 LSM:Register("font", "Standard Text Font", _G.STANDARD_TEXT_FONT) -- register so it's usable as a default in config
 LSM:Register("statusbar", "TC2 Default", [[Interface\ChatFrame\ChatFrameBackground]]) -- register so it's usable as a default in config
+LSM:Register("statusbar", "Minimalist", "Interface\\AddOns\\ThreatClassic2\\media\\Minimalist")
 LSM:Register("border", "TC2 Default", [[Interface\ChatFrame\ChatFrameBackground]]) -- register so it's usable as a default in config
 
 
@@ -648,13 +649,16 @@ function TC2:UpdateFrame()
     -- Background
     frame.bg:SetAllPoints()
     frame.bg:SetVertexColor(unpack(C.frame.color))
-
     -- Header
     if C.frame.headerShow then
         frame.header:SetSize(C.frame.width + 2, C.bar.height)
         frame.header:SetStatusBarTexture(LSM:Fetch("statusbar", C.bar.texture))
-
-        frame.header:SetPoint("TOPLEFT", frame, 0, C.bar.height - 1)
+        frame.header:ClearAllPoints()
+        if C.frame.growUp then
+            frame.header:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 0, 0)
+        else
+            frame.header:SetPoint("BOTTOMLEFT", frame, "TOPLEFT", 0, 0)
+        end
         frame.header:SetStatusBarColor(unpack(C.frame.headerColor))
 
         frame.header:SetBackdropColor(0, 0, 0, 0)
@@ -711,10 +715,19 @@ function TC2:UpdateBars()
         bar.edgeBackdrop:SetBackdropColor(0,0,0,0)
         bar.edgeBackdrop:SetBackdropBorderColor(unpack(C.backdrop.edgeColor))
         
+        bar:ClearAllPoints()
         if i == 1 then
-            bar:SetPoint("TOP", 0, 0)
+            if C.frame.growUp then
+                bar:SetPoint("BOTTOM", self.frame, "BOTTOM", 0, 0)
+            else
+                bar:SetPoint("TOP", self.frame, "TOP", 0, 0)
+            end
         else
-            bar:SetPoint("TOP", self.bars[i - 1], "BOTTOM", 0, -C.bar.padding + 1)
+            if C.frame.growUp then
+                bar:SetPoint("BOTTOM", self.bars[i - 1], "TOP", 0, -C.bar.padding + 1)
+            else
+                bar:SetPoint("TOP", self.bars[i - 1], "BOTTOM", 0, -C.bar.padding + 1)
+            end
         end
         bar:SetSize(C.frame.width + 2, C.bar.height)
 
@@ -1169,6 +1182,7 @@ TC2.configTable = {
                                 if C.frame.test then
                                     TC2:TestMode()
                                 else
+                                    wipe(TC2.threatData)
                                     CheckStatus()
                                 end
                             end,
@@ -1290,8 +1304,13 @@ TC2.configTable = {
                                 TC2:UpdateFrame()
                             end,
                         },
-                        frameColors = {
+                        growUp = {
                             order = 6,
+                            name = L.frame_growup,
+                            type = "toggle",
+                        },
+                        frameColors = {
+                            order = 7,
                             name = L.color,
                             type = "group",
                             inline = true,

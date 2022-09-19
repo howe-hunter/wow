@@ -64,14 +64,10 @@ ConditionCategory:RegisterCondition(1,	 "INSTANCE2", {
 	bitFlags = {
 		[01] = {order=01, text=L["CONDITIONPANEL_INSTANCETYPE_NONE"],                                space=true,   }, -- None (Outside)
 		[02] = {order=02, text=BATTLEGROUND,                                                                       }, -- Battleground
-		[03] = {order=03, text=ARENA,                                                                space=true,   }, -- Arena
 
 		[04] = {order=10, text=DUNGEON_DIFFICULTY_5PLAYER,                                                         }, -- 5-player
-		[05] = {order=11, text=DUNGEON_DIFFICULTY_5PLAYER_HEROIC,                                    space=true,   }, -- 5-player Heroic
-		[06] = {order=32, text=RAID_DIFFICULTY_10PLAYER,           }, -- 10-player raid (legacy)
-		[07] = {order=33, text=RAID_DIFFICULTY_25PLAYER,           }, -- 25-player raid (legacy)
-		
-		[12] = {order=36, text=RAID_DIFFICULTY_40PLAYER,           }, -- 40-man raid (legacy)
+
+		[12] = {order=36, text=L["CONDITIONPANEL_INSTANCETYPE_LEGACY"]:format(RAID_DIFFICULTY_40PLAYER),           }, -- 40-man raid (legacy)
 
 	},
 
@@ -88,9 +84,7 @@ ConditionCategory:RegisterCondition(1,	 "INSTANCE2", {
 				instanceDifficulty = 0
 			end
 
-			-- https://wow.tools/dbc/?dbc=difficulty&build=2.5.1.38692#page=1
-			-- Note that 148 is "20 Player" but this might not actually be used by AQ20?
-
+			
 			if z == "pvp" then
 				-- Battleground           (__ -> 02)
 				return 2
@@ -292,8 +286,8 @@ ConditionCategory:RegisterCondition(13,   "LOC_CONTINENT", {
 	bitFlagTitle = L["CONDITIONPANEL_BITFLAGS_CHOOSEMENU_CONTINENT"],
 	bitFlags = (function()
 		local t = {}
-		-- 946 is the cosmic map ID.
-		for id, mapInfo in pairs(C_Map.GetMapChildrenInfo(946, Enum.UIMapType.Continent, true)) do
+		-- 947 is the Azeroth Map ID.
+		for id, mapInfo in pairs(C_Map.GetMapChildrenInfo(947, Enum.UIMapType.Continent, true)) do
 			t[mapInfo.mapID] = mapInfo.name
 		end
 		return t

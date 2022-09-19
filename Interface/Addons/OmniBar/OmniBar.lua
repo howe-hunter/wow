@@ -6,10 +6,12 @@ local addonName, addon = ...
 local COMBATLOG_FILTER_STRING_UNKNOWN_UNITS = COMBATLOG_FILTER_STRING_UNKNOWN_UNITS
 local COMBATLOG_OBJECT_REACTION_HOSTILE = COMBATLOG_OBJECT_REACTION_HOSTILE
 local COMBATLOG_OBJECT_TYPE_PLAYER = COMBATLOG_OBJECT_TYPE_PLAYER
+local C_Timer_After = C_Timer.After
 local CanInspect = CanInspect
 local ClearInspectPlayer = ClearInspectPlayer
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local CreateFrame = CreateFrame
+local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetBattlefieldScore = GetBattlefieldScore
 local GetClassInfo = GetClassInfo
@@ -19,6 +21,7 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetRaidRosterInfo = GetRaidRosterInfo
+local GetServerTime = GetServerTime
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoByID = GetSpecializationInfoByID
@@ -29,8 +32,12 @@ local GetUnitName = GetUnitName
 local GetZonePVPInfo = GetZonePVPInfo
 local InCombatLockdown = InCombatLockdown
 local InterfaceOptionsFrame_OpenToCategory = InterfaceOptionsFrame_OpenToCategory
+local IsInGroup = IsInGroup
+local IsInGuild = IsInGuild
 local IsInInstance = IsInInstance
+local IsInRaid = IsInRaid
 local IsRatedBattleground = C_PvP.IsRatedBattleground
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local LibStub = LibStub
 local MAX_CLASSES = MAX_CLASSES
 local NotifyInspect = NotifyInspect
@@ -40,6 +47,7 @@ local UNITNAME_SUMMON_TITLE1 = UNITNAME_SUMMON_TITLE1
 local UNITNAME_SUMMON_TITLE2 = UNITNAME_SUMMON_TITLE2
 local UNITNAME_SUMMON_TITLE3 = UNITNAME_SUMMON_TITLE3
 local UnitClass = UnitClass
+local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
@@ -51,16 +59,22 @@ local WOW_PROJECT_CLASSIC = WOW_PROJECT_CLASSIC
 local WOW_PROJECT_ID = WOW_PROJECT_ID
 local WOW_PROJECT_MAINLINE = WOW_PROJECT_MAINLINE
 local bit_band = bit.band
+local date = date
 local tinsert = tinsert
 local wipe = wipe
+local tContains = tContains
 
-OmniBar = LibStub("AceAddon-3.0"):NewAddon("OmniBar", "AceEvent-3.0")
+OmniBar = LibStub("AceAddon-3.0"):NewAddon("OmniBar", "AceEvent-3.0", "AceComm-3.0", "AceSerializer-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("OmniBar")
 
--- Apply cooldown reductions
+-- Apply cooldown adjustments
 for k,v in pairs(addon.Cooldowns) do
-	if v['decrease'] then
-		addon.Cooldowns[k]['duration'] = v['duration'] - v['decrease']
-		addon.Cooldowns[k]['decrease'] = nil
+	if v.duration and type(v.duration) == "number" then
+		local adjust = v.adjust or 0
+		if type(adjust) == "table" then
+			adjust = adjust.default or 0 -- use default for now
+		end
+		addon.Cooldowns[k].duration = v.duration + adjust
 	end
 end
 
@@ -119,6 +133,10 @@ local MAX_DUPLICATE_ICONS = 5
 
 local BASE_ICON_SIZE = 36
 
+function OmniBar:Print(message)
+	DEFAULT_CHAT_FRAME:AddMessage("|cff33ff99OmniBar|r: " .. message)
+end
+
 function OmniBar:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("OmniBarDB", {
 		global = { version = DB_VERSION, cooldowns = {} },
@@ -134,6 +152,31 @@ function OmniBar:OnInitialize()
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "GetSpecs")
+	self:RegisterComm("OmniBarSpell", function(_, payload, _, sender)
+		if (not UnitExists(sender)) or sender == PLAYER_NAME then return end
+		local success, event, sourceGUID, sourceName, sourceFlags, spellID, serverTime = self:Deserialize(payload)
+		if (not success) then return end
+		self:AddSpellCast(event, sourceGUID, sourceName, sourceFlags, spellID, serverTime)
+	end)
+
+	-- Check if update available
+	self.version = tonumber((GetAddOnMetadata(addonName, "Version") or ""):sub(2))
+	if self.version then
+		self:RegisterComm("OmniBarVersion", function(_, payload)
+			local version = tonumber(payload)
+			if (not version) or self.version >= version then return end
+			self:UnregisterComm("OmniBarVersion")
+			self:Print(L.UPDATE_AVAILABLE)
+		end)
+
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "SendVersion")
+
+		C_Timer_After(10, function()
+			self:SendVersion()
+			if IsInGuild() then self:SendVersion("GUILD") end
+			self:SendVersion("YELL")
+		end)
+	end
 
 	-- Remove invalid custom cooldowns
 	for k,v in pairs(self.db.global.cooldowns) do
@@ -150,6 +193,23 @@ function OmniBar:OnInitialize()
 	end
 
 	self:SetupOptions()
+end
+
+local function GetDefaultCommChannel()
+	if IsInRaid() then
+		return IsInRaid(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT" or "RAID"
+	elseif IsInGroup() then
+		return IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT" or "PARTY"
+	elseif IsInGuild() then
+		return "GUILD"
+	else
+		return "YELL"
+	end
+end
+
+function OmniBar:SendVersion(distribution)
+	if (not self.version) then return end
+	self:SendCommMessage("OmniBarVersion", tostring(self.version), distribution or GetDefaultCommChannel())
 end
 
 function OmniBar:OnEnable()
@@ -180,6 +240,78 @@ function OmniBar:OnEnable()
 	end
 
 	self:Refresh(true)
+end
+
+function OmniBar:Decode(encoded)
+	local LibDeflate = LibStub:GetLibrary("LibDeflate")
+	local decoded = LibDeflate:DecodeForPrint(encoded)
+	if (not decoded) then return self:ImportError("DecodeForPrint") end
+	local decompressed = LibDeflate:DecompressZlib(decoded)
+	if (not decompressed) then return self:ImportError("DecompressZlib") end
+	local success, deserialized = self:Deserialize(decompressed)
+	if (not success) then return self:ImportError("Deserialize") end
+	return deserialized
+end
+
+function OmniBar:ExportProfile()
+	local LibDeflate = LibStub:GetLibrary("LibDeflate")
+	local data = {
+		profile = self.db.profile,
+		customSpells = self.db.global.cooldowns,
+		version = 1
+	}
+	local serialized = self:Serialize(data)
+	if (not serialized) then return end
+	local compressed = LibDeflate:CompressZlib(serialized)
+	if (not compressed) then return end
+	return LibDeflate:EncodeForPrint(compressed)
+end
+
+function OmniBar:ImportError(message)
+	if (not message) or self.import.editBox.editBox:GetNumLetters() == 0 then
+		self.import.statustext:SetTextColor(1, 0.82, 0)
+		self.import:SetStatusText(L["Paste a code to import an OmniBar profile."])
+	else
+		self.import.statustext:SetTextColor(1, 0, 0)
+		self.import:SetStatusText(L["Import failed (%s)"]:format(message))
+	end
+	self.import.button:SetDisabled(true)
+end
+
+function OmniBar:ImportProfile(data)
+	if (data.version ~= 1) then return self:ImportError(L["Invalid version"]) end
+
+	local profile = L["Imported (%s)"]:format(date())
+
+	self.db.profiles[profile] = data.profile
+	self.db:SetProfile(profile)
+
+	-- merge custom spells
+	for k,v in pairs(data.customSpells) do
+		self.db.global.cooldowns[k] = nil
+		self.options.args.customSpells.args.spellId.set(nil, k, v)
+	end
+
+	self:OnEnable()
+	LibStub("AceConfigRegistry-3.0"):NotifyChange("OmniBar")
+	return true
+end
+
+function OmniBar:ShowExport()
+	self.export.editBox:SetText(self:ExportProfile())
+	self.export:Show()
+	self.export.editBox:SetFocus()
+	self.export.editBox:HighlightText()
+	-- self.export.editBox:HighlightText(0, self.export.editBox.editBox:GetNumLetters())
+
+end
+
+function OmniBar:ShowImport()
+	self.import.editBox:SetText("")
+	self:ImportError()
+	self.import:Show()
+	self.import.button:SetDisabled(true)
+	self.import.editBox:SetFocus()
 end
 
 function OmniBar:Delete(key, keepProfile)
@@ -643,7 +775,37 @@ local function GetCooldownDuration(cooldown, specID)
 	end
 end
 
-function OmniBar:AddSpellCast(event, sourceGUID, sourceName, sourceFlags, spellID)
+function OmniBar:AddSpellCast(event, sourceGUID, sourceName, sourceFlags, spellID, serverTime, customDuration)
+	local isLocal = (not serverTime)
+	serverTime = serverTime or GetServerTime()
+
+	-- activate shared cooldowns
+	if (not customDuration) then
+		for i = 1, #addon.Shared do
+			local shared = addon.Shared[i]
+			if (shared.triggers and tContains(shared.triggers, spellID)) or tContains(shared.spells, spellID) then
+				for i = 1, #shared.spells do
+					if spellID ~= shared.spells[i] then
+						local amount = shared.amount
+						-- use default until we add spec detection
+						if type(amount) == "table" then amount = shared.amount.default end
+						if addon.Cooldowns[shared.spells[i]] and (not addon.Cooldowns[shared.spells[i]].parent) then
+							self:AddSpellCast(
+								event,
+								sourceGUID,
+								sourceName,
+								sourceFlags,
+								shared.spells[i],
+								nil, -- set to `serverTime` to disable sync
+								amount
+							)
+						end
+					end
+				end
+			end
+		end
+	end
+
 	if (not addon.Resets[spellID]) and (not addon.Cooldowns[spellID]) then return end
 
 	-- unset unknown sourceName
@@ -677,19 +839,23 @@ function OmniBar:AddSpellCast(event, sourceGUID, sourceName, sourceFlags, spellI
 
 	local now = GetTime()
 
-	-- make sure we aren't adding a duplicate
-	if self.spellCasts[name] and self.spellCasts[name][spellID] and self.spellCasts[name][spellID].timestamp == now then
+	-- make sure spellID is parent
+	spellID = addon.Cooldowns[spellID].parent or spellID
+
+	-- make sure we aren't adding a duplicate,
+	-- and if it is a shared cooldown make sure we don't overwrite
+	if  self.spellCasts[name] and
+		self.spellCasts[name][spellID] and
+		(customDuration or self.spellCasts[name][spellID].serverTime == serverTime)
+	then
 		return
 	end
 
 	-- only track players and their pets
 	if (not ownerName) and bit_band(sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) == 0 then return end
 
-	local duration = GetCooldownDuration(addon.Cooldowns[spellID])
+	local duration = customDuration or GetCooldownDuration(addon.Cooldowns[spellID])
 	local charges = addon.Cooldowns[spellID].charges
-
-	-- make sure spellID is parent
-	spellID = addon.Cooldowns[spellID].parent or spellID
 
 	-- child doesn't have custom charges, use parent
 	if (not charges) then
@@ -701,6 +867,11 @@ function OmniBar:AddSpellCast(event, sourceGUID, sourceName, sourceFlags, spellI
 		duration = GetCooldownDuration(addon.Cooldowns[spellID])
 	end
 
+	-- combat log is clamped in classic, so make sure our raid members detect the cast
+	if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and isLocal then
+		self:AlertGroup(event, sourceGUID, sourceName, sourceFlags, spellID, serverTime)
+	end
+
 	self.spellCasts[name] = self.spellCasts[name] or {}
 	self.spellCasts[name][spellID] = {
 		charges = charges,
@@ -708,6 +879,7 @@ function OmniBar:AddSpellCast(event, sourceGUID, sourceName, sourceFlags, spellI
 		event = event,
 		expires = now + duration,
 		ownerName = ownerName,
+		serverTime = serverTime,
 		sourceFlags = sourceFlags,
 		sourceGUID = sourceGUID,
 		sourceName = sourceName,
@@ -715,7 +887,14 @@ function OmniBar:AddSpellCast(event, sourceGUID, sourceName, sourceFlags, spellI
 		spellName = GetSpellInfo(spellID),
 		timestamp = now,
 	}
+
 	self:SendMessage("OmniBar_SpellCast", name, spellID)
+end
+
+function OmniBar:AlertGroup(...)
+	if (not IsInGroup()) then return end
+	local event, sourceGUID, sourceName, sourceFlags, spellID, serverTime = ...
+	self:SendCommMessage("OmniBarSpell", self:Serialize(...), GetDefaultCommChannel(), nil, "ALERT")
 end
 
 -- Needed to track PvP trinkets and possibly other spells that do not show up in COMBAT_LOG_EVENT_UNFILTERED

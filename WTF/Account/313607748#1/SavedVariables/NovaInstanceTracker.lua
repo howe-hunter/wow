@@ -2,9 +2,9 @@
 NITdatabase = {
 	["profileKeys"] = {
 		["Liandrii - Earthfury"] = "Default",
+		["Eurydice - Skyfury"] = "Default",
 	},
 	["global"] = {
-		["resetCharData"] = false,
 		["Earthfury"] = {
 			["trades"] = {
 			},
@@ -47,6 +47,64 @@ NITdatabase = {
 					["prof2"] = "none",
 					["classLocalized"] = "Paladin",
 					["level"] = 1,
+				},
+			},
+			["instances"] = {
+			},
+		},
+		["resetCharData"] = false,
+		["Skyfury"] = {
+			["trades"] = {
+			},
+			["myChars"] = {
+				["Eurydice"] = {
+					["fishingSkill"] = 0,
+					["cookingSkill"] = 0,
+					["profSkill1"] = 0,
+					["durabilityAverage"] = 100,
+					[17033] = 0,
+					["prof2"] = "none",
+					["savedInstances"] = {
+					},
+					["honor"] = 0,
+					["maxXP"] = 400,
+					["gender"] = "Female",
+					["prof1"] = "none",
+					["restedXP"] = 0,
+					["totalBagSlots"] = 20,
+					["freeBagSlots"] = 19,
+					["arenaPoints"] = 0,
+					["guildRankName"] = "No guild rank",
+					["raceEnglish"] = "Draenei",
+					["profSkillMax1"] = 0,
+					["resting"] = false,
+					["time"] = 1662220777,
+					["gold"] = 0,
+					["realm"] = "Skyfury",
+					["profSkill2"] = 0,
+					["firstaidSkillMax"] = 0,
+					["raceLocalized"] = "Draenei",
+					["fishingSkillMax"] = 0,
+					["firstaidSkill"] = 0,
+					["classEnglish"] = "PALADIN",
+					["level"] = 1,
+					["guild"] = "No guild",
+					["race"] = "Draenei",
+					["marks"] = {
+						[20559] = 0,
+						[20560] = 0,
+						[29024] = 0,
+						[42425] = 0,
+						[20558] = 0,
+						[47395] = 0,
+					},
+					[21177] = 0,
+					["currentXP"] = 0,
+					["cooldowns"] = {
+					},
+					["cookingSkillMax"] = 0,
+					["classLocalized"] = "Paladin",
+					["profSkillMax2"] = 0,
 				},
 			},
 			["instances"] = {

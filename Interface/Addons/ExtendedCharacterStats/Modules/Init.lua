@@ -22,7 +22,7 @@ function Init:OnAddonLoaded()
     end
 
     _Init:LoadProfile()
-    i18n:LoadLanguageData()
+    i18n:SetLanguage(ExtendedCharacterStats.general.language)
 end
 
 function Init:OnPlayerLogin()
@@ -51,7 +51,7 @@ function Init:OnPlayerLogin()
                     Stats:UpdateInformation()
                 end)
             end
-        elseif event == "PLAYER_EQUIPMENT_CHANGED" then
+        elseif event == "PLAYER_EQUIPMENT_CHANGED" or event == "SOCKET_INFO_SUCCESS" then
             GearInfos:UpdateGearColorFrames()
             C_Timer.After(0.5, function ()
                 Stats:UpdateInformation()
@@ -92,7 +92,7 @@ function _Init:LoadProfile()
 
     if isProfileVersionDifferent then
         ECS:Print("Migrating ECS profile from version " .. currentProfileVersion .. " to " .. targetProfileVersion)
-        Migration:ToLatestProfileVersion(currentProfileVersion, defaultProfile)
+        Migration:ToLatestProfileVersion(currentProfileVersion)
         ExtendedCharacterStats.general.profileVersion = targetProfileVersion
     end
 end
@@ -109,4 +109,7 @@ function _Init:RegisterEvents(eventFrame)
     eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED") -- Triggers whenever the player mounts or dismounts
     eventFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED") -- Triggers whenever a cast was successful
     eventFrame:RegisterEvent("INSPECT_READY") -- Triggers whenever the player inspects someone else and the inspect frame is ready
+    if ECS.IsWotlk then
+        eventFrame:RegisterEvent("SOCKET_INFO_SUCCESS") -- Triggers whenever the player successfully sockets an item
+    end
 end

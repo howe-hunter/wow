@@ -1,4 +1,25 @@
 # Changelog
+
+## v2.45
+* works in wotlk beta
+* update libaries
+* added media for my favorite bar style Minimalist
+
+## v2.44
+* adjust toc for AQ40 Season of Mastery
+
+## v2.43
+* adjust toc for Zul'Aman BCC
+
+## v2.42
+* adjust toc for Hyjal/BT BCC
+
+## v2.41
+* adjust toc for Season of Mastery
+
+## v2.40
+* Added new option to grow bars bottom up
+
 ## v2.39
 * Updated translations and bump interface version
 

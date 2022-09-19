@@ -1,1 +1,3 @@
-- Update for Burning Crusade Classic 2.5.2
+- Track shared cooldowns
+- Update spells
+- Bug fix

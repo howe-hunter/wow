@@ -1,16 +1,20 @@
 
 ThreatPlatesDB = {
 	["char"] = {
+		["Ruuss - Earthfury"] = {
+			["welcome"] = true,
+		},
 		["Liandrii - Earthfury"] = {
 			["welcome"] = true,
 		},
-		["Ruuss - Earthfury"] = {
+		["Eurydice - Skyfury"] = {
 			["welcome"] = true,
 		},
 	},
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Default",
 		["Ruuss - Earthfury"] = "Default",
+		["Liandrii - Earthfury"] = "Default",
+		["Eurydice - Skyfury"] = "Default",
 	},
 	["global"] = {
 		["version"] = "10.2.11",

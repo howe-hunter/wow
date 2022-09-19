@@ -1,11 +1,15 @@
 
 DataStore_AgendaDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["global"] = {
 		["Characters"] = {
+			["Default.Skyfury.Eurydice"] = {
+				["lastUpdate"] = 1662220723,
+			},
 			["Default.Earthfury.Ruuss"] = {
 				["lastUpdate"] = 1632932068,
 			},

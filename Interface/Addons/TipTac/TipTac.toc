@@ -1,9 +1,10 @@
-## Interface: 20502
-## Version: 21.09.24
+## Interface: 30400
+## Version: 22.09.02
 ## Title: TipTac Classic+TBC - MAIN |cff00aa00(Gepy)
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Highly Customizable Tooltip Enhancement Addon (Fix by DaMaGepy)
 ## SavedVariables: TipTac_Config
+embeds.xml
 ttCore.lua
 ttStyle.lua
 ttBars.lua

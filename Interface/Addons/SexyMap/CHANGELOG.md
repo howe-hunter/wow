@@ -1,6 +1,7 @@
 # SexyMap
 
-## [v5-bcc](https://github.com/funkydude/SexyMap/tree/v5-bcc) (2021-06-29)
-[Full Changelog](https://github.com/funkydude/SexyMap/compare/v4-bcc...v5-bcc) [Previous Releases](https://github.com/funkydude/SexyMap/releases)
+## [v9.2.11](https://github.com/funkydude/SexyMap/tree/v9.2.11) (2022-09-12)
+[Full Changelog](https://github.com/funkydude/SexyMap/compare/v9.2.10...v9.2.11) [Previous Releases](https://github.com/funkydude/SexyMap/releases)
 
-- Ping: Work around an issue showing double prints in chat  
+- Buttons: Fix the Calendar button not being attached to the Minimap in Wrath when button dragging is off (fixes #258)  
+- Buttons: Fix the calendar being hidden if you disable controlling the visibility of the buttons  

@@ -46,10 +46,10 @@ function Stats:CreateWindow()
     mainFrame.title = mainFrame:CreateFontString(nil, "OVERLAY")
     mainFrame.title:SetFontObject("GameFontHighlight")
     mainFrame.title:SetPoint("CENTER", mainFrame.TitleBg, "CENTER", 11,  0)
-    mainFrame.title:SetText(i18n("NAME_VERSION", Utils:GetAddonVersionString()))
+    mainFrame.title:SetText(i18n("ECS %s", Utils:GetAddonVersionString()))
 
     mainFrame.configButton = CreateFrame("Button", nil, mainFrame, "GameMenuButtonTemplate")
-    mainFrame.configButton:SetText(i18n("SETTINGS"))
+    mainFrame.configButton:SetText(i18n("Settings"))
     mainFrame.configButton:SetSize(ecs.general.window.width - 10, 20)
     mainFrame.configButton:SetPoint("CENTER", mainFrame, "TOP", -1,  -35)
     mainFrame.configButton:SetScript("OnClick", function ()
@@ -73,7 +73,7 @@ function Stats:CreateWindow()
         if OutfitterButton then -- See #89
             toggleButton:SetPoint("TOPRIGHT", PaperDollItemsFrame, "TOPRIGHT", -55, -16)
         else
-            toggleButton:SetPoint("TOPRIGHT", PaperDollItemsFrame, "TOPRIGHT", -38, -4)
+            toggleButton:SetPoint("TOPRIGHT", PaperDollItemsFrame, "TOPRIGHT", -57, -16)
         end
     else
         toggleButton:SetPoint("BOTTOMRIGHT", PaperDollItemsFrame, "BOTTOMRIGHT", -38, 87)
@@ -111,7 +111,7 @@ function Stats:UpdateWindowSize()
 end
 
 function Stats:UpdateSettingsButtonText()
-    _Stats.frame.configButton:SetText(i18n("SETTINGS"))
+    _Stats.frame.configButton:SetText(i18n("Settings"))
 end
 
 --- Toogles the stats window
@@ -146,38 +146,34 @@ end
 --- Helper function to iteracte all field of a given category and create them if they should be displayed
 ---@param category Category|SubCategory
 _CreateStatInfo = function(category, ...)
-    if (not ECS.IsTBC) and category.isTbcOnly then
+    if (not ECS.IsWotlk) and category.isTbcOnly then
         return
     end
 
-    if category.display == true then
+    if category.display then
         _CreateHeader(category.refName, i18n(category.text), category.isSubGroup)
         local stats = {...}
         -- Loop through all stats
         for _, stat in pairs(stats) do
-            if type(stat) == "table" and stat.display == true and ((not stat.isTbcOnly) or ECS.IsTBC) then
-                _CreateText(stat.refName, _FormatStatsText(stat.text,  stat.refName), category.isSubGroup)
+            if type(stat) == "table" and stat.display and ((not stat.isTbcOnly) or ECS.IsWotlk) then
+                _CreateText(stat.refName, _FormatStatsText(stat), category.isSubGroup)
             end
         end
     end
 end
 
-_FormatStatsText = function(statTextRef, statRefName)
-    local statText = i18n(statTextRef)
-    local statValue = Data:GetStatInfo(statRefName)
+_FormatStatsText = function(stat)
+    local statText = i18n(stat.text) .. ": "
+    local statValue = Data:GetStatInfo(stat.refName)
 
     if (not ExtendedCharacterStats.general.addColorsToStatTexts) then
         return Utils:Colorize(statText, colors.GRAY) .. Utils:Colorize(statValue, colors.WHITE)
     end
 
-    local statTextColor, statValueColor, percentColor = Utils:GetColorsForStatTextRef(statTextRef)
+    local textColor = stat.textColor or colors.DEFENSE_SECONDARY
+    local statColor = stat.statColor or colors.DEFENSE_PRIMARY
 
-    if string.sub(statValue, -1) == "%" then
-        statValue = string.sub(statValue, 1,  -2)
-        return Utils:Colorize(statText, statTextColor) .. Utils:Colorize(statValue, statValueColor) .. Utils:Colorize("%", percentColor)
-    else
-        return Utils:Colorize(statText, statTextColor) .. Utils:Colorize(statValue, statValueColor)
-    end
+    return Utils:Colorize(statText, textColor) .. Utils:Colorize(statValue, statColor)
 end
 
 --- Creates all categories with headers and their child values
@@ -188,8 +184,9 @@ _CreateStatInfos = function()
     _CreateStatInfo(category, category.movementSpeed)
 
     category = profile.melee
-    if ECS.IsTBC then
-        _CreateStatInfo(category, category.attackPower, category.crit, category.expertise)
+    if ECS.IsWotlk then
+        _CreateStatInfo(category, category.attackPower, category.crit, category.penetration, category.expertise, category.expertiseRating,
+                category.hasteRating, category.hasteBonus)
     else
         _CreateStatInfo(category, category.attackPower, category.crit)
     end
@@ -201,20 +198,32 @@ _CreateStatInfos = function()
     end
 
     category = profile.ranged
-    _CreateStatInfo(category, category.attackPower, category.crit, category.attackSpeed)
+    if ECS.IsWotlk then
+        _CreateStatInfo(category, category.attackPower, category.crit, category.penetration, category.hasteRating, category.hasteBonus,
+                category.attackSpeed)
+    else
+        _CreateStatInfo(category, category.attackPower, category.crit, category.attackSpeed)
+    end
+
     if category.display then
         category = category.hit
         _CreateStatInfo(category, category.rating, category.bonus, category.sameLevel, category.bossLevel)
     end
 
     category = profile.defense
-    _CreateStatInfo(category, category.armor, category.defense, category.blockChance, category.blockValue, category.parry,
-        category.dodge, category.resilience)
+    _CreateStatInfo(category, category.armor, category.critImmunity, category.critReduction, category.avoidance, category.defenseRating,
+            category.defense, category.blockChance, category.blockValue, category.parry, category.dodge, category.resilience)
+
     category = profile.regen
-    _CreateStatInfo(category, category.mp5Items, category.mp5Spirit, category.mp5Buffs, category.mp5Casting)
+    _CreateStatInfo(category, category.mp5Items, category.mp5Spirit, category.mp5Buffs, category.mp5Casting, category.mp5NotCasting)
 
     category = profile.spell
-    _CreateStatInfo(category, category.crit, category.penetration)
+    if ECS.IsWotlk then
+        _CreateStatInfo(category, category.crit, category.hasteRating, category.hasteBonus, category.penetration)
+    else
+        _CreateStatInfo(category, category.crit, category.penetration)
+    end
+
     if category.display then
         category = category.hit
         _CreateStatInfo(category, category.rating, category.bonus, category.sameLevel, category.bossLevel)
@@ -303,7 +312,7 @@ function Stats:UpdateInformation()
 
     -- Loop through all categories
     for _, category in pairs(ExtendedCharacterStats.profile) do
-        if category and category.display == true then
+        if category and category.display then
             -- Loop through all stats
             _UpdateStats(category)
         end
@@ -317,13 +326,12 @@ _UpdateStats = function(category)
         if type(stat) == "table" then
             if stat.isSubGroup then
                 for _, subStat in pairs(stat) do
-                    if type(subStat) == "table" and subStat.display == true then
-                        _UpdateItem(subStat.refName, _FormatStatsText(subStat.text, subStat.refName))
+                    if type(subStat) == "table" and subStat.display then
+                        _UpdateItem(subStat.refName, _FormatStatsText(subStat))
                     end
                 end
-            elseif stat.display == true then
-                --_UpdateItem(stat.refName, i18n(stat.text) .. Data:GetStatInfo(stat.refName))
-                _UpdateItem(stat.refName, _FormatStatsText(stat.text, stat.refName))
+            elseif stat.display then
+                _UpdateItem(stat.refName, _FormatStatsText(stat))
             end
         end
     end

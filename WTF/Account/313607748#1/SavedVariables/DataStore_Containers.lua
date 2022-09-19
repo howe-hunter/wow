@@ -1,11 +1,35 @@
 
 DataStore_ContainersDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["global"] = {
 		["Characters"] = {
+			["Default.Skyfury.Eurydice"] = {
+				["lastUpdate"] = 1662220722,
+				["numFreeBagSlots"] = 19,
+				["Containers"] = {
+					["Bag-2"] = {
+						["freeslots"] = 32,
+						["icon"] = "ICONS\\INV_Misc_Key_04.blp",
+						["size"] = 32,
+					},
+					["Bag0"] = {
+						["ids"] = {
+							6948, -- [1]
+						},
+						["links"] = {
+							"|cffffffff|Hitem:6948::::::::1:::::::::|h[Hearthstone]|h|r", -- [1]
+						},
+						["freeslots"] = 19,
+						["icon"] = "Interface\\Buttons\\Button-Backpack-Up",
+						["size"] = 20,
+					},
+				},
+				["numBagSlots"] = 20,
+			},
 			["Default.Earthfury.Ruuss"] = {
 				["lastUpdate"] = 1632933295,
 				["Containers"] = {
@@ -17,34 +41,12 @@ DataStore_ContainersDB = {
 						["links"] = {
 							"|cff0070dd|Hitem:13030::::::::58:::::::::|h[Basilisk Bone]|h|r", -- [1]
 						},
-						["icon"] = 133633,
 						["size"] = 16,
 						["link"] = "|cff1eff00|Hitem:4500::::::::58:::::::::|h[Traveler's Backpack]|h|r",
+						["icon"] = 133633,
 						["freeslots"] = 15,
 					},
 					["Bag0"] = {
-						["ids"] = {
-							15277, -- [1]
-							8495, -- [2]
-							17037, -- [3]
-							17021, -- [4]
-							6948, -- [5]
-							4813, -- [6]
-							23691, -- [7]
-							12815, -- [8]
-							15042, -- [9]
-							12638, -- [10]
-							22526, -- [11]
-							9173, -- [12]
-							9296, -- [13]
-							9304, -- [14]
-							12662, -- [15]
-							7972, -- [16]
-							14227, -- [17]
-							14047, -- [18]
-							14047, -- [19]
-							10646, -- [20]
-						},
 						["links"] = {
 							"|cff0070dd|Hitem:15277::::::::58:::::::::|h[Gray Kodo]|h|r", -- [1]
 							"|cffffffff|Hitem:8495::::::::58:::::::::|h[Parrot Cage (Senegal)]|h|r", -- [2]
@@ -67,18 +69,40 @@ DataStore_ContainersDB = {
 							"|cffffffff|Hitem:14047::::::::58:::::::::|h[Runecloth]|h|r", -- [19]
 							"|cffffffff|Hitem:10646::::::::58:::::::::|h[Goblin Sapper Charge]|h|r", -- [20]
 						},
+						["ids"] = {
+							15277, -- [1]
+							8495, -- [2]
+							17037, -- [3]
+							17021, -- [4]
+							6948, -- [5]
+							4813, -- [6]
+							23691, -- [7]
+							12815, -- [8]
+							15042, -- [9]
+							12638, -- [10]
+							22526, -- [11]
+							9173, -- [12]
+							9296, -- [13]
+							9304, -- [14]
+							12662, -- [15]
+							7972, -- [16]
+							14227, -- [17]
+							14047, -- [18]
+							14047, -- [19]
+							10646, -- [20]
+						},
 						["icon"] = "Interface\\Buttons\\Button-Backpack-Up",
-						["size"] = 20,
 						["counts"] = {
 							[11] = 9,
-							[18] = 20,
-							[15] = 8,
 							[3] = 4,
-							[20] = 10,
+							[15] = 8,
+							[18] = 20,
 							[4] = 3,
-							[16] = 2,
 							[19] = 17,
+							[16] = 2,
+							[20] = 10,
 						},
+						["size"] = 20,
 					},
 					["Bag1"] = {
 						["rarity"] = 1,
@@ -115,13 +139,13 @@ DataStore_ContainersDB = {
 							"|cffffffff|Hitem:4397::::::::58:::::::::|h[Gnomish Cloaking Device]|h|r", -- [14]
 						},
 						["icon"] = 133652,
-						["size"] = 14,
 						["link"] = "|cffffffff|Hitem:11324::::::::58:::::::::|h[Explorer's Knapsack]|h|r",
 						["counts"] = {
 							3, -- [1]
 							7, -- [2]
 							9, -- [3]
 						},
+						["size"] = 14,
 					},
 					["Bag2"] = {
 						["rarity"] = 1,
@@ -187,13 +211,13 @@ DataStore_ContainersDB = {
 						["freeslots"] = 13,
 					},
 					["Bag-2"] = {
-						["ids"] = {
-							7146, -- [1]
-							6893, -- [2]
-						},
 						["links"] = {
 							"|cff1eff00|Hitem:7146::::::::58:::::::::|h[The Scarlet Key]|h|r", -- [1]
 							"|cffffffff|Hitem:6893::::::::58:::::::::|h[Workshop Key]|h|r", -- [2]
+						},
+						["ids"] = {
+							7146, -- [1]
+							6893, -- [2]
 						},
 						["size"] = 32,
 						["icon"] = "ICONS\\INV_Misc_Key_04.blp",

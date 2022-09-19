@@ -1,11 +1,20 @@
 
 DataStore_InventoryDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["global"] = {
 		["Characters"] = {
+			["Default.Skyfury.Eurydice"] = {
+				["lastUpdate"] = 1662220622,
+				["Inventory"] = {
+					[16] = "|cffffffff|Hitem:2361::::::::1:::::::::|h[]|h|r",
+					[7] = "|cffffffff|Hitem:23477::::::::1:::::::::|h[]|h|r",
+					[4] = "|cffffffff|Hitem:23476::::::::1:::::::::|h[]|h|r",
+				},
+			},
 			["Default.Earthfury.Ruuss"] = {
 				["Inventory"] = {
 					"|cff0070dd|Hitem:8345::::::::58:::::::::|h[Wolfshead Helm]|h|r", -- [1]

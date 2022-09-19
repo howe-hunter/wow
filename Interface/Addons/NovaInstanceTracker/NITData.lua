@@ -149,7 +149,7 @@ end
 --Instance reset sent by someone with this addon.
 function NIT:instanceResetComm(data, sender, distribution)
 	--Do nothing if they have group msg enabled to let us know anyway.
-	NIT:debug("Incoming data:", data);
+	--NIT:debug("Incoming data:", data);
 end
 
 --Instance reset sent by someone with this addon but with group msg disabled.
@@ -183,6 +183,7 @@ f:RegisterEvent("PLAYER_REGEN_ENABLED");
 f:RegisterEvent("GROUP_ROSTER_UPDATE");
 f:RegisterEvent("CHAT_MSG_MONEY");
 f:RegisterEvent("CHAT_MSG_COMBAT_FACTION_CHANGE");
+f:RegisterEvent("CHAT_MSG_COMBAT_HONOR_GAIN");
 f:RegisterEvent("PLAYER_UPDATE_RESTING");
 f:RegisterEvent("PLAYER_XP_UPDATE");
 f:RegisterEvent("PLAYER_LEVEL_UP");
@@ -201,6 +202,8 @@ f:RegisterEvent("PLAYER_CAMPING");
 f:RegisterEvent("TRADE_SKILL_UPDATE");
 f:RegisterEvent("TRADE_SKILL_SHOW");
 f:RegisterEvent("TRADE_SKILL_CLOSE");
+f:RegisterEvent("UPDATE_BATTLEFIELD_SCORE");
+f:RegisterEvent("ENCOUNTER_END");
 f:SetScript('OnEvent', function(self, event, ...)
 	if (event == "PLAYER_LEAVING_WORLD" ) then
 		doGUID = nil;
@@ -271,9 +274,14 @@ f:SetScript('OnEvent', function(self, event, ...)
 		NIT:parseGUID("nameplate1", nil, "nameplate");
 	elseif (event == "CHAT_MSG_COMBAT_XP_GAIN") then
 		NIT:chatMsgCombatXpGain(...);
-		NIT:recordGroupInfo();
+		NIT:throddleEventByFunc(event, 2, "recordGroupInfo", ...);
+	elseif (event == "ENCOUNTER_END") then
+		NIT:throddleEventByFunc(event, 2, "recordGroupInfo", ...);
 	elseif (event == "CHAT_MSG_COMBAT_FACTION_CHANGE") then
 		NIT:chatMsgCombatFactionChange(...);
+	elseif (event == "CHAT_MSG_COMBAT_HONOR_GAIN") then
+		NIT:chatMsgCombatHonorGain(...);
+		NIT:recordHonorData();
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		NIT:recordCombatEndedData(...);
 		--Send GUID from mage possibly later after pull is done.
@@ -296,7 +304,7 @@ f:SetScript('OnEvent', function(self, event, ...)
 	elseif (event == "PLAYER_DEAD") then
 		NIT:throddleEventByFunc(event, 2, "recordDurabilityData", ...);
 	elseif (event == "BAG_UPDATE" or event == "PLAYER_MONEY") then
-		NIT:throddleEventByFunc(event, 2, "recordInventoryData", ...);
+		NIT:throddleEventByFunc(event, 3, "recordInventoryData", ...);
 	elseif (event == "QUEST_TURNED_IN") then
 		NIT:throddleEventByFunc(event, 2, "recordPlayerLevelData", ...);
 	elseif (event == "CHAT_MSG_SKILL") then
@@ -335,6 +343,8 @@ f:SetScript('OnEvent', function(self, event, ...)
 		end
 	elseif (event == "TRADE_SKILL_UPDATE" or event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE") then
 		NIT:recordCooldowns();
+	elseif ("UPDATE_BATTLEFIELD_SCORE") then
+		NIT:recordBgStats();
 	end
 end)
 
@@ -360,21 +370,22 @@ end
 function NIT:combatLogEventUnfiltered(...)
 	local timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, 
 			destName, destFlags, destRaidFlags, _, spellName = CombatLogGetCurrentEventInfo();
-	if (subEvent == "SWING_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "RANGE_DAMAGE") then
+	--[[if (subEvent == "SWING_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "RANGE_DAMAGE") then
 		if (sourceGUID and string.match(sourceGUID, "Creature")) then
 			NIT:parseGUID(nil, sourceGUID, "combatlogSourceGUID");
 		elseif (destGUID and string.match(destGUID, "Creature")) then
 			NIT:parseGUID(nil, destGUID, "combatlogDestGUID");
-		end
+		end]]
 	--elseif (subEvent == "UNIT_DIED" and UnitLevel("player") == NIT.maxLevel and string.match(destGUID, "Creature")) then
 	--elseif (subEvent == "UNIT_DIED" and UnitLevel("player") == NIT.maxLevel and string.match(destGUID, "Creature")) then
-	elseif (subEvent == "UNIT_DIED" and string.match(destGUID, "Creature")) then
+	if (subEvent == "UNIT_DIED" and string.match(destGUID, "Creature")) then
 		--If max level player then count mobs via death instead of xp.
 		local _, _, _, _, zoneID, npcID = strsplit("-", destGUID);
+		npcID = tonumber(npcID);
 		if (NIT.critterCreatures[npcID]) then
 			return;
 		end
-		NIT:countMobsFromKill();
+		NIT:countMobsFromKill(npcID);
 	end
 end
 
@@ -407,15 +418,21 @@ function NIT:chatMsgCombatXpGain(...)
 		xpGained = string.match(text, "(%d+)의 경험치");
 	end
 	if (NIT.inInstance and NIT.data.instances[1]) then
-		NIT.data.instances[1].mobCount = NIT.data.instances[1].mobCount + 1;
 		NIT.data.instances[1].xpFromChat = NIT.data.instances[1].xpFromChat + xpGained;
+		if (NIT.data.instances[1].isPvp) then
+			return;
+		end
+		NIT.data.instances[1].mobCount = NIT.data.instances[1].mobCount + 1;
 	end
 	currentXP = (UnitXP("player") or 0);
 	maxXP = (UnitXPMax("player") or 0);
 end
 
-function NIT:countMobsFromKill()
+function NIT:countMobsFromKill(npcID)
 	if (NIT.inInstance and NIT.data.instances[1]) then
+		if (NIT.data.instances[1].isPvp) then
+			return;
+		end
 		--NIT.data.instances[1].mobCount = NIT.data.instances[1].mobCount + 1;
 		--Starting in this version we count mobs from the combat log even seperately as a backup.
 		--And check both counts in the display, count from xp first, if no xp then check from death event.
@@ -427,6 +444,9 @@ end
 function NIT:chatMsgMoney(...)
 	local text = ...;
 	if (NIT.inInstance and NIT.data.instances[1]) then
+		if (NIT.data.instances[1].isPvp) then
+			return;
+		end
 		--local copperGained = string.match(text, "(%d+) Copper") or 0;
 		--local silverGained = string.match(text, "(%d+) Silver") or 0;
 		--local goldGained = string.match(text, "(%d+) Gold") or 0;
@@ -490,21 +510,37 @@ function NIT:chatMsgCombatFactionChange(...)
 	end
 end
 
+function NIT:chatMsgCombatHonorGain(...)
+	if (not NIT.inInstance or NIT.data.instances[1].type ~= "bg") then
+		return;
+	end
+	if (not NIT.data.instances[1].honor) then
+		NIT.data.instances[1].honor = 0;
+	end
+	local text = ...;
+	local honorGained = string.match(text, "%d+");
+	if (not honorGained) then
+		NIT:debug("Honor error:", text);
+		return;
+	end
+	NIT.data.instances[1].honor = NIT.data.instances[1].honor + honorGained;
+end
+
 function NIT:playerEnteringWorld(...)
 	local isLogon, isReload = ...;
 	--On rare occasions you PLAYER_ENTERING_WORLD as a ghost still instead of unghosting beforehand.
 	local isInstance, instanceType = IsInInstance();
 	if (isInstance) then
 		if (isReload) then
-			C_Timer.After(0.2, function()
+			C_Timer.After(0.5, function()
 				NIT:enteredInstance(true);
 			end)
 		elseif (isLogon) then
-			C_Timer.After(0.2, function()
+			C_Timer.After(0.5, function()
 				NIT:enteredInstance(nil, true);
 			end)
 		else
-			C_Timer.After(0.2, function()
+			C_Timer.After(0.5, function()
 				if (isInstance) then
 					NIT:enteredInstance();
 				end
@@ -528,13 +564,183 @@ function NIT:playerLogout(...)
 	end
 end
 
+function NIT:recordBgStats()
+	if (not NIT.inInstance) then
+		return;
+	end
+	local instance = NIT.data.instances[1];
+	local totalPlayers = GetNumBattlefieldScores();
+	local mapID = C_Map.GetBestMapForUnit("player");
+	if (NIT.data.instances[1].type == "bg") then
+		for i = 1, totalPlayers do
+			local name, kb, hk, deaths, honor, faction, rank, race, class, classEnglish, damage, healing = GetBattlefieldScore(i);
+			--local rankName, rankNumber = GetPVPRankInfo(rank, faction);
+			--Record me only.
+			local me = UnitName("player");
+			if (name == me) then
+				instance.kb = kb;
+				instance.hk = hk;
+				instance.deaths = deaths;
+				--instance.bonusHonor = honor;
+				instance.faction = faction;
+				--instance.classEnglish = classEnglish;
+				instance.damage = damage;
+				instance.healing = healing;
+				local objectives = {};
+				for j = 1, GetNumBattlefieldStats() do
+					local score = GetBattlefieldStatData(i, j);
+					if (score and score > 0) then
+						local text, icon = GetBattlefieldStatInfo(j);
+						--Icons textures end in 0 or 1 for each faction.
+						--We want to display the right color for our real faction and not same faction vs same faction wrong side.
+						--[[if (NIT.faction == "Horde") then
+							icon = icon .. "1";
+						else
+							icon = icon .. "0";
+						end]]
+						icon = icon .. faction;
+						local t = {
+							score = score,
+							text = text,
+							icon = icon,
+						};
+						table.insert(objectives, t);
+						--/run NIT.data.instances[1].objectives = {}
+						--/run NIT.data.instances[1].objectives[1] = {score = 3,text = "Flag Captures",icon = "Interface\\WorldStateFrame\\ColumnIcon-FlagCapture0"};
+					end
+				end
+				if (next(objectives)) then
+					instance.objectives = objectives;
+				end
+			end
+		end
+		if (GetBattlefieldWinner() == 0) then
+			--Horde won.
+			instance.winningFaction = 0;
+		elseif (GetBattlefieldWinner() == 1) then
+			--Alliance won.
+			instance.winningFaction = 1;
+		end
+	elseif (NIT.data.instances[1].type == "arena") then
+		local purpleTeam, goldTeam = {}, {};
+		for i = 1, totalPlayers do
+			local name, kb, hk, deaths, honor, faction, rank, race, class, classEnglish, damage, healing = GetBattlefieldScore(i);
+			--Record all players.
+			local me = UnitName("player");
+			if (name) then
+				local t = {
+					kb = kb,
+					faction = faction,
+					class = classEnglish,
+					damage = damage,
+					healing = healing,
+					race = race,
+				};
+				local teamName, teamRating, newTeamRating, teamMMR = GetBattlefieldTeamInfo(faction);
+				if (teamName) then
+					t.teamName = teamName;
+				end
+				if (teamRating) then
+					t.teamRating = teamRating;
+				end
+				if (newTeamRating) then
+					t.newTeamRating = newTeamRating;
+				end
+				if (teamMMR) then
+					t.teamMMR = teamMMR;
+				end
+				if (faction == 0) then
+					purpleTeam[name] = t;
+				else
+					goldTeam[name] = t;
+				end
+				if (name == me) then
+					instance.faction = faction;
+				end
+			end
+		end --/tinspect NIT.data.instances[1]
+		if (GetBattlefieldWinner() == 0) then
+			--Purple team won.
+			instance.winningFaction = 0;
+		elseif (GetBattlefieldWinner() == 1) then
+			--Gold team won.
+			instance.winningFaction = 1;
+		end
+		--No winner name means a draw.
+		local drawName;
+		--I've seen one time GetBattlefieldWinner() be nil when not a draw so had to add a check here.
+		if (GetBattlefieldWinner()) then
+			local drawName = GetBattlefieldTeamInfo(GetBattlefieldWinner());
+			if (not drawName) then
+				instance.draw = true;
+			end
+		end
+		if (next(purpleTeam)) then
+			instance.purpleTeam = purpleTeam;
+		end
+		if (next(goldTeam)) then
+			instance.goldTeam = goldTeam;
+		end
+	end
+	--instance.pvpStats = stats;
+	NIT:recordGroupInfo();
+end
+
+--Seems to be some issue with it not recording as an arena if we check before the zone data is upedated properly in blizz's end?
+local function doubleCheckArena()
+	if (NIT.isTBC and NIT.inInstance) then
+		if (NIT:isInArena()) then
+			NIT.data.instances[1].type = "arena";
+		end
+	end
+end
+
+--This frame is only used for same instance detection and disabled after first event after entering.
+--Changed to it's own frame for disabling to see if it makes a performance difference.
+local instanceDetectionFrame = CreateFrame("Frame");
+instanceDetectionFrame:SetScript('OnEvent', function(self, event, ...)
+	local _, subEvent, _, sourceGUID, _, _, _, destGUID = CombatLogGetCurrentEventInfo();
+	if (subEvent == "SWING_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "RANGE_DAMAGE") then
+		if (sourceGUID and string.match(sourceGUID, "Creature")) then
+			NIT:parseGUID(nil, sourceGUID, "combatlogSourceGUID");
+			instanceDetectionFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		elseif (destGUID and string.match(destGUID, "Creature")) then
+			NIT:parseGUID(nil, destGUID, "combatlogDestGUID");
+			instanceDetectionFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		end
+	end
+end)
+
 local isGhost = false;
 NIT.lastInstanceName = "(Unknown Instance)";
 local doneFirstGUIDCheck;
-function NIT:enteredInstance(isReload, isLogon)
+function NIT:enteredInstance(isReload, isLogon, checkAgain)
 	doGUID = true;
 	local instance, instanceType = IsInInstance();
-	if (instance == true and ((instanceType == "party") or (instanceType == "raid"))) then
+	local type;
+	--instanceType was showing "pvp" at the start of tbc, now it shows "arena".
+	--Leave some redunant checks here in place anyway incase it ever reverts back.
+	if (instanceType == "pvp" or instanceType == "arena") then
+		if (NIT:isInArena()) then
+			type = "arena";
+		elseif (UnitInBattleground("player")) then
+			type = "bg";
+		end
+		if (not type and not checkAgain) then
+			--Sometimes UnitInBattleground() is slow to return true after PEW.
+			--So recheck after a couple of seconds if we're in a pvp instance and both arena and bg wern't found.
+			NIT:debug("PvP type not found, rechecking.")
+			C_Timer.After(2, function()
+				NIT:enteredInstance(isReload, isLogon, true);
+			end)
+			return;
+		end
+	end
+	if (checkAgain) then
+		NIT:debug("Rechecked Instance:", instance, "Type:", instanceType, NIT:isInArena(), UnitInBattleground("player"));
+	end
+	if (instance == true and ((instanceType == "party") or (instanceType == "raid")
+			or (type == "bg") or (type == "arena"))) then
 		local instanceName, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty,
 				isDynamic, instanceID, instanceGroupSize, LfgDungeonID = GetInstanceInfo();
 		if (NIT.inInstance and NIT.lastInstanceName ~= instanceName) then
@@ -551,11 +757,12 @@ function NIT:enteredInstance(isReload, isLogon)
 			instanceNameMsg = instanceNameMsg .. " |cFF9CD6DE(|r|cFFFF2222H|r|cFF9CD6DE)|r";
 		end
 		if (isGhost) then
-			if (NIT.db.global.enteredMsg) then
-				local texture = "|TInterface\\AddOns\\NovaInstanceTracker\\Media\\greenTick:12:12:0:0|t";
-				NIT:print("Entered " .. instanceName .. " as ghost, not recording new instance. "
-						.. "If you would like to force record a new instance click |HNITCustomLink:deletelast|h" .. texture .. "|h");
-			end
+			--This never worked and doesn't need to anyway.
+			--if (NIT.db.global.enteredMsg) then
+			--	local texture = "|TInterface\\AddOns\\NovaInstanceTracker\\Media\\greenTick:12:12:0:0|t";
+				--NIT:print("Entered " .. instanceName .. " as ghost, not recording new instance. "
+				--		.. "If you would like to force record a new instance click |HNITCustomLink:deletelast|h" .. texture .. "|h");
+			--end
 		else
 			if (not isReload) then
 				local class, classEnglish = UnitClass("player");
@@ -566,6 +773,7 @@ function NIT:enteredInstance(isReload, isLogon)
 					instanceName = instanceName,
 					instanceID = instanceID,
 					difficultyID = difficultyID,
+					type = type,
 					enteredTime = GetServerTime(),
 					enteredLevel = UnitLevel("player");
 					enteredXP = UnitXP("player");
@@ -579,7 +787,27 @@ function NIT:enteredInstance(isReload, isLogon)
 					group = {},
 					rep = {},
 				};
-				NIT:debug("entered", UnitLevel("player"));
+				if (type == "bg") then
+					t.honor = 0;
+				end
+				if (type == "bg" or type == "arena") then
+					t.isPvp = true;
+				end
+				if (t.isPvp) then
+					--No need to store certain things for pvp instances.
+					t.difficultyID = nil;
+					--t.enteredLevel = nil;
+					--t.enteredXP = nil;
+					t.enteredMoney = nil;
+					t.rawMoneyCount = nil;
+					--t.xpFromChat = nil;
+					t.mobCount = nil;
+					--t.mobCountFromKill = nil;
+					C_Timer.After(2, function()
+						doubleCheckArena();
+					end)
+				end
+				--NIT:debug("entered", UnitLevel("player"));
 				--if (NIT.isDebug) then
 				--	t.GUIDList = {};
 				--end
@@ -592,24 +820,39 @@ function NIT:enteredInstance(isReload, isLogon)
 				local texture = "|TInterface\\AddOns\\NovaInstanceTracker\\Media\\redX2:12:12:0:0|t";
 				local hourCount, hourCount24, hourTimestamp, hourTimestamp24 = NIT:getInstanceLockoutInfo();
 				local countMsg = "(" .. NIT.prefixColor .. hourCount .. "|r" .. NIT.chatColor .. " " .. L["thisHour"] .. ")";
-				if (raid) then
-					C_Timer.After(0.5, function()
-						NIT:print("|HNITCustomLink:instancelog|h" .. string.format(L["enteredRaid"], instanceNameMsg) .. "|h");
-					end)
+				if (t.isPvp) then
+					if (NIT.db.global.pvpEnteredMsg) then
+						local msg = string.format(L["enteredDungeon"], instanceNameMsg, "");
+						msg = string.gsub(msg, " , ", ", ")
+						C_Timer.After(0.5, function()
+							--local hourCount, hourCount24, hourTimestamp, hourTimestamp24 = NIT:getInstanceLockoutInfo();
+							NIT:print("|HNITCustomLink:instancelog|h" .. msg .. "|h"
+									.. "|HNITCustomLink:deletelast|h" .. texture
+									.. "|h |HNITCustomLink:instancelog|h" .. L["enteredDungeon2"] .. "|h");
+						end)
+					end
+				elseif (raid) then
+					if (NIT.db.global.raidEnteredMsg) then
+						C_Timer.After(0.5, function()
+							NIT:print("|HNITCustomLink:instancelog|h" .. string.format(L["enteredRaid"], instanceNameMsg) .. "|h");
+						end)
+					end
 				elseif (isLogon) then
 					C_Timer.After(3, function()
-						local hourCount, hourCount24, hourTimestamp, hourTimestamp24 = NIT:getInstanceLockoutInfo();
+						--local hourCount, hourCount24, hourTimestamp, hourTimestamp24 = NIT:getInstanceLockoutInfo();
 						NIT:print("|HNITCustomLink:instancelog|h" .. string.format(L["loggedInDungeon"], instanceNameMsg, countMsg) .. "|h"
 								.. " |HNITCustomLink:deletelast|h" .. texture
 								.. "|h |HNITCustomLink:instancelog|h " .. L["loggedInDungeon2"] .. "|h");
 					end)
 				else
-					C_Timer.After(0.5, function()
-						local hourCount, hourCount24, hourTimestamp, hourTimestamp24 = NIT:getInstanceLockoutInfo();
-						NIT:print("|HNITCustomLink:instancelog|h" .. string.format(L["enteredDungeon"], instanceNameMsg, countMsg) .. "|h"
-								.. "|HNITCustomLink:deletelast|h" .. texture
-								.. "|h |HNITCustomLink:instancelog|h" .. L["enteredDungeon2"] .. "|h");
-					end)
+					if (NIT.db.global.enteredMsg) then
+						C_Timer.After(0.5, function()
+							--local hourCount, hourCount24, hourTimestamp, hourTimestamp24 = NIT:getInstanceLockoutInfo();
+							NIT:print("|HNITCustomLink:instancelog|h" .. string.format(L["enteredDungeon"], instanceNameMsg, countMsg) .. "|h"
+									.. "|HNITCustomLink:deletelast|h" .. texture
+									.. "|h |HNITCustomLink:instancelog|h" .. L["enteredDungeon2"] .. "|h");
+						end)
+					end
 				end
 			elseif (isReload) then
 				C_Timer.After(3, function()
@@ -633,19 +876,31 @@ function NIT:enteredInstance(isReload, isLogon)
 			end
 			NIT:pushInstanceEntered(instanceName, instanceID, type, isReload, isLogon);
 			doneFirstGUIDCheck = nil;
+			instanceDetectionFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		end
-		NIT:recordGroupInfo();
+		C_Timer.After(1, function()
+			NIT:recordGroupInfo();
+		end)
+		C_Timer.After(30, function()
+			NIT:recordGroupInfo();
+		end)
 	end
 end
 
 function NIT:leftInstance()
 	if (NIT.inInstance and NIT.data.instances[1]) then
+		local isPvp = NIT.data.instances[1].isPvp
 		NIT.data.instances[1]["leftTime"] = GetServerTime();
-		NIT.data.instances[1]["leftLevel"] = UnitLevel("player");
-		NIT:debug("left", UnitLevel("player"));
-		NIT.data.instances[1]["leftXP"] = UnitXP("player");
-		NIT.data.instances[1]["leftMoney"] = GetMoney();
-		NIT:showInstanceStats();
+		if (not isPvp) then
+			NIT.data.instances[1]["leftLevel"] = UnitLevel("player");
+			NIT.data.instances[1]["leftXP"] = UnitXP("player");
+			NIT.data.instances[1]["leftMoney"] = GetMoney();
+		end
+		--NIT:debug("left", UnitLevel("player"));
+		--Don't show party stats if bg or arena, only self.
+		if (not isPvp or NIT.db.global.instanceStatsOutputWhere == "self") then
+			NIT:showInstanceStats();
+		end
 		NIT:pushInstanceLeft(NIT.data.instances[1].instanceName, NIT.data.instances[1].instanceID);
 	end
 	NIT.inInstance = nil;
@@ -666,10 +921,12 @@ function NIT:showInstanceStats(id, output, showAll)
 	local timeSpentRaw = 0;
 	if (data.enteredTime and data.leftTime and data.enteredTime > 0 and data.leftTime > 0) then
 		timeSpentRaw = data.leftTime - data.enteredTime;
-	elseif (data.enteredTime and data.leftTime and data.enteredTime > 0 and (GetServerTime() - data.enteredTime) < 21600) then
+	elseif (data.enteredTime and data.leftTime and data.enteredTime > 0 and (GetServerTime() - data.enteredTime) < 21600
+			--Make sure we're not checking /nit stats while still inside an instance we have re-entered and recorded a leave time.
+			and not NIT.inInstance) then
 		timeSpentRaw = GetServerTime() - data.enteredTime;
 	end
-	if (not data.leftTime or data.leftTime == 0) then
+	if ((not data.leftTime or data.leftTime == 0) or NIT.inInstance) then
 		timeSpent = NIT:getTimeString(GetServerTime() - data.enteredTime, true, true);
 	else
 		timeSpent = NIT:getTimeString(data.leftTime - data.enteredTime, true, true);
@@ -683,69 +940,82 @@ function NIT:showInstanceStats(id, output, showAll)
 	--local text = sColor .. NIT.lastInstanceName;
 	local text = sColor .. data.instanceName .. "|r";
 	local mobCount = 0;
-	--Check both count from xp and count from combat log event.
-	--So it works for boosters that mobs are grey and people out of range of combat event but still get xp.
-	if (data.mobCount and data.mobCount > 0) then
-		mobCount = data.mobCount;
-	elseif (data.mobCountFromKill and data.mobCountFromKill > 0) then
-		mobCount = data.mobCountFromKill;
-	end
-	if (NIT.db.global.instanceStatsOutputMobCount or showAll) then
-		--text = text .. " |cFF9CD6DEMobs: " .. data.mobCount;
-		text = text .. pColor .. " " .. L["statsMobs"] .. "|r " .. sColor .. mobCount .. "|r";
-	end
-	if ((NIT.db.global.instanceStatsOutputXP or showAll) and UnitLevel("player") ~= NIT.maxLevel) then
-		text = text .. pColor .. " " .. L["statsXP"] .. "|r " .. sColor .. NIT:commaValue(data.xpFromChat) .. "|r";
-	end
-	if ((NIT.db.global.instanceStatsOutputXpPerHour or showAll) and UnitLevel("player") ~= NIT.maxLevel) then
-		if (timeSpentRaw and timeSpentRaw > 0 and tonumber(data.xpFromChat) and data.xpFromChat > 0) then
-			local xpPerHour = NIT:commaValue(NIT:round((tonumber(data.xpFromChat) / timeSpentRaw) * 3600));
-			text = text .. pColor .. " " .. L["experiencePerHour"] .. ":|r " .. sColor .. xpPerHour .. "|r";
+	local money = 0;
+	if (data.isPvp) then
+		if (data.type == "bg") then
+			text = text .. pColor .. " " .. L["Honor"] .. ":|r " .. sColor .. (data.honor or 0) .. "|r";
 		end
-	end
-	if ((NIT.db.global.instanceStatsOutputAverageXP or showAll) and UnitLevel("player") ~= NIT.maxLevel) then
-		--if (data.xpFromChat and data.xpFromChat > 0 and data.mobCount and data.mobCount > 0) then
-		if (data.xpFromChat and data.xpFromChat > 0) then
-			local averageXP = data.xpFromChat / mobCount;
-			text = text .. pColor .. " " .. L["statsAverageXP"] .. "|r " .. sColor .. NIT:round(averageXP, 2) .. "|r";
-		else
-			text = text .. pColor .. " " .. L["statsAverageXP"] .. "|r " .. sColor .. "0|r";
+		if (not NIT.isClassic and not NIT.isTBC and data.type ~= "arena") then
+			if ((NIT.db.global.instanceStatsOutputXP or showAll) and UnitLevel("player") ~= NIT.maxLevel) then
+				text = text .. pColor .. " " .. L["statsXP"] .. "|r " .. sColor .. NIT:commaValue(data.xpFromChat) .. "|r";
+			end
+		end
+	else
+		--Check both count from xp and count from combat log event.
+		--So it works for boosters that mobs are grey and people out of range of combat event but still get xp.
+		if (data.mobCount and data.mobCount > 0) then
+			mobCount = data.mobCount;
+		elseif (data.mobCountFromKill and data.mobCountFromKill > 0) then
+			mobCount = data.mobCountFromKill;
+		end
+		if (NIT.db.global.instanceStatsOutputMobCount or showAll) then
+			--text = text .. " |cFF9CD6DEMobs: " .. data.mobCount;
+			text = text .. pColor .. " " .. L["statsMobs"] .. "|r " .. sColor .. mobCount .. "|r";
+		end
+		if ((NIT.db.global.instanceStatsOutputXP or showAll) and UnitLevel("player") ~= NIT.maxLevel) then
+			text = text .. pColor .. " " .. L["statsXP"] .. "|r " .. sColor .. NIT:commaValue(data.xpFromChat) .. "|r";
+		end
+		if ((NIT.db.global.instanceStatsOutputXpPerHour or showAll) and UnitLevel("player") ~= NIT.maxLevel) then
+			if (timeSpentRaw and timeSpentRaw > 0 and tonumber(data.xpFromChat) and data.xpFromChat > 0) then
+				local xpPerHour = NIT:commaValue(NIT:round((tonumber(data.xpFromChat) / timeSpentRaw) * 3600));
+				text = text .. pColor .. " " .. L["experiencePerHour"] .. ":|r " .. sColor .. xpPerHour .. "|r";
+			end
+		end
+		if ((NIT.db.global.instanceStatsOutputAverageXP or showAll) and UnitLevel("player") ~= NIT.maxLevel) then
+			--if (data.xpFromChat and data.xpFromChat > 0 and data.mobCount and data.mobCount > 0) then
+			if (data.xpFromChat and data.xpFromChat > 0) then
+				local averageXP = data.xpFromChat / mobCount;
+				text = text .. pColor .. " " .. L["statsAverageXP"] .. "|r " .. sColor .. NIT:round(averageXP, 2) .. "|r";
+			else
+				text = text .. pColor .. " " .. L["statsAverageXP"] .. "|r " .. sColor .. "0|r";
+			end
 		end
 	end
 	if (NIT.db.global.instanceStatsOutputTime or showAll) then
 		text = text .. pColor .. " " .. L["statsTime"] .. "|r " .. sColor .. timeSpent .. "|r";
 	end
-	if ((NIT.db.global.instanceStatsOutputAverageGroupLevel or showAll) and data.groupAverage) then
-		text = text .. pColor .. " " .. L["statsAverageGroupLevel"] .. "|r " .. sColor .. NIT:round(data.groupAverage, 2) .. "|r";
-	end
-	--Don't send gold to group chat.
-	local money = "0";
-	if ((NIT.db.global.instanceStatsOutputGold and NIT.db.global.instanceStatsOutput ~= "group") or showAll) then
-		if (data.rawMoneyCount and data.rawMoneyCount > 0) then
-			money = data.rawMoneyCount;
-		elseif (data.enteredMoney and data.leftMoney and data.enteredMoney > 0 and data.leftMoney > 0) then
-			--Backup for people with addons installed using an altered money string.
-			money = data.leftMoney - data.enteredMoney;
+	if (not data.isPvp) then
+		if ((NIT.db.global.instanceStatsOutputAverageGroupLevel or showAll) and data.groupAverage) then
+			text = text .. pColor .. " " .. L["statsAverageGroupLevel"] .. "|r " .. sColor .. NIT:round(data.groupAverage, 2) .. "|r";
 		end
-		text = text .. pColor .. " " .. L["statsGold"] .. "|r " .. sColor .. NIT:convertMoney(money, true, "", true, sColor) .. "|r";
-	end
-	if (id == 1 and data.xpFromChat and data.xpFromChat > 0) then
-		if (currentXP == 0) then
-			currentXP = (UnitXP("player") or 0);
+		--Don't send gold to group chat.
+		if ((NIT.db.global.instanceStatsOutputGold and NIT.db.global.instanceStatsOutput ~= "group") or showAll) then
+			if (data.rawMoneyCount and data.rawMoneyCount > 0) then
+				money = data.rawMoneyCount;
+			elseif (data.enteredMoney and data.leftMoney and data.enteredMoney > 0 and data.leftMoney > 0) then
+				--Backup for people with addons installed using an altered money string.
+				money = data.leftMoney - data.enteredMoney;
+			end
+			text = text .. pColor .. " " .. L["statsGold"] .. "|r " .. sColor .. NIT:convertMoney(money, true, "", true, sColor) .. "|r";
 		end
-		if (maxXP == 0) then
-			maxXP = (UnitXPMax("player") or 0);
-		end
-		--Will add rested xp left calcs in to this later.
-		--local restedXP = (GetXPExhaustion() or 0);
-		--local percent = NIT:round((data.xpFromChat/maxXP) * 100);
-		local runsPerLevel = NIT:round(maxXP / data.xpFromChat, 1);
-		local runsToLevel = NIT:round((maxXP - currentXP) / data.xpFromChat, 1);
-		if ((NIT.db.global.instanceStatsOutputRunsPerLevel or showAll) and runsPerLevel > 0) then
-			text = text .. pColor .. " " .. L["statsRunsPerLevel"] .. "|r " .. sColor .. runsPerLevel .. "|r";
-		end
-		if ((NIT.db.global.instanceStatsOutputRunsNextLevel or showAll) and runsToLevel > 0) then
-			text = text .. pColor .. " " .. L["statsRunsNextLevel"] .. "|r " .. sColor .. runsToLevel .. "|r";
+		if (id == 1 and data.xpFromChat and data.xpFromChat > 0) then
+			if (currentXP == 0) then
+				currentXP = (UnitXP("player") or 0);
+			end
+			if (maxXP == 0) then
+				maxXP = (UnitXPMax("player") or 0);
+			end
+			--Will add rested xp left calcs in to this later.
+			--local restedXP = (GetXPExhaustion() or 0);
+			--local percent = NIT:round((data.xpFromChat/maxXP) * 100);
+			local runsPerLevel = NIT:round(maxXP / data.xpFromChat, 1);
+			local runsToLevel = NIT:round((maxXP - currentXP) / data.xpFromChat, 1);
+			if ((NIT.db.global.instanceStatsOutputRunsPerLevel or showAll) and runsPerLevel > 0) then
+				text = text .. pColor .. " " .. L["statsRunsPerLevel"] .. "|r " .. sColor .. runsPerLevel .. "|r";
+			end
+			if ((NIT.db.global.instanceStatsOutputRunsNextLevel or showAll) and runsToLevel > 0) then
+				text = text .. pColor .. " " .. L["statsRunsNextLevel"] .. "|r " .. sColor .. runsToLevel .. "|r";
+			end
 		end
 	end
 	if (NIT.db.global.instanceStatsOutputRep or showAll) then
@@ -806,10 +1076,8 @@ function NIT:showInstanceStats(id, output, showAll)
 			end
 		end
 	elseif (not NIT.db.global.statsOnlyWhenActivity or ((data.xpFromChat and data.xpFromChat > 0)
-			--or (data.mobCount and data.mobCount > 0) or tonumber(money) > 0)) then
 			or mobCount > 0 or tonumber(money) > 0)) then
 		C_Timer.After(0.7, function()
-		--C_Timer.After(5, function()
 			if (NIT.db.global.instanceStatsOutput and NIT.db.global.instanceStatsOutputWhere == "group") then
 				if (IsInRaid()) then
 					if (NIT.db.global.showStatsInRaid) then
@@ -852,6 +1120,10 @@ end
 
 NIT.lastNpcID = 999999999;
 function NIT:parseGUID(unit, GUID, source)
+	--Don't merge pvp instances, zoneids can come from temporary pets with a creature guid.
+	if (NIT.data.instances[1] and NIT.data.instances[1].isPvp) then
+		return;
+	end
 	if (not GUID) then
 		GUID = UnitGUID(unit);
 	end
@@ -890,7 +1162,10 @@ function NIT:parseGUID(unit, GUID, source)
 					local hourCount, hourCount24, hourTimestamp, hourTimestamp24 = NIT:getInstanceLockoutInfo();
 					local countMsg = "(" .. NIT.prefixColor .. hourCount .. "|r" .. NIT.mergeColor .. " " .. L["thisHour"] .. ")";
 					C_Timer.After(0.7, function()
-						NIT:print(NIT.mergeColor .. string.format(L["sameInstance"], countMsg));
+						local isInstance, instanceType = IsInInstance();
+						if (instanceType ~= "raid" or not NIT.db.global.noRaidInstanceMergeMsg) then
+							NIT:print(NIT.mergeColor .. string.format(L["sameInstance"], countMsg));
+						end
 					end)
 				end
 			elseif (NIT.lastNpcID == npcID or (not NIT.data.instances[1].zoneID or NIT.data.instances[1].zoneID < 1)) then
@@ -926,11 +1201,13 @@ function NIT:mergeLastInstances(GUID, source)
 	NIT.data.instances[2].enteredLevel = UnitLevel("player");
 	NIT.data.instances[2].enteredXP = UnitXP("player");
 	NIT.data.instances[2].enteredMoney = GetMoney();
-	NIT.data.instances[2].mobCount =  NIT.data.instances[2].mobCount + NIT.data.instances[1].mobCount;
-	NIT.data.instances[2].mobCountFromKill =  NIT.data.instances[2].mobCountFromKill + NIT.data.instances[1].mobCountFromKill;
-	NIT.data.instances[2].rawMoneyCount =  NIT.data.instances[2].rawMoneyCount + NIT.data.instances[1].rawMoneyCount;
-	NIT.data.instances[2].xpFromChat =  NIT.data.instances[2].xpFromChat + NIT.data.instances[1].xpFromChat;
-	NIT.data.instances[2].oldZoneID = NIT.data.instances[1].zoneID
+	if (not NIT.data.instances[1].isPvp) then
+		NIT.data.instances[2].mobCount =  NIT.data.instances[2].mobCount + NIT.data.instances[1].mobCount;
+		NIT.data.instances[2].mobCountFromKill =  NIT.data.instances[2].mobCountFromKill + NIT.data.instances[1].mobCountFromKill;
+		NIT.data.instances[2].rawMoneyCount =  NIT.data.instances[2].rawMoneyCount + NIT.data.instances[1].rawMoneyCount;
+		NIT.data.instances[2].xpFromChat =  NIT.data.instances[2].xpFromChat + NIT.data.instances[1].xpFromChat;
+	end
+	NIT.data.instances[2].oldZoneID = NIT.data.instances[1].zoneID;
 	if (GUID) then
 		NIT.data.instances[2].mergeGUID = GUID;
 	end
@@ -951,6 +1228,10 @@ end
 local recordGroupInfoThroddle = 0;
 function NIT:recordGroupInfo()
 	if (not NIT.inInstance) then
+		return;
+	end
+	if (NIT.data.instances[1].type == "arena") then
+		--We get the group info from scoreboard in arena.
 		return;
 	end
 	if ((GetServerTime() - recordGroupInfoThroddle) < 2) then
@@ -1000,7 +1281,13 @@ end
 
 function NIT:addToGroupData(unit)
 	local level = UnitLevel(unit);
-	local name = UnitName(unit);
+	local name, realm = UnitName(unit);
+	if (realm and realm ~= "" and realm ~= GetRealmName()) then
+	--if (NIT.data.instances[1] and NIT.data.instances[1].isPvp) then
+		--if (realm) then
+			name = name .. "-" .. realm;
+		--end
+	end
 	if (name == "Unknown") then
 		--Sometimes the game can't get info from a group member.
 		return 0;
@@ -1109,7 +1396,7 @@ function NIT:getInstanceLockoutInfo(char)
 	end
 	for k, v in ipairs(NIT.data.instances) do
 		if (not NIT.perCharOnly or target == v.playerName) then
-			if (v.instanceID and NIT.zones[v.instanceID] and NIT.zones[v.instanceID].noLockout) then
+			if (v.isPvp or (v.instanceID and NIT.zones[v.instanceID] and NIT.zones[v.instanceID].noLockout)) then
 				--NIT:debug("skipping raid", v.instanceID);
 			else
 				count = count + 1;
@@ -1319,6 +1606,9 @@ function NIT:recordCharacterData()
 	NIT:recordInventoryData();
 	NIT:recordLockoutData();
 	NIT:recordPvpData();
+	NIT:recordHonorData();
+	NIT:recordArenaPoints();
+	NIT:recordMarksData();
 	NIT:recordCooldowns();
 end
 
@@ -1356,9 +1646,9 @@ function NIT:recordAttunementKeys()
 				if (itemID == 31084) then
 					NIT.data.myChars[char].arcatrazAttune = true;
 				end
-				if (itemID == 7146) then
-					NIT.data.myChars[char].testAttune = true;
-				end
+				--if (itemID == 7146) then
+				--	NIT.data.myChars[char].testAttune = true;
+				--end
 				--if (itemName and string.find(itemName, "Key")) then
 				--	print(itemName, itemID)
 				--end
@@ -1386,6 +1676,86 @@ function NIT:recordPvpData()
 			NIT.data.myChars[char].pvpRankNumber = rankNumber;
 			NIT.data.myChars[char].pvpRankPercent = rankPercent;
 		end
+	end
+end
+
+function NIT:recordHonorData()
+	if (NIT.isClassic) then
+		return;
+	end
+	local data = C_CurrencyInfo.GetCurrencyInfo(1901);
+	local char = UnitName("player");
+	if (not NIT.data.myChars[char]) then
+		NIT.data.myChars[char] = {};
+	end
+	if (data and data.quantity and data.quantity > 0) then
+		NIT.data.myChars[char].honor = data.quantity;
+	else
+		NIT.data.myChars[char].honor = 0;
+	end
+end
+
+function NIT:recordArenaPoints()
+	if (NIT.isClassic) then
+		return;
+	end
+	local data = C_CurrencyInfo.GetCurrencyInfo(1900);
+	local char = UnitName("player");
+	if (not NIT.data.myChars[char]) then
+		NIT.data.myChars[char] = {};
+	end
+	if (data and data.quantity and data.quantity > 0) then
+		NIT.data.myChars[char].arenaPoints = data.quantity;
+	else
+		NIT.data.myChars[char].arenaPoints = 0;
+	end
+end
+
+NIT.bgMarks = {
+	[20558] = {
+		name = "Warsong Gulch Mark of Honor",
+		icon = 134420,
+	};
+	[20559] = {
+		name = "Arathi Basin Mark of Honor",
+		icon = 133282,
+	};
+	[20560] = {
+		name = "Alterac Valley Mark of Honor",
+		icon = 133308,
+	};
+};
+if (NIT.isTBC) then
+	NIT.bgMarks[29024] = {
+		name = "Eye of the Storm Mark of Honor",
+		icon = 136032,
+	};
+end
+if (NIT.isWrath) then
+	NIT.bgMarks[29024] = {
+		name = "Eye of the Storm Mark of Honor",
+		icon = 136032,
+	};
+	NIT.bgMarks[42425] = {
+		name = "Strand of the Ancients Mark of Honor",
+		icon = 133276,
+	};
+	NIT.bgMarks[47395] = {
+		name = "Isle of Conquest Mark of Honor",
+		icon = 133314,
+	};
+end
+
+function NIT:recordMarksData()
+	local char = UnitName("player");
+	if (not NIT.data.myChars[char]) then
+		NIT.data.myChars[char] = {};
+	end
+	if (not NIT.data.myChars[char].marks) then
+		NIT.data.myChars[char].marks = {};
+	end
+	for k, v in pairs(NIT.bgMarks) do
+		NIT.data.myChars[char].marks[k] = (GetItemCount(k, true) or 0);
 	end
 end
 
@@ -1570,6 +1940,7 @@ function NIT:recordInventoryData()
 			end
 		end
 	end
+	NIT:recordMarksData();
 end
 
 function NIT:recordPlayerLevelData()
@@ -1715,8 +2086,6 @@ end
 
 --Big thanks to this comment https://github.com/Stanzilla/WoWUIBugs/issues/47#issuecomment-710698976
 local function GetCooldownLeft(start, duration)
-	-- Before restarting the GetTime() will always be grater than [start]
-	-- After the restart it is technically always bigger because of the 2^32 offset thing
 	if (start < GetTime()) then
 		local cdEndTime = start + duration;
 		local cdLeftDuration = cdEndTime - GetTime();
@@ -1724,7 +2093,6 @@ local function GetCooldownLeft(start, duration)
 	end
 	local time = time();
 	local startupTime = time - GetTime();
-	-- just a simplification of: ((2^32) - (start * 1000)) / 1000
 	local cdTime = (2 ^ 32) / 1000 - start;
 	local cdStartTime = startupTime - cdTime;
 	local cdEndTime = cdStartTime + duration;
@@ -1756,16 +2124,21 @@ function NIT:recordCooldowns()
 	local data = {};
 	local error;
 	local duplicateCheck = true;
+	local numTradeSkills = GetNumTradeSkills() or 0;
+	if (numTradeSkills < 1) then
+		--Try crafts for enchanting.
+		numTradeSkills = GetNumCrafts();
+	end
 	if (duplicateCheck) then
-		for i = 1, GetNumTradeSkills() do
-			local secondsLeft = GetTradeSkillCooldown(i);
+		for i = 1, numTradeSkills do
+			local secondsLeft = GetTradeSkillCooldown(i) or GetCraftCooldown(i);
 			if (secondsLeft and secondsLeft > 60) then
-				local skillName = GetTradeSkillInfo(i);
+				local skillName = GetTradeSkillInfo(i) or GetCraftInfo(i);
 				--NIT:debug("Check Skill:", skillName, "Cooldown:", secondsLeft);
 				data[skillName] = secondsLeft;
 				--Alchemy has 12 skills that share a cooldown, if there's more than 12 duplicate timestamps we have a rare bug.
 				count[secondsLeft] = (count[secondsLeft] or 0) + 1;
-				if (count[secondsLeft] > 12) then
+				if (count[secondsLeft] > 15) then
 					error = true;
 				end
 			end
@@ -1779,7 +2152,7 @@ function NIT:recordCooldowns()
 			end
 		end
 	else
-		for i = 1, GetNumTradeSkills() do
+		for i = 1, numTradeSkills do
 			local secondsLeft = GetTradeSkillCooldown(i);
 			if (secondsLeft and secondsLeft > 60) then
 				local skillName = GetTradeSkillInfo(i);
@@ -1798,7 +2171,7 @@ function NIT:recordCooldowns()
 			if (item) then
 				local itemID = item:GetItemID(item);
 				local itemName = item:GetItemName(item);
-				if (itemID and itemCooldowns[itemID]) then
+				if (itemID and itemName and itemCooldowns[itemID]) then
 					local startTime, duration, isEnabled = GetContainerItemCooldown(bag, slot);
 					--local endTime = (startTime + duration) - (GetTime() - GetServerTime());
 					local endTime = GetCooldownLeft(startTime, duration) + GetServerTime();
@@ -1825,7 +2198,7 @@ function NIT:fixCooldowns()
 				if (v.cooldowns) then
 					for skill, vv in pairs(v.cooldowns) do
 						count[vv.time] = (count[vv.time] or 0) + 1;
-						if (count[vv.time] > 12) then
+						if (count[vv.time] > 30) then
 							local time = vv.time;
 							for skill, data in pairs(v.cooldowns) do
 								--Remove all duplicate timestamp entries.

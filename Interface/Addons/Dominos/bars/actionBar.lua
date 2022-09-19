@@ -45,11 +45,11 @@ ActionBar.mainbarOffsets = {
         elseif i == 'ROGUE' then
             pages.stealth = 6
             pages.shadowdance = 6
-        elseif i == 'WARRIOR' and Addon:IsBuild('bcc', 'classic') then
+        elseif i == 'WARRIOR' and not Addon:IsBuild('retail') then
             pages.battle = 6
             pages.defensive = 7
             pages.berserker = 8
-        elseif i == 'PRIEST' and Addon:IsBuild('bcc', 'classic') then
+        elseif i == 'PRIEST' and not Addon:IsBuild('retail') then
             pages.shadowform = 6
         end
 
@@ -71,7 +71,8 @@ end)
 ActionBar:Extend('OnAcquire', function(self)
     self:LoadStateController()
     self:UpdateStateDriver()
-    self:SetRightClickUnit(Addon:GetRightClickUnit())
+    self:SetUnit(self:GetUnit())
+    self:SetRightClickUnit(self:GetRightClickUnit())
     self:UpdateGrid()
     self:UpdateTransparent(true)
     self:UpdateFlyoutDirection()
@@ -87,7 +88,9 @@ function ActionBar:GetDefaults()
         spacing = 4,
         padW = 2,
         padH = 2,
-        numButtons = self:MaxLength()
+        numButtons = self:MaxLength(),
+        unit = "none",
+        rightClickUnit = "none"
     }
 end
 
@@ -143,7 +146,6 @@ end
 function ActionBar:GetOffset(stateId)
     return self.pages[stateId]
 end
-
 
 function ActionBar:UpdateStateDriver()
     local conditions
@@ -251,6 +253,22 @@ function ActionBar:KEYBOUND_DISABLED()
 end
 
 -- right click targeting support
+function ActionBar:SetUnit(unit)
+    unit = unit or 'none'
+
+    if unit == 'none' then
+        self:SetAttribute('*unit*', nil)
+    else
+        self:SetAttribute('*unit*', unit)
+    end
+
+    self.sets.unit = unit
+end
+
+function ActionBar:GetUnit()
+    return self.sets.unit or 'none'
+end
+
 function ActionBar:SetRightClickUnit(unit)
     unit = unit or 'none'
 
@@ -259,13 +277,21 @@ function ActionBar:SetRightClickUnit(unit)
     else
         self:SetAttribute('*unit2', unit)
     end
+
+    self.sets.rightClickUnit = unit
 end
 
 function ActionBar:GetRightClickUnit()
-    return self:SetAttribute('*unit2') or 'none'
+    local unit = self.sets.rightClickUnit
+
+    if unit ~= "none" then
+        return unit
+    end
+
+    return Addon:GetRightClickUnit() or "none"
 end
 
-function ActionBar:OnSetAlpha(alpha)
+function ActionBar:OnSetAlpha(_alpha)
     self:UpdateTransparent()
 end
 

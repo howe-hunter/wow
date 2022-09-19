@@ -21,10 +21,8 @@ fakenames={	"Magepy","MaGepy",
 			"Darkmedic","DarkMedic",
 			"Holymedic","HolyMedic",
 			"Tipsout","TipsOut",
-			"Konnagma","Big Blue Danger",
-			"Zeprin","IMPossible",
 			"Marcang","MARCANG",
-			"XXX","YYY",
+			"Hotmedic","HoTmedic",
 			"XXX","YYY",
 			"XXX","YYY"}
 			
@@ -79,7 +77,7 @@ fakenames={	"Magepy","MaGepy",
 	
 if round~=nil then fakenum=round(table.getn(fakenames) / 2) else fakenum=math.floor(table.getn(fakenames) / 2); end
 if fakenum==nil then fakenum=0 end
-DEFAULT_CHAT_FRAME:AddMessage("|cffbbddbbFake-names loaded:  |cffcc55cc"..fakenum)
+--DEFAULT_CHAT_FRAME:AddMessage("|cffbbddbbFake-names loaded:  |cffcc55cc"..fakenum)
 
 function GetFakeName(gfn,fsource) -- DaMaGepy
 	local NewFakeName=gfn;

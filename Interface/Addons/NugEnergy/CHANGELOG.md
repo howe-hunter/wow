@@ -1,6 +1,6 @@
 # NugEnergy
 
-## [9.0.11-tbc](https://github.com/rgd87/NugEnergy/tree/9.0.11-tbc) (2021-06-29)
-[Full Changelog](https://github.com/rgd87/NugEnergy/compare/9.0.10...9.0.11-tbc) [Previous Releases](https://github.com/rgd87/NugEnergy/releases)
+## [9.2.6](https://github.com/rgd87/NugEnergy/tree/9.2.6) (2022-09-06)
+[Full Changelog](https://github.com/rgd87/NugEnergy/compare/9.2.5...9.2.6) [Previous Releases](https://github.com/rgd87/NugEnergy/releases)
 
-- Revert "Reset tick when entering Cat Form in BCC"  
+- Selectable mana config  

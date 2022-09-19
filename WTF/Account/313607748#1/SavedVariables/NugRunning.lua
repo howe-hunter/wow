@@ -14,4 +14,6 @@ NRunDB_Global = {
 NugRunningConfigCustom = {
 	["DRUID"] = {
 	},
+	["PALADIN"] = {
+	},
 }

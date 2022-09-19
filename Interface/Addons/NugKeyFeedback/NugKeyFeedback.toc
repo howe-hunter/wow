@@ -1,5 +1,4 @@
-## Interface: 20501
-
+## Interface: 90200
 ## Title: NugKeyFeedback
 ## SavedVariables: NugKeyFeedbackDB
 ## OptionalDeps: Masque, Bartender4, Neuron, ElvUI

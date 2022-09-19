@@ -1,18 +1,18 @@
 
 OmniCCDB = {
-	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Default",
-		["Ruuss - Earthfury"] = "Default",
-	},
 	["global"] = {
 		["dbVersion"] = 6,
-		["addonVersion"] = "9.1.0",
+		["addonVersion"] = "9.2.1",
+	},
+	["profileKeys"] = {
+		["Ruuss - Earthfury"] = "Default",
+		["Liandrii - Earthfury"] = "Default",
+		["Eurydice - Skyfury"] = "Default",
 	},
 	["profiles"] = {
 		["Default"] = {
 			["rules"] = {
 				{
-					["enabled"] = false,
 					["patterns"] = {
 						"Aura", -- [1]
 						"Buff", -- [2]
@@ -51,9 +51,9 @@ OmniCCDB = {
 			["themes"] = {
 				["Default"] = {
 					["textStyles"] = {
-						["soon"] = {
-						},
 						["seconds"] = {
+						},
+						["soon"] = {
 						},
 						["minutes"] = {
 						},
@@ -61,9 +61,9 @@ OmniCCDB = {
 				},
 				["Plater Nameplates Theme"] = {
 					["textStyles"] = {
-						["soon"] = {
-						},
 						["seconds"] = {
+						},
+						["soon"] = {
 						},
 						["minutes"] = {
 						},

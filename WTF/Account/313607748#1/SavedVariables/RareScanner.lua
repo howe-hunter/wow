@@ -2,7 +2,7 @@
 RareScannerDB = {
 	["char"] = {
 		["Liandrii - Earthfury"] = {
-			["events_completed"] = {
+			["containers_opened"] = {
 			},
 			["quests_completed"] = {
 				[8325] = true,
@@ -37,8 +37,8 @@ RareScannerDB = {
 				[8345] = true,
 				[8891] = true,
 				[8472] = true,
-				[8347] = true,
 				[8473] = true,
+				[8347] = true,
 				[8890] = true,
 				[8474] = true,
 				[9253] = true,
@@ -58,8 +58,6 @@ RareScannerDB = {
 				[9395] = true,
 				[8482] = true,
 				[9255] = true,
-			},
-			["containers_opened"] = {
 			},
 			["rares_killed"] = {
 				[15949] = -1,
@@ -101,42 +99,10 @@ RareScannerDB = {
 				[16294] = -1,
 				[15649] = -1,
 			},
+			["events_completed"] = {
+			},
 		},
 		["Ruuss - Earthfury"] = {
-			["containers_opened"] = {
-			},
-			["quests_completed"] = {
-				[5230] = true,
-				[5234] = true,
-				[5021] = true,
-				[5149] = true,
-				[5405] = true,
-				[4971] = true,
-				[5098] = true,
-				[5231] = true,
-				[5235] = true,
-				[5238] = true,
-				[5050] = true,
-				[6022] = true,
-				[5096] = true,
-				[4984] = true,
-				[5228] = true,
-				[5232] = true,
-				[5236] = true,
-				[5023] = true,
-				[9443] = true,
-				[6023] = true,
-				[5233] = true,
-				[5229] = true,
-				[6004] = true,
-				[4985] = true,
-				[5051] = true,
-				[5241] = true,
-				[5049] = true,
-				[838] = true,
-				[9444] = true,
-				[6025] = true,
-			},
 			["rares_killed"] = {
 				[11611] = -1,
 				[1793] = -1,
@@ -195,8 +161,8 @@ RareScannerDB = {
 				[1854] = -1,
 				[8543] = -1,
 				[8525] = -1,
-				[1791] = -1,
 				[8548] = -1,
+				[3566] = -1,
 				[8541] = -1,
 				[8538] = -1,
 				[8551] = -1,
@@ -209,27 +175,59 @@ RareScannerDB = {
 				[1824] = -1,
 				[1833] = -1,
 				[11077] = -1,
-				[3566] = -1,
+				[1791] = -1,
 				[8530] = -1,
 				[10979] = -1,
 			},
+			["quests_completed"] = {
+				[5230] = true,
+				[5234] = true,
+				[5021] = true,
+				[5149] = true,
+				[5405] = true,
+				[4971] = true,
+				[5098] = true,
+				[5231] = true,
+				[5235] = true,
+				[5238] = true,
+				[5232] = true,
+				[6022] = true,
+				[5096] = true,
+				[5050] = true,
+				[5228] = true,
+				[4984] = true,
+				[5236] = true,
+				[5023] = true,
+				[9443] = true,
+				[6023] = true,
+				[5233] = true,
+				[5229] = true,
+				[6004] = true,
+				[4985] = true,
+				[5051] = true,
+				[5241] = true,
+				[5049] = true,
+				[838] = true,
+				[9444] = true,
+				[6025] = true,
+			},
 			["events_completed"] = {
+			},
+			["containers_opened"] = {
 			},
 		},
 	},
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Default",
 		["Ruuss - Earthfury"] = "Default",
+		["Liandrii - Earthfury"] = "Default",
+		["Eurydice - Skyfury"] = "Default",
 	},
 	["global"] = {
 		["object_names"] = {
 			["enUS"] = {
 			},
 		},
-		["rares_loot"] = {
-			[16184] = {
-				11991, -- [1]
-			},
+		["recentlySeen"] = {
 		},
 		["custom_npcs"] = {
 		},
@@ -237,14 +235,10 @@ RareScannerDB = {
 			["enUS"] = {
 			},
 		},
-		["recentlySeen"] = {
-		},
-		["dbversion"] = {
-			{
-				["locale"] = "enUS",
-				["version"] = 2,
-				["sync"] = true,
-			}, -- [1]
+		["rares_loot"] = {
+			[16184] = {
+				11991, -- [1]
+			},
 		},
 		["rare_names"] = {
 			["enUS"] = {
@@ -403,9 +397,9 @@ RareScannerDB = {
 				[14269] = "Seeker Aqualon",
 				[7895] = "Ambassador Bloodrage",
 				[1841] = "Scarlet Executioner",
-				[3253] = "Silithid Harvester",
-				[1885] = "Scarlet Smith",
+				[11447] = "Mushgog",
 				[2744] = "Shadowforge Commander",
+				[1885] = "Scarlet Smith",
 				[1119] = "Hammerspine",
 				[14018] = "Rezrelek",
 				[11467] = "Tsu'zee",
@@ -423,13 +417,13 @@ RareScannerDB = {
 				[3270] = "Elder Mystic Razorsnout",
 				[18685] = "Okrek",
 				[2605] = "Zalas Witherbark",
-				[8976] = "Hematos",
 				[10509] = "Jed Runewatcher",
+				[8976] = "Hematos",
 				[2604] = "Molok the Crusher",
-				[14016] = "Ushalac the Gloomdweller",
+				[7016] = "Lady Vespira",
 				[7057] = "Digmaster Shovelphlange",
 				[1130] = "Bjarn",
-				[7016] = "Lady Vespira",
+				[14016] = "Ushalac the Gloomdweller",
 				[2258] = "Stone Fury",
 				[3792] = "Terrowulf Packlord",
 				[1132] = "Timber",
@@ -445,17 +439,17 @@ RareScannerDB = {
 				[1137] = "Edan the Howler",
 				[6489] = "Ironspine",
 				[10078] = "Terrorspark",
-				[3295] = "Sludge Beast",
+				[10082] = "Zerillis",
 				[6584] = "King Mosh",
-				[1399] = "Magosh",
+				[2283] = "Ravenclaw Regent",
 				[1140] = "Razormaw Matriarch",
 				[14697] = "Lumbering Horror",
-				[18679] = "Vorakem Doomspeaker",
+				[1399] = "Magosh",
 				[1911] = "Deeb",
 				[572] = "Leprithus",
 				[1398] = "Boss Galgosh",
-				[2476] = "Large Loch Crocolisk",
-				[2283] = "Ravenclaw Regent",
+				[18690] = "Morcrush",
+				[1910] = "Muad",
 				[573] = "Foe Reaper 4000",
 				[18695] = "Ambassador Jerrikar",
 				[14222] = "Araga",
@@ -463,7 +457,7 @@ RareScannerDB = {
 				[574] = "Naraxis",
 				[14234] = "Hayoc",
 				[18698] = "Ever-Core the Punisher",
-				[14471] = "Setis",
+				[2476] = "Large Loch Crocolisk",
 				[8204] = "Soriid the Devourer",
 				[14476] = "Krellack",
 				[14475] = "Rex Ashil",
@@ -475,7 +469,7 @@ RareScannerDB = {
 				[14278] = "Ro'Bark",
 				[14447] = "Gilmorian",
 				[10198] = "Kashoch the Reaver",
-				[10202] = "Azurous",
+				[1920] = "Dalaran Spellscribe",
 				[6582] = "Clutchmother Zavas",
 				[6646] = "Monnos the Elder",
 				[6648] = "Antilos",
@@ -508,10 +502,10 @@ RareScannerDB = {
 				[1424] = "Master Digger",
 				[8282] = "Highlord Mastrogonde",
 				[1425] = "Grizlak",
-				[3872] = "Deathsworn Captain",
-				[14426] = "Harb Foulmountain",
-				[17075] = "Sandworm",
 				[2850] = "Broken Tooth",
+				[14426] = "Harb Foulmountain",
+				[14430] = "Duskstalker",
+				[8302] = "Deatheye",
 				[5354] = "Gnarl Leafbrother",
 				[10358] = "Fellicent's Shade",
 				[14446] = "Fingat",
@@ -519,7 +513,7 @@ RareScannerDB = {
 				[7015] = "Flagglemurk the Cruel",
 				[1112] = "Leech Widow",
 				[18696] = "Kraator",
-				[18680] = "Marticar",
+				[61] = "Thuros Lightfingers",
 				[5399] = "Veyzhak the Cannibal",
 				[14474] = "Zora",
 				[14478] = "Huricanian",
@@ -551,23 +545,23 @@ RareScannerDB = {
 				[596] = "Brainwashed Noble",
 				[4132] = "Silithid Ravager",
 				[12432] = "Old Vicejaw",
-				[14267] = "Emogg the Crusher",
-				[16179] = "Hyakiss the Lurker",
-				[8981] = "Malfunctioning Reaver",
-				[5864] = "Swinegart Spearhide",
-				[10558] = "Hearthsinger Forresten",
-				[599] = "Marisa du'Paige",
+				[4842] = "Earthcaller Halmgar",
 				[5798] = "Thora Feathermoon",
+				[8981] = "Malfunctioning Reaver",
+				[14267] = "Emogg the Crusher",
+				[11580] = "Kelemis the Lifeless",
+				[599] = "Marisa du'Paige",
+				[16179] = "Hyakiss the Lurker",
 				[5786] = "Snagglespear",
 				[9041] = "Warder Stilgiss",
 				[5790] = "Lizzle Sprysprocket",
 				[5343] = "Lady Szallah",
 				[5794] = "Thurmonde the Devout",
 				[5796] = "Ben",
-				[11580] = "Kelemis the Lifeless",
+				[10558] = "Hearthsinger Forresten",
 				[5800] = "Marcus Bel",
 				[9596] = "Bannok Grimaxe",
-				[5832] = "Thunderstomp",
+				[9604] = "Gorgon'och",
 				[601] = "Capo the Mean",
 				[5808] = "Warlord Kolkanis",
 				[14235] = "The Rot",
@@ -581,8 +575,8 @@ RareScannerDB = {
 				[5826] = "Geolord Mottle",
 				[5828] = "Humar the Pridelord",
 				[5830] = "Sister Rathtalon",
-				[9604] = "Gorgon'och",
-				[10119] = "Volchan",
+				[5832] = "Thunderstomp",
+				[5834] = "Azzere the Skyblade",
 				[5836] = "Engineer Whirleygig",
 				[5838] = "Brokespear",
 				[10642] = "Eck'alom",
@@ -590,14 +584,14 @@ RareScannerDB = {
 				[14227] = "Hissperak",
 				[11676] = "Fjordune the Greater",
 				[5848] = "Malgin Barleybrew",
-				[5834] = "Azzere the Skyblade",
+				[10119] = "Volchan",
 				[11688] = "Cursed Centaur",
 				[2931] = "Zaricotl",
 				[5345] = "Diamond Head",
 				[5347] = "Antilus the Soarer",
 				[5349] = "Arash-ethis",
 				[15796] = "Christmas Goraluk Anvilcrack",
-				[4842] = "Earthcaller Halmgar",
+				[5864] = "Swinegart Spearhide",
 				[14271] = "Ribchaser",
 				[14275] = "Tamra Stormpike",
 				[14279] = "Creepthess",
@@ -622,12 +616,12 @@ RareScannerDB = {
 				[2447] = "Narillasanz",
 				[3470] = "Rathorian",
 				[5912] = "Deviate Faerie Dragon",
-				[61] = "Thuros Lightfingers",
+				[18680] = "Marticar",
 				[5916] = "Sentinel Amarassan",
 				[2452] = "Skhowl",
 				[2453] = "Lo'Grosh",
 				[14233] = "Ripscale",
-				[8302] = "Deatheye",
+				[3872] = "Deathsworn Captain",
 				[616] = "Chatter",
 				[10818] = "Death Knight Soulbearer",
 				[10822] = "Warlord Thresh'jin",
@@ -635,7 +629,7 @@ RareScannerDB = {
 				[5934] = "Heartrazor",
 				[8279] = "Faulty War Golem",
 				[8283] = "Slave Master Blackheart",
-				[14430] = "Duskstalker",
+				[17075] = "Sandworm",
 				[14432] = "Threggil",
 				[14427] = "Gibblesnik",
 				[8299] = "Spiteflayer",
@@ -643,20 +637,20 @@ RareScannerDB = {
 				[8201] = "Omgorn the Lost",
 				[10644] = "Mist Howler",
 				[10359] = "Sri'skulk",
-				[1920] = "Dalaran Spellscribe",
+				[10202] = "Azurous",
 				[4425] = "Blind Hunter",
 				[14237] = "Oozeworm",
 				[14433] = "Sludginn",
 				[18682] = "Bog Lurker",
-				[18690] = "Morcrush",
+				[14471] = "Setis",
 				[12431] = "Gorefang",
 				[14479] = "Twilight Lord Everun",
 				[503] = "Lord Malathrom",
 				[14487] = "Gluggle",
 				[14491] = "Kurmokk",
 				[4015] = "Pridewing Patriarch",
-				[1910] = "Muad",
-				[10082] = "Zerillis",
+				[18679] = "Vorakem Doomspeaker",
+				[3295] = "Sludge Beast",
 				[14345] = "The Ongar",
 				[462] = "Vultros",
 				[14344] = "Mongress",
@@ -673,7 +667,7 @@ RareScannerDB = {
 				[100] = "Gruff Swiftbite",
 				[11497] = "The Razza",
 				[9602] = "Hahk'Zor",
-				[11447] = "Mushgog",
+				[3253] = "Silithid Harvester",
 				[16854] = "Eldinarcus",
 				[506] = "Sergeant Brashclaw",
 				[17144] = "Goretooth",
@@ -685,6 +679,12 @@ RareScannerDB = {
 				[14221] = "Gravis Slipknot",
 				[5859] = "Hagg Taurenbane",
 			},
+		},
+		["dbversion"] = {
+			{
+				["locale"] = "enUS",
+				["version"] = 3,
+			}, -- [1]
 		},
 		["loot_info"] = {
 			[2957] = {
@@ -1503,14 +1503,6 @@ RareScannerDB = {
 				4, -- [5]
 				2, -- [6]
 			},
-			[10162] = {
-				"|cff1eff00|Hitem:10162::::::::57:::::::::|h[Mercurial Legguards]|h|r", -- [1]
-				2, -- [2]
-				"INVTYPE_LEGS", -- [3]
-				134586, -- [4]
-				4, -- [5]
-				3, -- [6]
-			},
 			[117] = {
 				"|cffffffff|Hitem:117::::::::7:::::::::|h[Tough Jerky]|h|r", -- [1]
 				1, -- [2]
@@ -1518,6 +1510,14 @@ RareScannerDB = {
 				133972, -- [4]
 				0, -- [5]
 				5, -- [6]
+			},
+			[10162] = {
+				"|cff1eff00|Hitem:10162::::::::57:::::::::|h[Mercurial Legguards]|h|r", -- [1]
+				2, -- [2]
+				"INVTYPE_LEGS", -- [3]
+				134586, -- [4]
+				4, -- [5]
+				3, -- [6]
 			},
 			[10263] = {
 				"|cff1eff00|Hitem:10263::::::::57:::::::::|h[Adventurer's Shoulders]|h|r", -- [1]
@@ -1607,14 +1607,6 @@ RareScannerDB = {
 				4, -- [5]
 				6, -- [6]
 			},
-			[10188] = {
-				"|cff1eff00|Hitem:10188::::::::57:::::::::|h[Swashbuckler's Leggings]|h|r", -- [1]
-				2, -- [2]
-				"INVTYPE_LEGS", -- [3]
-				134586, -- [4]
-				4, -- [5]
-				2, -- [6]
-			},
 			[1413] = {
 				"|cff9d9d9d|Hitem:1413::::::::10:::::::::|h[Feeble Sword]|h|r", -- [1]
 				0, -- [2]
@@ -1622,6 +1614,14 @@ RareScannerDB = {
 				135274, -- [4]
 				2, -- [5]
 				7, -- [6]
+			},
+			[10188] = {
+				"|cff1eff00|Hitem:10188::::::::57:::::::::|h[Swashbuckler's Leggings]|h|r", -- [1]
+				2, -- [2]
+				"INVTYPE_LEGS", -- [3]
+				134586, -- [4]
+				4, -- [5]
+				2, -- [6]
 			},
 			[10220] = {
 				"|cff1eff00|Hitem:10220::::::::57:::::::::|h[Nightshade Tunic]|h|r", -- [1]
@@ -1806,7 +1806,7 @@ RareScannerDB = {
 		},
 		["npc_quest_ids"] = {
 		},
-		["lootdbversion"] = 2,
+		["lootdbversion"] = 3,
 		["container_quest_ids"] = {
 		},
 		["containers_loot"] = {

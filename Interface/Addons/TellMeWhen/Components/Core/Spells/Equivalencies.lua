@@ -54,7 +54,6 @@ TMW.BE = {
 		Shatterable = {
 			   -122, -- Frost Nova                          (mage, frost)
 			  -3355, -- Freezing Trap                       (hunter, general)
-			  33395, -- Freeze (Mage Water Elemental)
 		},
 		Bleeding = {
 			   -703, -- Garrote                             (rogue, general)
@@ -89,7 +88,7 @@ TMW.BE = {
 			  13327, -- Reckless Charge (Rocket Helmet)
 			  13181, -- Gnomish Mind Control Cap
 			  26108, -- Glimpse of Madness
-			  33043, -- Dragon's Breath
+
 		},
 		Disoriented = {
 			   -605, -- Mind Control                        (priest, PVE talent, general)
@@ -103,7 +102,6 @@ TMW.BE = {
 			 -24259, -- Spell Lock
 			 -18498, -- Shield Bash - Silenced
 			  19821, -- Arcane Bomb Silence
-			  34490, -- Silencing Shot (hunter)
 		},
 		Rooted = {
 			   -339, -- Entangling Roots                    (druid, general)
@@ -117,7 +115,6 @@ TMW.BE = {
 			 -19306, -- Counterattack
 			 -19185, -- Entrapment
 			 -23694, -- Improved Hamstring
-			  33395, -- Freeze (Mage Water Elemental)
 		},
 		Slowed = {
 			   -116, -- Frostbolt                           (mage, frost)
@@ -132,15 +129,12 @@ TMW.BE = {
 			   3409, -- Crippling Poison                    (rogue, assassination)
 			  -3600, -- Earthbind                           (shaman, general)
 			  -5116, -- Concussive Shot                     (hunter, beast mastery/marksman)
-			  -6343, -- Thunder Clap                        (warrior, protection)
 			  -7321, -- Chilled (Ice/Frost Armor)           (mage)
 			  -7992, -- Slowing Poison                      (NPC ability)
 			 -12323, -- Piercing Howl                       (warrior, fury)
 			  12486, -- Blizzard                            (mage, frost)
 			 -12544, -- Frost Armor                         (mage/NPC ability)
 			 -15407, -- Mind Flay                           (priest, shadow)
-			 -32700, -- Avenger's Shield                    (paladin, prot)
-			 -31589, -- Slow                                (mage, arcane)
 		},
 		Stunned = {
 			    -25, -- Stun                                (generic NPC ability)
@@ -176,7 +170,6 @@ TMW.BE = {
 			 -12798, -- Revenge Stun                        (warrior)
 			   5530, -- Mace Stun Effect                    (Mace Specialization)
 			  15283, -- Stunning Blow                       (Weapon Proc)
-			  30115, -- Sacrifice                           (Karazhan, Terestian Illhoof)
 		},
 	},
 	buffs = {
@@ -192,7 +185,6 @@ TMW.BE = {
 			    710, -- Banish                              (warlock)
 			   1022, -- Blessing of Protection              (paladin)
 			   6615, -- Free Action                         (vanilla potion)
-			  19752, -- Divine Intervention                 (paladin)
 		},
 		-- DefensiveBuffsAOE = {
 		-- },
@@ -216,26 +208,21 @@ TMW.BE = {
 			  13750, -- Adrenaline Rush                     (rogue, outlaw)
 			  19574, -- Bestial Wrath                       (hunter, beast mastery)
 			  28682, -- Combustion                          (mage, fire)
-			  31884, -- Avenging Wrath                      (paladin)
 		},
 		DamageShield = {
 			    -17, -- Power Word: Shield                  (priest)
-			  -1463, -- Mana Shield                         (mage)
 			 -11426, -- Ice Barrier                         (mage)
-			  19443, -- Sacrifice (Rank 6)                  (warlock, voidhunter)
-			  27273, -- Sacrifice (Rank 7)                  (warlock, voidhunter)
+			  -1463, -- Mana Shield                         (mage)
 		},
 		ImmuneToMagicCC = {
 			    642, -- Divine Shield                       (paladin, general)
 			   -710, -- Banish                              (warlock, general)
 			   8178, -- Grounding Totem Effect              (shaman, PVP talent, general)
-			  19752, -- Divine Intervention                 (paladin)
 			  23920, -- Spell Reflection                    (warrior, PVP talent for arms/fury, baseline for protection)
 		},
-		BurstHaste = {
-			   2825, -- Bloodlust                           (shaman, horde)
-			  32182, -- Heroism                             (shaman, alliance)
-		},
+		-- BurstHaste = {
+		-- 	   2825, -- Bloodlust                           (shaman, horde)
+		-- },
 		ImmuneToInterrupts = {
 			   -642, -- Divine Shield                       (paladin, general)
 		},
@@ -247,21 +234,17 @@ TMW.BE = {
 	casts = {
 		Heals = {
 			   -596, -- Prayer of Healing
-			  -2050, -- Lesser Heal
-			  -2060, -- Greater Heal
+			  -2060, -- Heal
 			  -2061, -- Flash Heal
-			 -32546, -- Binding Heal
 
 			   -740, -- Tranquility
-			  -5185, -- Healing Touch
 			  -8936, -- Regrowth
 
-			   -331, -- Healing Wave
 			  -1064, -- Chain Heal
-			  -8004, -- Lesser Healing Wave
+			  -8004, -- Healing Surge
 
-			   -635, -- Holy Light
 			 -19750, -- Flash of Light
+			   -863, -- Holy Light
 		},
 	},
 }

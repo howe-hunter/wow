@@ -1,17 +1,22 @@
 
 DataStoreDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["global"] = {
 		["Version"] = 1,
 		["Characters"] = {
+			["Default.Skyfury.Eurydice"] = {
+				["faction"] = "Alliance",
+			},
 			["Default.Earthfury.Liandrii"] = {
 				["faction"] = "Horde",
 			},
 		},
 		["ShortToLongRealmNames"] = {
+			["Skyfury"] = "Skyfury",
 			["Earthfury"] = "Earthfury",
 		},
 	},

@@ -3,29 +3,40 @@ if not TMW then return end
 TMW.CHANGELOG_LASTVER="7.4.0"
 
 TMW.CHANGELOG = [==[
+## v9.2.2
+### Bug Fixes
+* Fix #1931 - Group controller Buff/Debuff icons not checking any specific aura were not responding to UNIT_AURA events.
+  
+## v9.2.1
+### Bug Fixes
+* Fix #1930 - Buff/Debuff icons checking dispel types were not responding to events.
+  
+## v9.2.0
+* #1929 - Utilize new payload for UNIT_AURA event to greatly improve performance.
+
+## v9.1.2
+* New icon type: Lua Value (community contribution by Taurlog of Wyrmrest Accord)
+* Minor performance improvements
+* Support for Classic SoM patch (1.14).
+  
+### Bug Fixes
+* Fixed #1918 - Combo point resource display icons now update properly.
+
 ## v9.1.1
 ### Bug Fixes
 * Fixed #1909 - IconConfig.lua:127: attempt to index field "CurrentTabGroup" (a nil value)
 * Fixed #1913 (LibDogTag-Stats-3.0/1) - Error with code "[SpellCrit]"
-* Fixed #1905 - Re-added arena unitIDs.
 * Fixed #1914 - Meta icons that switch between shown/hidden OmniCC timer text without changing the duration of their timer now properly hide/show the timer text.
 
+
 ## v9.1.0
+* Version bump for WoW 9.1
 * Minor performance improvements
 
-## v9.0.8
-* Fixed up diminishing returns categories
-* Reworked suggestion list for totems to make it clear that the actual totem name is the correct input.
-* Adjusted the totem icon type to allow for matching ranks by spell ID, and to allow matching any rank by entering the name of the rank 1 version of the totem.
-* Reintroduced the Guardians icon type for temporary pets like Water Elemental, Shadowfiend, etc.
-* #1901 - Reintroduced the threat conditions.
-
 ## v9.0.7
-## Bug Fixes
+### Bug Fixes
 * Fixed #1886 - invalid key to "next" (new version of LibDogTag-Unit-3.0 should resolve this).
 * Fixed #1889 - error thrown when attempting to import corrupted strings
-* Fixed #1897 - attempt to call method 'SetBackdrop' (a nil value)
-* Fix LibRangeCheck errors (switched to WeakAuras fork of LRC).
 
 ## v9.0.6
 * New Condition: Covenant Membership

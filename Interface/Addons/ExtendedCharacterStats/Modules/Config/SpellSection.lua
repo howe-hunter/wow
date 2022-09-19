@@ -13,13 +13,13 @@ function _Config:LoadSpellSection()
         order = 6,
         inline = false,
         width = 2,
-        name = function() return i18n("SPELL") end,
+        name = function() return i18n("Spell") end,
         args = {
             showSpellStats = {
                 type = "toggle",
                 order = 0,
-                name = function() return i18n("SPELL_SETTINGS") end,
-                desc = function() return i18n("SPELL_SETTINGS_DESC") end,
+                name = function() return i18n("Show Spell Stats") end,
+                desc = function() return i18n("Shows/Hides all spell stats.") end,
                 width = 1.5,
                 get = function () return ExtendedCharacterStats.profile.spell.display; end,
                 set = function (_, value)
@@ -30,8 +30,8 @@ function _Config:LoadSpellSection()
             spellCrit = {
                 type = "toggle",
                 order = 1,
-                name = function() return i18n("SPELL_CRIT_SETTING") end,
-                desc = function() return i18n("SPELL_CRIT_SETTING_DESC") end,
+                name = function() return i18n("Spell Crit") end,
+                desc = function() return i18n("Shows/Hides the spell crit chance.") end,
                 width = 1.5,
                 disabled = function() return (not ExtendedCharacterStats.profile.spell.display); end,
                 get = function () return ExtendedCharacterStats.profile.spell.crit.display; end,
@@ -40,11 +40,43 @@ function _Config:LoadSpellSection()
                     Stats:RebuildStatInfos()
                 end,
             },
+            hasteRating = {
+                type = "toggle",
+                order = 2,
+                name = function() return i18n("Haste Rating") end,
+                desc = function() return i18n("Shows/Hides the spell haste rating value.") end,
+                width = 1.5,
+                hidden = function()
+                    return (not ECS.IsWotlk)
+                end,
+                disabled = function() return (not ExtendedCharacterStats.profile.spell.display); end,
+                get = function () return ExtendedCharacterStats.profile.spell.hasteRating.display; end,
+                set = function (_, value)
+                    ExtendedCharacterStats.profile.spell.hasteRating.display = value
+                    Stats:RebuildStatInfos()
+                end,
+            },
+            hasteBonus = {
+                type = "toggle",
+                order = 3,
+                name = function() return i18n("Haste Bonus") end,
+                desc = function() return i18n("Shows/Hides the spell haste bonus value.") end,
+                width = 1.5,
+                hidden = function()
+                    return (not ECS.IsWotlk)
+                end,
+                disabled = function() return (not ExtendedCharacterStats.profile.spell.display); end,
+                get = function () return ExtendedCharacterStats.profile.spell.hasteBonus.display; end,
+                set = function (_, value)
+                    ExtendedCharacterStats.profile.spell.hasteBonus.display = value
+                    Stats:RebuildStatInfos()
+                end,
+            },
             spellPenetration = {
                 type = "toggle",
-                order = 1,
-                name = function() return i18n("SPELL_PENETRATION_SETTING") end,
-                desc = function() return i18n("SPELL_PENETRATION_SETTING_DESC") end,
+                order = 4,
+                name = function() return i18n("Spell Penetration") end,
+                desc = function() return i18n("Shows/Hides the spell penetration value.") end,
                 width = 1.5,
                 disabled = function() return (not ExtendedCharacterStats.profile.spell.display); end,
                 get = function () return ExtendedCharacterStats.profile.spell.penetration.display; end,
@@ -55,9 +87,9 @@ function _Config:LoadSpellSection()
             },
             spellHit = {
                 type = "toggle",
-                order = 2,
-                name = function() return i18n("SPELL_HIT_SETTING") end,
-                desc = function() return i18n("SPELL_HIT_SETTING_DESC") end,
+                order = 5,
+                name = function() return i18n("Spell Hit") end,
+                desc = function() return i18n("Shows/Hides all spell hit chance.") end,
                 width = 1.5,
                 disabled = function() return (not ExtendedCharacterStats.profile.spell.display); end,
                 get = function () return ExtendedCharacterStats.profile.spell.hit.display; end,
@@ -68,18 +100,18 @@ function _Config:LoadSpellSection()
             },
             spellHitGroup = {
                 type = "group",
-                order = 3,
+                order = 6,
                 inline = true,
-                name = function() return "Spell Hit Values" end,
+                name = function() return i18n("Spell Hit Values") end,
                 args = {
                     spellHitRating = {
                         type = "toggle",
                         order = 1,
-                        name = function() return i18n("HIT_RATING_SETTING") end,
-                        desc = function() return i18n("SPELL_HIT_RATING_SETTING_DESC") end,
+                        name = function() return i18n("Hit Rating") end,
+                        desc = function() return i18n("Shows/Hides the spell hit rating.") end,
                         width = 1.5,
                         hidden = function()
-                            return (not ECS.IsTBC)
+                            return (not ECS.IsWotlk)
                         end,
                         disabled = function()
                             return ((not ExtendedCharacterStats.profile.spell.display) or
@@ -94,8 +126,8 @@ function _Config:LoadSpellSection()
                     spellHitBonus = {
                         type = "toggle",
                         order = 2,
-                        name = function() return i18n("HIT_BONUS_SETTING") end,
-                        desc = function() return i18n("SPELL_HIT_BONUS_SETTING_DESC") end,
+                        name = function() return i18n("Hit Bonus") end,
+                        desc = function() return i18n("Shows/Hides the spell hit bonus.") end,
                         width = 1.5,
                         disabled = function()
                             return ((not ExtendedCharacterStats.profile.spell.display) or
@@ -110,8 +142,8 @@ function _Config:LoadSpellSection()
                     spellMiss = {
                         type = "toggle",
                         order = 3,
-                        name = function() return i18n("MISS_CHANCE_SETTING") end,
-                        desc = function() return i18n("SPELL_MISS_CHANCE_SETTING_DESC") end,
+                        name = function() return i18n("Miss Chance") end,
+                        desc = function() return i18n("Shows/Hides the spell miss chance against enemies on the same level.") end,
                         width = 1.5,
                         disabled = function()
                             return ((not ExtendedCharacterStats.profile.spell.display) or
@@ -126,8 +158,8 @@ function _Config:LoadSpellSection()
                     spellMissBoss = {
                         type = "toggle",
                         order = 4,
-                        name = function() return i18n("MISS_CHANCE_BOSS_SETTING") end,
-                        desc = function() return i18n("SPELL_MISS_CHANCE_BOSS_SETTING_DESC") end,
+                        name = function() return i18n("Miss Chance Boss") end,
+                        desc = function() return i18n("Shows/Hides the spell miss chance against boss enemies (+3 Level).") end,
                         width = 1.5,
                         disabled = function()
                             return ((not ExtendedCharacterStats.profile.spell.display) or

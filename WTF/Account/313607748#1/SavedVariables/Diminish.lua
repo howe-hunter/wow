@@ -2,20 +2,13 @@
 DiminishDB = {
 	["profileKeys"] = {
 		["Liandrii-Earthfury"] = "Default",
+		["Eurydice-Skyfury"] = "Default",
 	},
 	["profiles"] = {
 		["Default"] = {
 			["categoryTextures"] = {
 			},
-			["timerColors"] = false,
-			["timerStartAuraEnd"] = false,
-			["trackNPCs"] = false,
-			["border"] = {
-				["layer"] = "BORDER",
-				["edgeSize"] = 2.5,
-				["name"] = "Default",
-				["edgeFile"] = "Interface\\BUTTONS\\UI-Quickslot-Depress",
-			},
+			["timerText"] = true,
 			["unitFrames"] = {
 				["nameplate"] = {
 					["enabled"] = false,
@@ -173,13 +166,22 @@ DiminishDB = {
 					["isEnabledForZone"] = false,
 				},
 			},
+			["timerColors"] = false,
+			["timerStartAuraEnd"] = false,
+			["border"] = {
+				["layer"] = "BORDER",
+				["edgeSize"] = 2.5,
+				["name"] = "Default",
+				["edgeFile"] = "Interface\\BUTTONS\\UI-Quickslot-Depress",
+			},
+			["timerEdge"] = false,
 			["categoryTextMaxLines"] = 2,
 			["showCategoryText"] = false,
-			["version"] = "1.8",
+			["version"] = "1.10",
 			["timerTextOutline"] = "NONE",
 			["colorBlind"] = false,
+			["trackNPCs"] = false,
 			["timerSwipe"] = true,
-			["timerText"] = true,
 			["categoryFont"] = {
 				["x"] = 0,
 				["size"] = 9,

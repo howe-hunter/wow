@@ -96,7 +96,6 @@ local FirstStances = {
 	PRIEST = 15473, 	-- Shadowform
 	ROGUE = 1784, 		-- Stealth
 	WARRIOR = 2457, 	-- Battle Stance
-	PALADIN = 19746, 	-- Concentration Aura
 }
 ConditionCategory:RegisterCondition(6,	 "STANCE", {
 	text = 	pclass == "DRUID" and L["SHAPESHIFT"] or

@@ -1,15 +1,40 @@
 
 DataStore_CharactersDB = {
 	["profileKeys"] = {
-		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
 		["Ruuss - Earthfury"] = "Ruuss - Earthfury",
+		["Liandrii - Earthfury"] = "Liandrii - Earthfury",
+		["Eurydice - Skyfury"] = "Eurydice - Skyfury",
 	},
 	["global"] = {
 		["Characters"] = {
+			["Default.Skyfury.Eurydice"] = {
+				["XPMax"] = 400,
+				["played"] = 102,
+				["playedThisLevel"] = 102,
+				["isResting"] = false,
+				["lastUpdate"] = 1662220828,
+				["class"] = "Paladin",
+				["race"] = "Draenei",
+				["level"] = 1,
+				["XP"] = 0,
+				["RestXP"] = 0,
+				["money"] = 0,
+				["gender"] = 3,
+				["classID"] = 2,
+				["englishClass"] = "PALADIN",
+				["bindLocation"] = "Ammen Vale",
+				["localizedFaction"] = "Alliance",
+				["subZone"] = "Ammen Vale",
+				["faction"] = "Alliance",
+				["englishRace"] = "Draenei",
+				["name"] = "Eurydice",
+				["lastLogoutTimestamp"] = 1662220828,
+				["zone"] = "Azuremyst Isle",
+			},
 			["Default.Earthfury.Ruuss"] = {
-				["lastUpdate"] = 1632933374,
 				["played"] = 1399983,
 				["playedThisLevel"] = 3962,
+				["lastUpdate"] = 1632933374,
 				["lastLogoutTimestamp"] = 1632933374,
 			},
 			["Default.Earthfury.Liandrii"] = {

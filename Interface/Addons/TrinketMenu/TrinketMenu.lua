@@ -1,4 +1,4 @@
---[[ TrinketMenu 9.0.0 ]]--
+--[[ TrinketMenu 9.0.7 ]]--
 
 TrinketMenu = { }
 
@@ -7,6 +7,7 @@ local Masque = LibStub("Masque", true)
 
 local IsClassic = WOW_PROJECT_ID >= WOW_PROJECT_CLASSIC
 local IsVanillaClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 -- localized strings required to support engineering bags
 TrinketMenu.BAG = "Bag" -- 7th return of GetItemInfo on a normal bag
@@ -280,6 +281,7 @@ function TrinketMenu.Initialize()
 	TrinketMenuPerOptions.Hidden = TrinketMenuPerOptions.Hidden or { }
 	options.MenuOnRight = options.MenuOnRight or "OFF" -- 3.61
 	if TrinketMenuPerOptions.XPos and TrinketMenuPerOptions.YPos then
+		TrinketMenu_MainFrame:ClearAllPoints()
 		TrinketMenu_MainFrame:SetPoint("TOPLEFT", "UIParent", "BOTTOMLEFT", TrinketMenuPerOptions.XPos, TrinketMenuPerOptions.YPos)
 	end
 	if TrinketMenuPerOptions.MainScale then
@@ -388,7 +390,6 @@ function TrinketMenu.OnLoad(self)
 	self:RegisterEvent("PLAYER_LOGIN")
 end
 
-local shown
 function TrinketMenu.OnEvent(self, event, ...)
 	if event == "UNIT_INVENTORY_CHANGED" then
 		local unitID = ...
@@ -401,14 +402,23 @@ function TrinketMenu.OnEvent(self, event, ...)
 		TrinketMenu.UpdateWornCooldowns(1)
 	elseif event == "PET_BATTLE_OPENING_START" then
 		if TrinketMenuOptions.HidePetBattle == "ON" then
-			shown = TrinketMenu_MainFrame:IsShown()
-			if shown then
+			if TrinketMenu_MainFrame:IsShown() then
 				TrinketMenu_MainFrame:Hide()
+				TrinketMenu_MainFrame.WasShown = true
+			end
+			if TrinketMenu_MenuFrame:IsShown() then
+				TrinketMenu_MenuFrame:Hide()
+				TrinketMenu_MenuFrame.WasShown = true
 			end
 		end
 	elseif event == "PET_BATTLE_CLOSE" then
-		if TrinketMenuOptions.HidePetBattle == "ON" and shown then
-			TrinketMenu_MainFrame:Show()
+		if TrinketMenuOptions.HidePetBattle == "ON" then
+			if TrinketMenu_MainFrame.WasShown then
+				TrinketMenu_MainFrame:Show()
+			end
+			if TrinketMenu_MenuFrame.WasShown then
+				TrinketMenu_MenuFrame:Show()
+			end
 		end
 	elseif (event == "PLAYER_REGEN_ENABLED" or event == "PLAYER_UNGHOST" or event == "PLAYER_ALIVE") and not TrinketMenu.IsPlayerReallyDead() then
 		if TrinketMenu.CombatQueue[0] or TrinketMenu.CombatQueue[1] then
@@ -425,7 +435,6 @@ function TrinketMenu.OnEvent(self, event, ...)
 		TrinketMenu_OptMenuOnRight:Disable()
 	elseif event == "PLAYER_LOGIN" then
 		TrinketMenu.LoadDefaults()
-		TrinketMenu_MainFrame:ClearAllPoints()
 		TrinketMenu.Initialize()
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		self:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -486,6 +495,9 @@ function TrinketMenu.SlashHandler(msg)
 		TrinketMenu.ReflectLock()
 	elseif msg == "reset" then
 		TrinketMenu.ResetSettings()
+	elseif msg == "clear" then
+		wipe(TrinketMenuPerOptions.Hidden)
+		DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFF00TrinketMenu: Cleared all ignored/hidden trinkets.")
 	elseif string.find(msg, "alpha") then
 		local _, _, alpha = string.find(msg, "alpha (.+)")
 		alpha = tonumber(alpha)
@@ -524,6 +536,7 @@ function TrinketMenu.SlashHandler(msg)
 		DEFAULT_CHAT_FRAME:AddMessage("|cFFFFFF00TrinketMenu useage:")
 		DEFAULT_CHAT_FRAME:AddMessage("/trinket or /trinketmenu : toggle the window")
 		DEFAULT_CHAT_FRAME:AddMessage("/trinket reset : reset all settings")
+		DEFAULT_CHAT_FRAME:AddMessage("/trinket clear : clear all ignored/hidden trinkets")
 		DEFAULT_CHAT_FRAME:AddMessage("/trinket opt : summon options window")
 		DEFAULT_CHAT_FRAME:AddMessage("/trinket lock|unlock : toggles window lock")
 		DEFAULT_CHAT_FRAME:AddMessage("/trinket scale main|menu (number) : sets an exact scale")
@@ -1170,14 +1183,19 @@ end
 
 function TrinketMenu.OnShow()
 	TrinketMenuPerOptions.Visible = "ON"
-	if TrinketMenuOptions.KeepOpen == "ON" then
+	if TrinketMenuOptions.KeepOpen == "ON" and TrinketMenu_MenuFrame.WasShown then
 		TrinketMenu.BuildMenu()
 	end
 end
 
 function TrinketMenu.OnHide()
-	TrinketMenuPerOptions.Visible = "OFF"
+	if not UIParent:IsShown() or (IsRetail and C_PetBattles.IsInBattle() or false) then
+		TrinketMenu_MenuFrame.WasShown = false
+		return
+	end
 	TrinketMenu_MenuFrame:Hide()
+	TrinketMenu_MenuFrame.WasShown = true
+	TrinketMenuPerOptions.Visible = "OFF"
 end
 
 function TrinketMenu.ReflectAlpha()
